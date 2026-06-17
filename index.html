@@ -2367,9 +2367,9 @@
         leadData: { name: '', phone: '', email: '', city: '', date: '', time: '' }
       };
 
-      // Add WhatsApp Bot Initial Greeting (Bilingual with Hindi & Gujarati)
-      renderWAMessage("Welcome to Sri Gowthami Admissions Office chatbot! Choose your language to begin.\n\nश्री गौतमी शैक्षणिक संस्थान प्रवेश चैटबॉट में आपका स्वागत है! शुरू करने के लिए अपनी भाषा चुनें।\n\nશ્રી ગૌતમી શૈક્ષણિક સંસ્થાના પ્રવેશ ચેટબોટમાં આપનું સ્વાગત છે! શરૂ કરવા માટે તમારી ભાષા પસંદ કરો.", 'bot');
-      setWAQuickReplies(['English', 'हिन्दी (Hindi)', 'ગુજરાતી (Gujarati)']);
+      // Add WhatsApp Bot Initial Greeting (Multilingual with Hindi, Gujarati, Marathi)
+      renderWAMessage("Welcome to Sri Gowthami Admissions Office chatbot! Choose your language to begin.\n\nश्री गौतमी शैक्षणिक संस्थान प्रवेश चैटबॉट में आपका स्वागत है! शुरू करने के लिए अपनी भाषा चुनें।\n\nશ્રી ગૌતમી શૈક્ષણિક સંસ્થાના પ્રવેશ ચેટબોટમાં આપનું સ્વાગત છે! શરૂ કરવા માટે તમારી ભાષા પસંદ કરો.\n\nश्री गौतमी शैक्षणिक संस्था प्रवेश चॅटबॉटमध्ये आपले स्वागत आहे! सुरू करण्यासाठी आपली भाषा निवडा.", 'bot');
+      setWAQuickReplies(['English', 'हिन्दी (Hindi)', 'ગુજરાતી (Gujarati)', 'मराठी (Marathi)']);
     }
 
     function renderWAMessage(text, sender = 'bot') {
@@ -2489,6 +2489,11 @@
             waState.step = 'stream_select';
             renderWAMessage("भाषा **हिन्दी** सेट की गई है।\n\nनमस्कार! मैं आपका एआई प्रवेश सलाहकार हूँ। मैं यहाँ आपको हमारे पाठ्यक्रमों, पात्रता, फीस, प्लेसमेंट, छात्रावास, परिवहन और आपकी सीट सुरक्षित करने में मार्गदर्शन करूँगा।\n\nसबसे पहले, कृपया अपनी हाई स्कूल / इंटरमीडिएट शिक्षा स्ट्रीम का चयन करें:", 'bot');
             setWAQuickReplies(['MPC (इंजीनियरिंग)', 'BiPC (मेडिकल/विज्ञान)', 'CEC/MEC (मैनेजमेंट)', 'स्नातक की डिग्री']);
+          } else if (input.includes('मराठी')) {
+            waState.lang = 'mr';
+            waState.step = 'stream_select';
+            renderWAMessage("भाषा **मराठी** सेट केली आहे.\n\nनमस्कार! मी तुमचा एआय प्रवेश सल्लागार आहे. मी तुम्हाला आमचे अभ्यासक्रम, पात्रता, फी, प्लेसमेंट्स, हॉस्टेल, वाहतूक आणि सीट सुरक्षित करण्यासाठी मार्गदर्शन करेन.\n\nसर्वप्रथम, कृपया तुमची १२ वी / माध्यमिक शिक्षण शाखा निवडा:", 'bot');
+            setWAQuickReplies(['MPC (अभियांत्रिकी)', 'BiPC (वैद्यकीय/विज्ञान)', 'CEC/MEC (व्यवस्थापन)', 'पदवी']);
           } else {
             waState.lang = 'gj';
             waState.step = 'stream_select';
@@ -2506,6 +2511,9 @@
           } else if (lang === 'hi') {
             renderWAMessage("बढ़िया! आपके मुख्य करियर लक्ष्य या रुचियां क्या हैं?", 'bot');
             setWAQuickReplies(['कोडिंग और कंप्यूटर', 'इलेक्ट्रॉनिक्स और रोबोटिक्स', 'सिविल और बिल्डिंग', 'बिजनेस और मैनेजमेंट', 'डेटा और गणित']);
+          } else if (lang === 'mr') {
+            renderWAMessage("उत्कृष्ट! तुमचे मुख्य करिअर ध्येय किंवा आवडी काय आहेत?", 'bot');
+            setWAQuickReplies(['कोडिंग आणि कॉम्प्युटर्स', 'इलेक्ट्रॉनिक्स आणि रोबोटिक्स', 'सिव्हिल आणि बिल्डिंग', 'व्यवसाय आणि व्यवस्थापन', 'डेटा आणि गणित']);
           } else {
             renderWAMessage("ખૂબ સરસ! તમારા મુખ્ય કારકિર્દી લક્ષ્યો અથવા રુચિઓ શું છે?", 'bot');
             setWAQuickReplies(['કોડિંગ અને કોમ્પ્યુટર', 'ઇલેક્ટ્રોનિક્સ અને રોબોટિક્સ', 'સિવિલ અને બિલ્ડિંગ', 'બિઝનેસ અને મેનેજમેન્ટ', 'ડેટા અને ગણિત']);
@@ -2518,19 +2526,19 @@
           
           // Recommend Course
           let recCourse = ACADEMIC_COURSES[0]; // Default CSE
-          if (waState.stream.includes('MPC') || waState.stream.includes('इंजीनियरिंग') || waState.stream.includes('ઇજનેરી')) {
-            if (input.includes('Coding') || input.includes('कोडिंग') || input.includes('કોડિંગ')) {
+          if (waState.stream.includes('MPC') || waState.stream.includes('इंजीनियरिंग') || waState.stream.includes('ઇજનેરી') || waState.stream.includes('अभियांत्रिकी')) {
+            if (input.includes('Coding') || input.includes('कोडिंग') || input.includes('કોડિંગ') || input.includes('कोडिंग')) {
               recCourse = ACADEMIC_COURSES[0]; // CSE
-            } else if (input.includes('Electronics') || input.includes('इलेक्ट्रॉनिक्स') || input.includes('ઇલેક્ટ્રોનિક્સ')) {
+            } else if (input.includes('Electronics') || input.includes('इलेक्ट्रॉनिक्स') || input.includes('ઇલેક્ટ્રોનિક્સ') || input.includes('इलेक्ट्रॉनिक्स')) {
               recCourse = ACADEMIC_COURSES[2]; // ECE
-            } else if (input.includes('Civil') || input.includes('बिल्डिंग') || input.includes('બિલ્ડિંગ') || input.includes('Civil')) {
+            } else if (input.includes('Civil') || input.includes('बिल्डिंग') || input.includes('બિલ્ડિંગ') || input.includes('Civil') || input.includes('बिल्डिंग')) {
               recCourse = ACADEMIC_COURSES[3]; // Civil
             } else {
               recCourse = ACADEMIC_COURSES[1]; // AI/ML
             }
-          } else if (waState.stream.includes('BiPC') || waState.stream.includes('विज्ञान') || waState.stream.includes('સાયન્સ')) {
+          } else if (waState.stream.includes('BiPC') || waState.stream.includes('विज्ञान') || waState.stream.includes('સાયન્સ') || waState.stream.includes('वैद्यकीय')) {
             recCourse = ACADEMIC_COURSES[5]; // B.Sc DS
-          } else if (waState.stream.includes('CEC') || waState.stream.includes('Graduation') || waState.stream.includes('मैनेजमेंट') || waState.stream.includes('મેનેજમેન્ટ') || waState.stream.includes('डिग्री') || waState.stream.includes('ડિગ્રી')) {
+          } else if (waState.stream.includes('CEC') || waState.stream.includes('Graduation') || waState.stream.includes('मैनेजमेंट') || waState.stream.includes('મેનેજમેન્ટ') || waState.stream.includes('डिग्री') || waState.stream.includes('ડિગ્રી') || waState.stream.includes('व्यवस्थापन') || waState.stream.includes('पदवी')) {
             recCourse = ACADEMIC_COURSES[4]; // MBA
           }
 
@@ -2545,6 +2553,10 @@
             responseText = `आपकी स्ट्रीम (${waState.stream}) और रुचियों (${input}) के आधार पर, मैं हमारे **${recCourse.campus}** ब्लॉक में **${recCourse.name} (${recCourse.shortName})** की अत्यधिक अनुशंसा करता हूँ।\n\n*यह क्यों मेल खाता है:* ${recCourse.desc}\n\n*विवरण:* \n📅 अवधि: ${recCourse.duration}\n💰 ट्यूशन फीस: ${recCourse.fee}\n✔️ न्यूनतम पात्रता कटऑफ: बोर्ड परीक्षाओं में ${recCourse.eligibility}% अंक।\n\n🏫 *परिसर सुविधाएं:* वाई-फाई छात्रावास, एसी/गैर-एसी कमरे, प्लेसमेंट अभियान (उच्चतम पैकेज ₹12 लाख प्रति वर्ष), सभी मुख्य स्थानों को कवर करने वाली बसें।\n\nआप आगे क्या करना चाहेंगे?`;
             renderWAMessage(responseText, 'bot');
             setWAQuickReplies(['अपॉइंटमेंट बुक करें 📅', 'विवरणिका डाउनलोड करें 📄', 'छात्रावास का विवरण 🏢', 'चैट रीस्टार्ट करें 🔄']);
+          } else if (lang === 'mr') {
+            responseText = `तुमच्या शाखा (${waState.stream}) आणि आवडीनुसार (${input}), मी आमच्या **${recCourse.campus}** ब्लॉकमध्ये **${recCourse.name} (${recCourse.shortName})** ची शिफारस करतो.\n\n*हे का जुळते:* ${recCourse.desc}\n\n*तपशील:* \n📅 कालावधी: ${recCourse.duration}\n💰 शैक्षणिक शुल्क: ${recCourse.fee}\n✔️ किमान पात्रता कटऑफ: बोर्डाच्या परीक्षेत ${recCourse.eligibility}% गुण.\n\n🏫 *कॅम्पस सुविधा:* वाय-फाय हॉस्टेल, एसी/नॉन-एसी खोल्या, कॅम्पस प्लेसमेंट ड्राइव्ह (उच्चतम पॅकेज ₹१२ लाख प्रति वर्ष), सर्व मुख्य ठिकाणांना जोडणारी बस सेवा.\n\nतुम्हाला पुढे काय करायला आवडेल?`;
+            renderWAMessage(responseText, 'bot');
+            setWAQuickReplies(['अपॉइंटमेंट बुक करा 📅', 'माहिती पुस्तिका डाउनलोड करा 📄', 'हॉस्टेल तपशील 🏢', 'चॅट रीस्टार्ट करा 🔄']);
           } else {
             responseText = `તમારા પ્રવાહ (${waState.stream}) અને રુચિઓ (${input}) ના આધારે, હું અમારા **${recCourse.campus}** બ્લોકમાં **${recCourse.name} (${recCourse.shortName})** ની ભારપૂર્વક ભલામણ કરું છું.\n\n*તે કેમ મેળ ખાય છે:* ${recCourse.desc}\n\n*વિગતો:* \n📅 સમયગાળો: ${recCourse.duration}\n💰 ટ્યુશન ફી: ${recCourse.fee}\n✔️ લઘુત્તમ પાત્રતા કટઓફ: બોર્ડ પરીક્ષામાં ${recCourse.eligibility}% ગુણ.\n\n🏫 *કેમ્પસ સુવિધાઓ:* વાઇ-ફાઇ હોસ્ટેલ, એસી/નોન-એસી રૂમ, કેમ્પસ પ્લેસમેન્ટ ડ્રાઇવ (સૌથી વધુ પેકેજ ₹12 લાખ પ્રતિ વર્ષ), તમામ મુખ્ય સ્થાનોને આવરી લેતી પરિવહન બસો.\n\nતમે આગળ શું કરવા માંગો છો?`;
             renderWAMessage(responseText, 'bot');
@@ -2553,7 +2565,7 @@
           break;
 
         case 'course_rec':
-          if (input.includes('Brochure') || input.includes('विवरणिका') || input.includes('પત્રિકા')) {
+          if (input.includes('Brochure') || input.includes('विवरणिका') || input.includes('પત્રિકા') || input.includes('पुस्तिका') || input.includes('माहिती पुस्तिका')) {
             downloadMockBrochure();
             if (lang === 'en') {
               renderWAMessage("⚠️ The online brochure download service is currently not working / undergoing maintenance.\n\nLet's schedule an appointment with a counselor to secure your seat and receive the brochure directly. What would you like to do?", 'bot');
@@ -2561,27 +2573,35 @@
             } else if (lang === 'hi') {
               renderWAMessage("⚠️ विवरणिका डाउनलोड सेवा वर्तमान में काम नहीं कर रही है / रखरखाव के अधीन है।\n\nअपनी सीट सुरक्षित करने और सीधे विवरणिका प्राप्त करने के लिए कृपया काउंसलर के साथ अपॉइंटमेंट बुक करें। आप क्या करना चाहेंगे?", 'bot');
               setWAQuickReplies(['अपॉइंटमेंट बुक करें 📅', 'छात्रावास का विवरण 🏢', 'चैट रीस्टार्ट करें 🔄']);
+            } else if (lang === 'mr') {
+              renderWAMessage("⚠️ ऑनलाईन माहिती पुस्तिका डाऊनलोड सेवा सध्या कार्यरत नाही / दुरुस्ती सुरू आहे.\n\nतुमची सीट सुरक्षित करण्यासाठी आणि थेट माहिती पुस्तिका मिळवण्यासाठी कृपया समुपदेशकासोबत अपॉइंटमेंट बुक करा. तुम्हाला काय करायला आवडेल?", 'bot');
+              setWAQuickReplies(['अपॉइंटमेंट बुक करा 📅', 'हॉस्टेल तपशील 🏢', 'चॅट रीस्टार्ट करा 🔄']);
             } else {
               renderWAMessage("⚠️ માહિતી પત્રિકા ડાઉનલોડ સેવા હાલમાં કામ કરી રહી નથી / જાળવણી હેઠળ છે.\n\nતમારી સીટ સુરક્ષિત કરવા અને સીધી માહિતી પત્રિકા મેળવવા માટે કૃપા કરીને કાઉન્સિલર સાથે એપોઇન્ટમેન્ટ નક્કી કરો. તમે શું કરવા માંગો છો?", 'bot');
               setWAQuickReplies(['એપોઇન્ટમેન્ટ બુક કરો 📅', 'હોસ્ટેલ વિગતો 🏢', 'ચેટ રીસ્ટાર્ટ કરો 🔄']);
             }
-          } else if (input.includes('Hostel') || input.includes('छात्रावास') || input.includes('હોસ્ટેલ')) {
+          } else if (input.includes('Hostel') || input.includes('छात्रावास') || input.includes('હોસ્ટેલ') || input.includes('हॉस्टेल')) {
             if (lang === 'en') {
               renderWAMessage("🏢 Hostels feature 3/4 sharing rooms, study halls, hygienic mess halls (North & South Indian menu), 24/7 medical room, and high-speed Wi-Fi. Our transport covers 15 routes with GPS-enabled buses. Let's secure your seat booking.", 'bot');
               setWAQuickReplies(['Book Appointment 📅', 'Download Brochure 📄', 'Restart Bot 🔄']);
             } else if (lang === 'hi') {
               renderWAMessage("🏢 छात्रावासों में 3/4 साझा कमरे, अध्ययन कक्ष, स्वच्छ मेस (उत्तर और दक्षिण भारतीय भोजन), 24/7 चिकित्सा कक्ष और हाई-स्पीड वाई-फाई की सुविधा है। हमारा परिवहन जीपीएस बसों के साथ 15 मार्गों को कवर करता है। आइए आपकी सीट सुरक्षित करें।", 'bot');
               setWAQuickReplies(['अपॉइंटमेंट बुक करें 📅', 'विवरणिका डाउनलोड करें 📄', 'चैट रीस्टार्ट करें 🔄']);
+            } else if (lang === 'mr') {
+              renderWAMessage("🏢 हॉस्टेलमध्ये ३/४ शेअरिंग रूम, अभ्यासिका, स्वच्छ मेस (उत्तर आणि दक्षिण भारतीय जेवण), २४/७ वैद्यकीय खोली आणि हाय-स्पीड वाय-फाय सुविधा आहे. आमची वाहतूक जीपीएस युक्त बससह १५ मार्गांवर उपलब्ध आहे. चला तुमची सीट बुक करूया.", 'bot');
+              setWAQuickReplies(['अपॉइंटमेंट बुक करा 📅', 'माहिती पुस्तिका डाउनलोड करा 📄', 'चॅट रीस्टार्ट करा 🔄']);
             } else {
               renderWAMessage("🏢 હોસ્ટેલમાં 3/4 શેરિંગ રૂમ, સ્ટડી હોલ, સ્વચ્છ મેસ (ઉત્તર અને દક્ષિણ ભારતીય ભોજન), 24/7 મેડિકલ રૂમ અને હાઇ-સ્પીડ વાઇ-ફાઇની સુવિધા છે. અમારું પરિવહન જીપીએસ બસો સાથે 15 રૂટને આવરી લે છે. ચાલો તમારી સીટ સુરક્ષિત કરીએ.", 'bot');
               setWAQuickReplies(['એપોઇન્ટમેન્ટ બુક કરો 📅', 'માહિતી પત્રિકા ડાઉનલોડ કરો 📄', 'ચેટ રીસ્ટાર્ટ કરો 🔄']);
             }
-          } else if (input.includes('Book Appointment') || input.includes('अपॉइंटमेंट') || input.includes('એપોઇન્ટમેન્ટ')) {
+          } else if (input.includes('Book Appointment') || input.includes('अपॉइंटमेंट') || input.includes('એપોઇન્ટમેન્ટ') || input.includes('अपॉइंटमेंट') || input.includes('बुक करा')) {
             waState.step = 'name_collect';
             if (lang === 'en') {
               renderWAMessage("Great choice! Let's register your seat booking session. Please type your **Full Name**:", 'bot');
             } else if (lang === 'hi') {
               renderWAMessage("बहुत बढ़िया विकल्प! आइए आपके सीट बुकिंग सत्र को पंजीकृत करें। कृपया अपना **पूरा नाम** टाइप करें:", 'bot');
+            } else if (lang === 'mr') {
+              renderWAMessage("उत्कृष्ट पर्याय! चला तुमच्या सीट बुकिंग सत्राची नोंदणी करूया. कृपया तुमचे **पूर्ण नाव** टाईप करा:", 'bot');
             } else {
               renderWAMessage("સરસ વિકલ્પ! ચાલો તમારા સીટ બુકિંગ સત્રની નોંધણી કરીએ. કૃપા કરીને તમારું **પૂરું નામ** ટાઇપ કરો:", 'bot');
             }
@@ -2597,6 +2617,8 @@
             renderWAMessage(`Thanks ${input}. Please share your **10-Digit Mobile Phone Number** (for SMS alerts):`, 'bot');
           } else if (lang === 'hi') {
             renderWAMessage(`धन्यवाद ${input}। कृपया अपना **10 अंकों का मोबाइल फोन नंबर** साझा करें (एसएमएस अलर्ट के लिए):`, 'bot');
+          } else if (lang === 'mr') {
+            renderWAMessage(`धन्यवाद ${input}. कृपया तुमचा **१०-अंकी मोबाईल नंबर** शेअर करा (SMS अलर्टसाठी):`, 'bot');
           } else {
             renderWAMessage(`આભાર ${input}. કૃપા કરીને તમારો **10 અંકનો મોબાઈલ ફોન નંબર** દાખલ કરો (SMS એલર્ટ માટે):`, 'bot');
           }
@@ -2608,6 +2630,8 @@
               renderWAMessage("⚠️ Invalid phone number. Please enter a valid 10-digit number:", 'bot');
             } else if (lang === 'hi') {
               renderWAMessage("⚠️ अमान्य फोन नंबर। कृपया एक वैध 10-अंकीय नंबर दर्ज करें:", 'bot');
+            } else if (lang === 'mr') {
+              renderWAMessage("⚠️ अवैध मोबाईल नंबर. कृपया वैध १०-अंकी नंबर प्रविष्ट करा:", 'bot');
             } else {
               renderWAMessage("⚠️ અમાન્ય ફોન નંબર. કૃપા કરીને સાચો 10 અંકનો નંબર દાખલ કરો:", 'bot');
             }
@@ -2619,6 +2643,8 @@
             renderWAMessage("Excellent. Please share your **Email Address**:", 'bot');
           } else if (lang === 'hi') {
             renderWAMessage("बहुत बढ़िया। कृपया अपना **ईमेल पता** साझा करें:", 'bot');
+          } else if (lang === 'mr') {
+            renderWAMessage("उत्कृष्ट. कृपया तुमचा **ईमेल पत्ता** शेअर करा:", 'bot');
           } else {
             renderWAMessage("ખૂબ સરસ. કૃપા કરીને તમારું **ઇમેઇલ સરનામું** દાખલ કરો:", 'bot');
           }
@@ -2630,6 +2656,8 @@
               renderWAMessage("⚠️ Invalid email format. Please enter a valid email address:", 'bot');
             } else if (lang === 'hi') {
               renderWAMessage("⚠️ अमान्य ईमेल प्रारूप। कृपया एक वैध ईमेल पता दर्ज करें:", 'bot');
+            } else if (lang === 'mr') {
+              renderWAMessage("⚠️ अवैध ईमेल स्वरूप. कृपया वैध ईमेल पत्ता प्रविष्ट करा:", 'bot');
             } else {
               renderWAMessage("⚠️ અમાન્ય ઇમેઇલ ફોર્મેટ. કૃપા કરીને સાચું ઇમેઇલ સરનામું દાખલ કરો:", 'bot');
             }
@@ -2641,6 +2669,8 @@
             renderWAMessage("Which **City or Town** are you from?", 'bot');
           } else if (lang === 'hi') {
             renderWAMessage("आप किस **शहर या कस्बे** से हैं?", 'bot');
+          } else if (lang === 'mr') {
+            renderWAMessage("तुम्ही कोणत्या **शहर किंवा गावातील** आहात?", 'bot');
           } else {
             renderWAMessage("તમે કયા **શહેર અથવા નગર** થી છો?", 'bot');
           }
@@ -2655,6 +2685,9 @@
           } else if (lang === 'hi') {
             renderWAMessage("अद्भुत! कृपया अपनी पसंदीदा **काउंसिलिंग तिथि** स्लॉट चुनें:", 'bot');
             setWAQuickReplies(['कल 📅', 'इस शनिवार 📅', 'अगले सोमवार 📅']);
+          } else if (lang === 'mr') {
+            renderWAMessage("उत्कृष्ट! कृपया तुमची पसंतीची **समुपदेशन तारीख** निवडा:", 'bot');
+            setWAQuickReplies(['उद्या 📅', 'या शनिवारी 📅', 'पुढील सोमवारी 📅']);
           } else {
             renderWAMessage("ખૂબ સરસ! કૃપા કરીને તમારી પસંદગીનો **કાઉન્સેલિંગ તારીખ** સ્લોટ પસંદ કરો:", 'bot');
             setWAQuickReplies(['આવતીકાલે 📅', 'આ શનિવારે 📅', 'આવતા સોમવારે 📅']);
@@ -2670,6 +2703,9 @@
           } else if (lang === 'hi') {
             renderWAMessage("समझ गया। अपना पसंदीदा **समय स्लॉट** चुनें:", 'bot');
             setWAQuickReplies(['सुबह 10:00 🕒', 'दोपहर 01:00 🕒', 'शाम 03:30 🕒']);
+          } else if (lang === 'mr') {
+            renderWAMessage("समजले. तुमची पसंतीची **वेळ** निवडा:", 'bot');
+            setWAQuickReplies(['सकाळी १०:०० 🕒', 'दुपारी ०१:०० 🕒', 'दुपारी ०३:३० 🕒']);
           } else {
             renderWAMessage("સમજી ગયો. તમારી પસંદગીનો **સમય સ્લોટ** પસંદ કરો:", 'bot');
             setWAQuickReplies(['સવારે 10:00 🕒', 'બપોરે 01:00 🕒', 'સાંજે 03:30 🕒']);
@@ -2682,9 +2718,9 @@
           
           // Determine Lead Score (Hot, Warm, Cold)
           let leadScore = 'Warm';
-          if (waState.stream.includes('MPC') || waState.stream.includes('ઇજનેરી') || waState.stream.includes('इंजीनियरिंग')) {
+          if (waState.stream.includes('MPC') || waState.stream.includes('ઇજનેરી') || waState.stream.includes('इंजीनियरिंग') || waState.stream.includes('अभियांत्रिकी')) {
             leadScore = 'Hot'; // Engineering high demand
-          } else if (waState.interests.includes('Coding') || waState.interests.includes('कोडिंग') || waState.interests.includes('કોડિંગ')) {
+          } else if (waState.interests.includes('Coding') || waState.interests.includes('कोडिंग') || waState.interests.includes('કોડિંગ') || waState.interests.includes('कोडिंग')) {
             leadScore = 'Hot';
           }
 
@@ -2722,6 +2758,9 @@
           } else if (lang === 'hi') {
             renderWAMessage(`🎉 **काउंसिलिंग स्लॉट की पुष्टि हो गई है!**\n\n👤 उम्मीदवार का नाम: ${waState.leadData.name}\n📅 दिनांक: ${waState.leadData.date}\n🕒 समय स्लॉट: ${waState.leadData.time}\n📍 कोर्स: ${waState.course}\n\nहमारे काउंसिलिंग निदेशक **Dr. K. Raghavan** को आपकी प्रोफ़ाइल सौंपी गई है। एक पुष्टिकरण व्हाट्सएप संदेश **${waState.leadData.phone}** पर भेज दिया गया है।\n\nश्री गौतमी चुनने के लिए धन्यवाद!`, 'bot');
             setWAQuickReplies(['रीस्टार्ट चैट 🔄', 'मुख्य पोर्टल 🌐']);
+          } else if (lang === 'mr') {
+            renderWAMessage(`🎉 **समुपदेशन वेळ निश्चित झाली आहे!**\n\n👤 उमेदवाराचे नाव: ${waState.leadData.name}\n📅 दिनांक: ${waState.leadData.date}\n🕒 वेळ: ${waState.leadData.time}\n📍 अभ्यासक्रम: ${waState.course}\n\nआमचे समुपदेशन संचालक **Dr. K. Raghavan** यांना तुमचे प्रोफाईल सोपवण्यात आले आहे. एक पुष्टीकरण संदेश **${waState.leadData.phone}** वर पाठवण्यात आला आहे.\n\nश्री गौतमी निवडल्याबद्दल धन्यवाद!`, 'bot');
+            setWAQuickReplies(['चॅट रीस्टार्ट करा 🔄', 'मुख्य पोर्टल 🌐']);
           } else {
             renderWAMessage(`🎉 **કાઉન્સેલિંગ સ્લોટ કન્ફર્મ થઈ ગયો છે!**\n\n👤 ઉમેદવારનું નામ: ${waState.leadData.name}\n📅 તારીખ: ${waState.leadData.date}\n🕒 સમય સ્લોટ: ${waState.leadData.time}\n📍 કોર્સ: ${waState.course}\n\nઅમારા કાઉન્સેલિંગ ડિરેક્ટર **Dr. K. Raghavan** ને તમારી પ્રોફાઇલ સોંપવામાં આવી છે. એક કન્ફર્મેશન વોટ્સએપ સંદેશ **${waState.leadData.phone}** પર મોકલવામાં આવ્યો છે.\n\nશ્રી ગૌતમી પસંદ કરવા બદલ આભાર!`, 'bot');
             setWAQuickReplies(['ચેટ રીસ્ટાર્ટ કરો 🔄', 'મુખ્ય પોર્ટલ 🌐']);
