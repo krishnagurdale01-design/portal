@@ -152,28 +152,40 @@
         </div>
         <div>
           <h1 class="text-xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight leading-tight">Sri Gowthami</h1>
-          <span class="text-xs font-semibold tracking-wider text-teal-600 dark:text-teal-400 uppercase">Educational Institutions</span>
+          <span data-i18n="brand-subtitle" class="text-xs font-semibold tracking-wider text-teal-600 dark:text-teal-400 uppercase">Educational Institutions</span>
         </div>
       </div>
       
       <!-- View Navigation Switcher (Desktop) -->
       <nav class="hidden md:flex items-center space-x-2 bg-slate-200/40 dark:bg-slate-800/40 p-1.5 rounded-2xl border border-white/60 dark:border-slate-700/60">
-        <button onclick="switchTab('student-portal')" id="nav-student-portal" class="nav-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center space-x-2 bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 shadow-sm">
+        <button onclick="switchTab('student-portal')" id="nav-student-portal" class="nav-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center space-x-2 bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 shadow-sm border border-slate-200/40 dark:border-slate-700/40">
           <i class="fa-solid fa-graduation-cap"></i>
-          <span>Student Portal</span>
+          <span data-i18n="nav-student">Student Portal</span>
         </button>
         <button onclick="switchTab('admin-dashboard')" id="nav-admin-dashboard" class="nav-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
           <i class="fa-solid fa-chart-line"></i>
-          <span>Operations Dashboard</span>
+          <span data-i18n="nav-admin">Operations Dashboard</span>
         </button>
         <button onclick="switchTab('gowthami-ai')" id="nav-gowthami-ai" class="nav-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
           <i class="fa-solid fa-wand-magic-sparkles"></i>
-          <span>Gowthami AI</span>
+          <span data-i18n="nav-ai">Gowthami AI</span>
         </button>
       </nav>
 
       <!-- Utility Contact & Mobile Toggle -->
       <div class="flex items-center space-x-3">
+        <!-- Language Selector Dropdown -->
+        <div class="relative">
+          <select id="lang-selector" onchange="changeWebsiteLanguage(this.value)" class="glass-panel text-slate-700 dark:text-slate-200 bg-white/40 dark:bg-slate-800/40 text-xs font-extrabold px-3.5 py-2 rounded-xl border border-slate-250/50 dark:border-slate-700/50 cursor-pointer focus:outline-none appearance-none pr-8">
+            <option value="en" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">English</option>
+            <option value="hi" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">हिन्दी</option>
+            <option value="gj" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">ગુજરાતી</option>
+          </select>
+          <div class="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-[10px]">
+            <i class="fa-solid fa-globe"></i>
+          </div>
+        </div>
+
         <button onclick="toggleDarkMode()" id="dark-mode-toggle" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-slate-750 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 border border-slate-200/50 dark:border-slate-700/50 transition-colors" title="Toggle Light/Dark Theme">
           <i class="fa-solid fa-moon text-lg"></i>
         </button>
@@ -219,21 +231,21 @@
         <div class="max-w-xl space-y-4 text-center md:text-left z-10">
           <span class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-100/60 border border-emerald-200/50 text-emerald-700 text-xs font-bold uppercase tracking-wider">
             <i class="fa-solid fa-sparkles animate-pulse"></i>
-            <span>Admissions Open 2026-27</span>
+            <span data-i18n="hero-badge">Admissions Open 2026-27</span>
           </span>
-          <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+          <h2 data-i18n="hero-title" class="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight leading-tight">
             Shape Your Future at <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">Sri Gowthami</span>
           </h2>
-          <p class="text-slate-600 font-medium text-base md:text-lg">
+          <p data-i18n="hero-desc" class="text-slate-600 dark:text-slate-400 font-medium text-base md:text-lg">
             Empowering students with cutting-edge B.Tech and management programs. Discover campus profiles, verify eligibility, and secure your seat today.
           </p>
           <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2">
             <button onclick="scrollToEnquiry()" class="bg-slate-800 text-white font-bold px-6 py-3 rounded-xl shadow-md shadow-slate-900/10 hover:bg-slate-900 hover:scale-[1.02] transition-all">
-              Start Enquiry
+              <span data-i18n="hero-enquiry">Start Enquiry</span>
             </button>
-            <button onclick="switchTab('gowthami-ai')" class="glass-card px-6 py-3 rounded-xl font-bold text-emerald-700 flex items-center space-x-2 hover:bg-white">
+            <button onclick="switchTab('gowthami-ai')" class="glass-card px-6 py-3 rounded-xl font-bold text-emerald-700 dark:text-emerald-450 flex items-center space-x-2 hover:bg-white dark:hover:bg-slate-800">
               <i class="fa-solid fa-robot"></i>
-              <span>Consult Gowthami AI</span>
+              <span data-i18n="hero-ai">Consult Gowthami AI</span>
             </button>
           </div>
         </div>
@@ -264,8 +276,8 @@
       <div class="space-y-6">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <h3 class="text-2xl font-extrabold text-slate-800 tracking-tight">Explore Our Programs</h3>
-            <p class="text-slate-500 font-semibold text-sm">Filter courses by campus blocks and academic disciplines</p>
+            <h3 data-i18n="explore-title" class="text-2xl font-extrabold text-slate-800 dark:text-slate-200 tracking-tight">Explore Our Programs</h3>
+            <p data-i18n="explore-desc" class="text-slate-500 dark:text-slate-400 font-semibold text-sm">Filter courses by campus blocks and academic disciplines</p>
           </div>
           
           <!-- Filters Group (Pill Buttons) -->
@@ -1308,6 +1320,12 @@
         if (btn) btn.innerHTML = `<i class="fa-solid fa-moon text-lg"></i>`;
       }
 
+      // Initialize language from storage
+      const savedLang = localStorage.getItem("sg_lang") || "en";
+      const langSelector = document.getElementById("lang-selector");
+      if (langSelector) langSelector.value = savedLang;
+      changeWebsiteLanguage(savedLang, false);
+
       // Load from localStorage or initialize with dummy entries
       const savedEnquiries = localStorage.getItem("sg_enquiries");
       if (savedEnquiries) {
@@ -1347,6 +1365,67 @@
         if (btn) btn.innerHTML = `<i class="fa-solid fa-sun text-lg text-amber-400 animate-pulse"></i>`;
         localStorage.setItem("sg_theme", "dark");
         showToast("Switched to Dark Theme", "info");
+      }
+    }
+
+    const TRANSLATIONS = {
+      en: {
+        "brand-subtitle": "Educational Institutions",
+        "nav-student": "Student Portal",
+        "nav-admin": "Operations Dashboard",
+        "nav-ai": "Gowthami AI",
+        "hero-badge": "Admissions Open 2026-27",
+        "hero-title": 'Shape Your Future at <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">Sri Gowthami</span>',
+        "hero-desc": "Empowering students with cutting-edge B.Tech and management programs. Discover campus profiles, verify eligibility, and secure your seat today.",
+        "hero-enquiry": "Start Enquiry",
+        "hero-ai": "Consult Gowthami AI",
+        "explore-title": "Explore Our Programs",
+        "explore-desc": "Filter courses by campus blocks and academic disciplines"
+      },
+      hi: {
+        "brand-subtitle": "शैक्षणिक संस्थान",
+        "nav-student": "छात्र पोर्टल",
+        "nav-admin": "संचालन डैशबोर्ड",
+        "nav-ai": "गौतमी एआई",
+        "hero-badge": "प्रवेश खुले हैं 2026-27",
+        "hero-title": 'श्री गौतमी में अपना <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">भविष्य संवारें</span>',
+        "hero-desc": "छात्रों को अत्याधुनिक बी.टेक और प्रबंधन कार्यक्रमों के साथ सशक्त बनाना। आज ही परिसर प्रोफाइल खोजें, पात्रता सत्यापित करें और अपनी सीट सुरक्षित करें।",
+        "hero-enquiry": "पूछताछ शुरू करें",
+        "hero-ai": "गौतमी एआई से परामर्श करें",
+        "explore-title": "हमारे कार्यक्रमों का पता लगाएं",
+        "explore-desc": "कैंपस ब्लॉक और शैक्षणिक विषयों द्वारा पाठ्यक्रमों को फ़िल्टर करें"
+      },
+      gj: {
+        "brand-subtitle": "શૈક્ષણિક સંસ્થાઓ",
+        "nav-student": "વિદ્યાર્થી પોર્ટલ",
+        "nav-admin": "ઓપરેશન ડેશબોર્ડ",
+        "nav-ai": "ગૌતમી એઆઈ",
+        "hero-badge": "પ્રવેશ ખુલ્લા છે 2026-27",
+        "hero-title": 'શ્રી ગૌતમીમાં તમારું <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">ભવિષ્ય ઉજ્જવળ બનાવો</span>',
+        "hero-desc": "અત્યાધુનિક બી.ટેક અને મેનેજમેન્ટ પ્રોગ્રામ્સ દ્વારા વિદ્યાર્થીઓને સશક્ત બનાવવા. આજે જ કેમ્પસ પ્રોફાઇલ શોધો, પાત્રતા ચકાસો અને તમારી સીટ સુરક્ષિત કરો.",
+        "hero-enquiry": "પૂછપરછ શરૂ કરો",
+        "hero-ai": "ગૌતમી એઆઈ ની સલાહ લો",
+        "explore-title": "અમારા કાર્યક્રમો શોધો",
+        "explore-desc": "કેમ્પસ બ્લોક્સ અને શૈક્ષણિક શાખાઓ દ્વારા અભ્યાસક્રમો ફિલ્ટર કરો"
+      }
+    };
+
+    function changeWebsiteLanguage(lang, triggerToast = true) {
+      localStorage.setItem("sg_lang", lang);
+      
+      const elements = document.querySelectorAll("[data-i18n]");
+      elements.forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (TRANSLATIONS[lang] && TRANSLATIONS[lang][key]) {
+          el.innerHTML = TRANSLATIONS[lang][key];
+        }
+      });
+
+      if (triggerToast) {
+        let text = "Language set to English";
+        if (lang === 'hi') text = "भाषा हिन्दी में बदल दी गई है";
+        if (lang === 'gj') text = "ભાષા ગુજરાતીમાં બદલવામાં આવી છે";
+        showToast(text, "info");
       }
     }
 
