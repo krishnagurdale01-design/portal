@@ -3,8 +3,10 @@ import urllib.parse
 import urllib.error
 import json
 import sys
+import time
 
 BASE_URL = "http://localhost:8080/api/enquiries"
+test_username = f"newcounselor_{int(time.time())}"
 
 def run_test(name, func):
     print(f"Running test: {name}...", end=" ")
@@ -118,6 +120,34 @@ def test_verify_token_invalid():
     except urllib.error.HTTPError as e:
         assert e.code == 401, f"Expected 401 Unauthorized, got {e.code}"
 
+def test_signup_success():
+    url = "http://localhost:8080/api/signup"
+    payload = {
+        "username": test_username,
+        "password": "password123",
+        "name": "New Counselor Staff",
+        "role": "counselor"
+    }
+    status, data = make_request(url, method="POST", data=payload)
+    assert status == 200, f"Expected 200, got {status}"
+    assert data["status"] == "success"
+    assert data["username"] == test_username
+    assert "token" in data
+
+def test_signup_duplicate():
+    url = "http://localhost:8080/api/signup"
+    payload = {
+        "username": test_username,
+        "password": "password123",
+        "name": "Duplicate Staff",
+        "role": "counselor"
+    }
+    try:
+        make_request(url, method="POST", data=payload)
+        assert False, "Expected HTTPError for duplicate username, but request succeeded"
+    except urllib.error.HTTPError as e:
+        assert e.code == 400, f"Expected 400 Bad Request, got {e.code}"
+
 if __name__ == "__main__":
     test_enquiry_id = None
     
@@ -131,6 +161,8 @@ if __name__ == "__main__":
         ("POST /api/login (Invalid)", test_login_invalid),
         ("POST /api/verify_token (Success)", test_verify_token_success),
         ("POST /api/verify_token (Invalid)", test_verify_token_invalid),
+        ("POST /api/signup (Success)", test_signup_success),
+        ("POST /api/signup (Duplicate)", test_signup_duplicate),
     ]
     
     success = True

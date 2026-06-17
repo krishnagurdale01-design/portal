@@ -148,6 +148,12 @@ class LoginResponse(BaseModel):
 class TokenVerifyRequest(BaseModel):
     token: str
 
+class SignupCredentials(BaseModel):
+    username: str
+    password: str
+    name: str
+    role: Optional[str] = "counselor"
+
 def load_db() -> List[Dict[str, Any]]:
     if not os.path.exists(DB_PATH):
         save_db(DEFAULT_ENQUIRIES)
@@ -160,6 +166,21 @@ def load_db() -> List[Dict[str, Any]]:
 
 def save_db(data: List[Dict[str, Any]]):
     with open(DB_PATH, "w") as f:
+        json.dump(data, f, indent=2)
+
+USERS_DB_PATH = "users.json"
+
+def load_users() -> List[Dict[str, Any]]:
+    if not os.path.exists(USERS_DB_PATH):
+        return []
+    try:
+        with open(USERS_DB_PATH, "r") as f:
+            return json.load(f)
+    except Exception:
+        return []
+
+def save_users(data: List[Dict[str, Any]]):
+    with open(USERS_DB_PATH, "w") as f:
         json.dump(data, f, indent=2)
 
 @app.get("/api/enquiries", response_model=List[EnquiryItem])
@@ -236,37 +257,59 @@ def restore_db():
 
 @app.post("/api/login", response_model=LoginResponse)
 def login(credentials: LoginCredentials):
-    users = {
-        "admin": {"password": "password123", "role": "admin", "name": "System Admin", "token": "token-admin-123"},
-        "counselor": {"password": "password123", "role": "counselor", "name": "Dr. K. Raghavan", "token": "token-counselor-raghavan"},
-        "counselor1": {"password": "password123", "role": "counselor", "name": "Dr. K. Raghavan", "token": "token-counselor-raghavan"},
-        "counselor2": {"password": "password123", "role": "counselor", "name": "Prof. S. Laxmi", "token": "token-counselor-laxmi"},
-        "counselor3": {"password": "password123", "role": "counselor", "name": "Mr. B. Srinivas", "token": "token-counselor-srinivas"},
-        "counselor4": {"password": "password123", "role": "counselor", "name": "Mrs. P. Shanti", "token": "token-counselor-shanti"}
-    }
-    
+    db = load_users()
     username = credentials.username.lower().strip()
-    if username in users and users[username]["password"] == credentials.password:
-        user_info = users[username]
-        return LoginResponse(
-            status="success",
-            token=user_info["token"],
-            username=username,
-            role=user_info["role"],
-            name=user_info["name"]
-        )
-        
+    
+    for u in db:
+        if u["username"] == username and u["password"] == credentials.password:
+            return LoginResponse(
+                status="success",
+                token=u["token"],
+                username=username,
+                role=u["role"],
+                name=u["name"]
+            )
+            
     raise HTTPException(status_code=401, detail="Invalid username or password")
 
 @app.post("/api/verify_token")
 def verify_token(payload: TokenVerifyRequest):
-    valid_tokens = {
-        "token-admin-123",
-        "token-counselor-raghavan",
-        "token-counselor-laxmi",
-        "token-counselor-srinivas",
-        "token-counselor-shanti"
-    }
-    if payload.token in valid_tokens:
-        return {"status": "valid"}
+    db = load_users()
+    for u in db:
+        if u["token"] == payload.token:
+            return {"status": "valid"}
     raise HTTPException(status_code=401, detail="Invalid session token")
+
+@app.post("/api/signup", response_model=LoginResponse)
+def signup(credentials: SignupCredentials):
+    db = load_users()
+    username = credentials.username.lower().strip()
+    
+    for u in db:
+        if u["username"] == username:
+            raise HTTPException(status_code=400, detail="Username already exists")
+            
+    role = credentials.role or "counselor"
+    name = credentials.name.strip()
+    
+    import secrets
+    token = f"token-{username}-{secrets.token_hex(4)}"
+    
+    new_user = {
+        "username": username,
+        "password": credentials.password,
+        "role": role,
+        "name": name,
+        "token": token
+    }
+    
+    db.append(new_user)
+    save_users(db)
+    
+    return LoginResponse(
+        status="success",
+        token=token,
+        username=username,
+        role=role,
+        name=name
+    )

@@ -1,0 +1,51 @@
+[
+  {
+    "username": "admin",
+    "password": "password123",
+    "role": "admin",
+    "name": "System Admin",
+    "token": "token-admin-123"
+  },
+  {
+    "username": "counselor",
+    "password": "password123",
+    "role": "counselor",
+    "name": "Dr. K. Raghavan",
+    "token": "token-counselor-raghavan"
+  },
+  {
+    "username": "counselor1",
+    "password": "password123",
+    "role": "counselor",
+    "name": "Dr. K. Raghavan",
+    "token": "token-counselor-raghavan"
+  },
+  {
+    "username": "counselor2",
+    "password": "password123",
+    "role": "counselor",
+    "name": "Prof. S. Laxmi",
+    "token": "token-counselor-laxmi"
+  },
+  {
+    "username": "counselor3",
+    "password": "password123",
+    "role": "counselor",
+    "name": "Mr. B. Srinivas",
+    "token": "token-counselor-srinivas"
+  },
+  {
+    "username": "counselor4",
+    "password": "password123",
+    "role": "counselor",
+    "name": "Mrs. P. Shanti",
+    "token": "token-counselor-shanti"
+  },
+  {
+    "username": "newcounselor_1781717599",
+    "password": "password123",
+    "role": "counselor",
+    "name": "New Counselor Staff",
+    "token": "token-newcounselor_1781717599-ba3e6cfb"
+  }
+]
