@@ -1,0 +1,121 @@
+[
+  {
+    "id": "ENQ1091",
+    "name": "Aravind Swamy",
+    "parent": "A. Rama Swamy",
+    "email": "aravind@gmail.com",
+    "phone": "9876543210",
+    "course": "B.Tech Computer Science & Engineering",
+    "campus": "Main Campus",
+    "marks": 88,
+    "status": "Shortlisted",
+    "staff": "Dr. K. Raghavan",
+    "notes": "Excellent academic record. Sent initial acceptance schedule.",
+    "history": [
+      {
+        "date": "2026-06-16 10:15",
+        "action": "Submitted Admission Enquiry Form"
+      },
+      {
+        "date": "2026-06-16 11:20",
+        "action": "Assigned counselor Dr. K. Raghavan"
+      },
+      {
+        "date": "2026-06-16 11:20",
+        "action": "Status updated to Shortlisted by Dr. K. Raghavan"
+      }
+    ]
+  },
+  {
+    "id": "ENQ1092",
+    "name": "Divya Reddy",
+    "parent": "D. Prabhakar Reddy",
+    "email": "divya.reddy@yahoo.com",
+    "phone": "9123456780",
+    "course": "MBA Business Management",
+    "campus": "City Campus",
+    "marks": 76,
+    "status": "Shortlisted",
+    "staff": "Prof. S. Laxmi",
+    "notes": "Undergraduate documents verified, waiting for fee confirmation.",
+    "history": [
+      {
+        "date": "2026-06-15 14:02",
+        "action": "Submitted Admission Enquiry Form"
+      },
+      {
+        "date": "2026-06-15 15:30",
+        "action": "Status updated to Shortlisted by Prof. S. Laxmi"
+      }
+    ]
+  },
+  {
+    "id": "ENQ1093",
+    "name": "Rahul Kumar",
+    "parent": "Satish Kumar",
+    "email": "rahulkumar@outlook.com",
+    "phone": "9988776655",
+    "course": "B.Tech Civil Engineering",
+    "campus": "Engineering Block",
+    "marks": 52,
+    "status": "Pending",
+    "staff": "Mr. B. Srinivas",
+    "notes": "Enquired about campus hostel accommodation facilities.",
+    "history": [
+      {
+        "date": "2026-06-16 09:45",
+        "action": "Submitted Admission Enquiry Form"
+      }
+    ]
+  },
+  {
+    "id": "ENQ1094",
+    "name": "Sneha Rao",
+    "parent": "P. Venkateswara Rao",
+    "email": "sneha.rao@gmail.com",
+    "phone": "9554321098",
+    "course": "B.Tech Electronics & Comm. Eng.",
+    "campus": "Main Campus",
+    "marks": 45,
+    "status": "Ineligible",
+    "staff": "Mrs. P. Shanti",
+    "notes": "Marks are below the minimum threshold required for ECE (55%).",
+    "history": [
+      {
+        "date": "2026-06-16 08:30",
+        "action": "Submitted Admission Enquiry Form"
+      },
+      {
+        "date": "2026-06-16 08:31",
+        "action": "System auto-marked Ineligible due to insufficient marks"
+      }
+    ]
+  },
+  {
+    "id": "ENQ1095",
+    "name": "Vineeth Naidu",
+    "parent": "V. Krishna Naidu",
+    "email": "vineeth.naidu@gmail.com",
+    "phone": "9440123456",
+    "course": "B.Tech Artificial Intelligence & ML",
+    "campus": "Engineering Block",
+    "marks": 92,
+    "status": "Approved",
+    "staff": "Dr. K. Raghavan",
+    "notes": "Direct Admission approved under merit bracket. Seat reservation fee processed.",
+    "history": [
+      {
+        "date": "2026-06-14 11:12",
+        "action": "Submitted Admission Enquiry Form"
+      },
+      {
+        "date": "2026-06-14 12:00",
+        "action": "Assigned to counselor Dr. K. Raghavan"
+      },
+      {
+        "date": "2026-06-14 16:30",
+        "action": "Status updated to Approved by Dr. K. Raghavan"
+      }
+    ]
+  }
+]

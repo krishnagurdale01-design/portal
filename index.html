@@ -1307,7 +1307,30 @@
     let selectedDeptFilter = 'all';
 
     // 2. LIFECYCLE MANAGEMENT & STATE RESTORATION
-    window.onload = function() {
+    const API_URL = "http://localhost:8080/api/enquiries";
+
+    async function loadEnquiriesFromServer() {
+      try {
+        const response = await fetch(API_URL);
+        if (response.ok) {
+          enquiries = await response.json();
+        } else {
+          throw new Error("API failed");
+        }
+      } catch (err) {
+        console.warn("Backend server not reachable, using localStorage fallback.");
+        const savedEnquiries = localStorage.getItem("sg_enquiries");
+        if (savedEnquiries) {
+          enquiries = JSON.parse(savedEnquiries);
+        } else {
+          enquiries = [...DEFAULT_ENQUIRIES];
+          localStorage.setItem("sg_enquiries", JSON.stringify(enquiries));
+        }
+      }
+    }
+
+    // 2. LIFECYCLE MANAGEMENT & STATE RESTORATION
+    window.onload = async function() {
       // Initialize theme from storage
       const savedTheme = localStorage.getItem("sg_theme");
       const doc = document.documentElement;
@@ -1326,14 +1349,8 @@
       if (langSelector) langSelector.value = savedLang;
       changeWebsiteLanguage(savedLang, false);
 
-      // Load from localStorage or initialize with dummy entries
-      const savedEnquiries = localStorage.getItem("sg_enquiries");
-      if (savedEnquiries) {
-        enquiries = JSON.parse(savedEnquiries);
-      } else {
-        enquiries = [...DEFAULT_ENQUIRIES];
-        localStorage.setItem("sg_enquiries", JSON.stringify(enquiries));
-      }
+      // Load from server database (with localStorage fallback)
+      await loadEnquiriesFromServer();
 
       // Render Dynamic Course Catalog
       renderCourseCards();
@@ -1430,18 +1447,30 @@
     }
 
     // Helper to persist database modifications
-    function saveDatabaseState() {
+    async function saveDatabaseState() {
       localStorage.setItem("sg_enquiries", JSON.stringify(enquiries));
       updateDashboardKPIs();
     }
 
-    function restoreDefaults() {
+    async function restoreDefaults() {
       if (confirm("Are you sure you want to restore the database to default demo entries? All current updates will be overwritten.")) {
-        // Deep copy of DEFAULT_ENQUIRIES to avoid mutating reference
-        enquiries = JSON.parse(JSON.stringify(DEFAULT_ENQUIRIES));
-        saveDatabaseState();
+        try {
+          const response = await fetch(`${API_URL}/restore`, { method: 'POST' });
+          if (response.ok) {
+            const result = await response.json();
+            enquiries = result.data;
+            showToast("Database successfully restored to defaults.", "info");
+          } else {
+            throw new Error();
+          }
+        } catch (err) {
+          // Deep copy of DEFAULT_ENQUIRIES to avoid mutating reference
+          enquiries = JSON.parse(JSON.stringify(DEFAULT_ENQUIRIES));
+          saveDatabaseState();
+          showToast("Database successfully restored to defaults (offline mode).", "info");
+        }
         renderEnquiryTable();
-        showToast("Database successfully restored to defaults.", "info");
+        updateDashboardKPIs();
       }
     }
 
@@ -1864,7 +1893,7 @@
       }
     }
 
-    function handleFormSubmit(event) {
+    async function handleFormSubmit(event) {
       event.preventDefault();
       
       const name = document.getElementById("form-name").value.trim();
@@ -1901,7 +1930,6 @@
       const dateStr = now.toISOString().split('T')[0] + ' ' + now.toTimeString().split(' ')[0].substring(0, 5);
 
       const newEnquiry = {
-        id: "ENQ" + (1000 + enquiries.length + 1),
         name: name,
         parent: parent,
         email: email,
@@ -1921,9 +1949,28 @@
         newEnquiry.history.push({ date: dateStr, action: "System auto-marked Ineligible due to score criteria" });
       }
 
-      // Append and save
-      enquiries.unshift(newEnquiry);
-      saveDatabaseState();
+      let savedItem = null;
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newEnquiry)
+        });
+        if (response.ok) {
+          savedItem = await response.json();
+          enquiries.unshift(savedItem);
+          showToast(`Congratulations! Admission enquiry successfully logged for ${name}. Code: ${savedItem.id}`, 'success');
+        } else {
+          throw new Error();
+        }
+      } catch (err) {
+        // Fallback
+        newEnquiry.id = "ENQ" + (1000 + enquiries.length + 1);
+        enquiries.unshift(newEnquiry);
+        saveDatabaseState();
+        showToast(`Congratulations! Admission enquiry successfully logged for ${name} (offline mode).`, 'success');
+        savedItem = newEnquiry;
+      }
 
       // Clear Form Fields
       document.getElementById("form-name").value = "";
@@ -1933,16 +1980,9 @@
       document.getElementById("form-marks").value = "80";
       updateMarksDisplay();
 
-      // Show Custom Success Toast
-      if (initialStatus === 'Ineligible') {
-        showToast(`Enquiry logged, but board score (${marks}%) is below the required threshold of ${courseObj.eligibility}%.`, 'warning');
-      } else {
-        showToast(`Congratulations! Admission enquiry successfully logged for ${name}. Code: ${newEnquiry.id}`, 'success');
-      }
-
       // Trigger Simulated Email Confirmation modal immediately
       setTimeout(() => {
-        showSimulatedEmail(newEnquiry);
+        showSimulatedEmail(savedItem);
       }, 800);
     }
 
@@ -2072,15 +2112,26 @@
       });
     }
 
-    function deleteEnquiry(id) {
+    async function deleteEnquiry(id) {
       if (confirm(`Are you sure you want to delete enquiry record ${id}?`)) {
         const index = enquiries.findIndex(e => e.id === id);
         if (index !== -1) {
           const removedName = enquiries[index].name;
-          enquiries.splice(index, 1);
-          saveDatabaseState();
+          try {
+            const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+            if (response.ok) {
+              enquiries.splice(index, 1);
+              showToast(`Deleted enquiry record for ${removedName} (${id})`, 'warning');
+            } else {
+              throw new Error("Delete failed");
+            }
+          } catch (err) {
+            enquiries.splice(index, 1);
+            saveDatabaseState();
+            showToast(`Deleted enquiry record for ${removedName} (${id}) (offline mode)`, 'warning');
+          }
           renderEnquiryTable();
-          showToast(`Deleted enquiry record for ${removedName} (${id})`, 'warning');
+          updateDashboardKPIs();
         }
       }
     }
@@ -2138,7 +2189,7 @@
       currentEditEnquiryId = null;
     }
 
-    function saveEnquiryModification() {
+    async function saveEnquiryModification() {
       if (!currentEditEnquiryId) return;
 
       const appIndex = enquiries.findIndex(e => e.id === currentEditEnquiryId);
@@ -2152,44 +2203,64 @@
       const now = new Date();
       const dateStr = now.toISOString().split('T')[0] + ' ' + now.toTimeString().split(' ')[0].substring(0, 5);
 
-      let historyAdded = false;
-
-      // Status changed logging
-      if (app.status !== newStatus) {
-        app.history.push({
-          date: dateStr,
-          action: `Status changed to ${newStatus} by admin counselor`
+      try {
+        const response = await fetch(`${API_URL}/${currentEditEnquiryId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            status: newStatus,
+            staff: newStaff,
+            notes: noteInput
+          })
         });
-        app.status = newStatus;
-        historyAdded = true;
+        if (response.ok) {
+          const updatedItem = await response.json();
+          enquiries[appIndex] = updatedItem;
+          showToast(`Profile ${updatedItem.id} changes recorded successfully.`, 'success');
+        } else {
+          throw new Error("Update failed");
+        }
+      } catch (err) {
+        let historyAdded = false;
+
+        // Status changed logging
+        if (app.status !== newStatus) {
+          app.history.push({
+            date: dateStr,
+            action: `Status changed to ${newStatus} by admin counselor`
+          });
+          app.status = newStatus;
+          historyAdded = true;
+        }
+
+        // Counselor assigned logging
+        if (app.staff !== newStaff) {
+          app.history.push({
+            date: dateStr,
+            action: `Assigned counselor updated to ${newStaff}`
+          });
+          app.staff = newStaff;
+          historyAdded = true;
+        }
+
+        // Add text note logging
+        if (noteInput) {
+          app.history.push({
+            date: dateStr,
+            action: `Note added: "${noteInput}"`
+          });
+          app.notes = noteInput;
+          historyAdded = true;
+        }
+
+        if (historyAdded) {
+          saveDatabaseState();
+          showToast(`Profile ${app.id} changes recorded (offline mode).`, 'success');
+        }
       }
 
-      // Counselor assigned logging
-      if (app.staff !== newStaff) {
-        app.history.push({
-          date: dateStr,
-          action: `Assigned counselor updated to ${newStaff}`
-        });
-        app.staff = newStaff;
-        historyAdded = true;
-      }
-
-      // Add text note logging
-      if (noteInput) {
-        app.history.push({
-          date: dateStr,
-          action: `Note added: "${noteInput}"`
-        });
-        app.notes = noteInput;
-        historyAdded = true;
-      }
-
-      if (historyAdded) {
-        saveDatabaseState();
-        renderEnquiryTable();
-        showToast(`Profile ${app.id} changes recorded successfully.`, 'success');
-      }
-
+      renderEnquiryTable();
+      updateDashboardKPIs();
       closeAdminModal();
     }
 
