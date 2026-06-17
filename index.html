@@ -180,6 +180,7 @@
             <option value="en" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">English</option>
             <option value="hi" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">हिन्दी</option>
             <option value="gj" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">ગુજરાતી</option>
+            <option value="mr" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">मराठी</option>
           </select>
           <div class="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-[10px]">
             <i class="fa-solid fa-globe"></i>
@@ -1424,6 +1425,19 @@
         "hero-ai": "ગૌતમી એઆઈ ની સલાહ લો",
         "explore-title": "અમારા કાર્યક્રમો શોધો",
         "explore-desc": "કેમ્પસ બ્લોક્સ અને શૈક્ષણિક શાખાઓ દ્વારા અભ્યાસક્રમો ફિલ્ટર કરો"
+      },
+      mr: {
+        "brand-subtitle": "शैक्षणिक संस्था",
+        "nav-student": "विद्यार्थी पोर्टल",
+        "nav-admin": "ऑपरेशन्स डॅशबोर्ड",
+        "nav-ai": "गौतमी एआय",
+        "hero-badge": "प्रवेश खुले आहेत २०२६-२७",
+        "hero-title": 'श्री गौतमीमध्ये तुमचे <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">भविष्य घडवा</span>',
+        "hero-desc": "अत्याधुनिक बी.टेक आणि व्यवस्थापन कार्यक्रमांसह विद्यार्थ्यांना सक्षम करणे. आजच कॅम्पस प्रोफाईल शोधा, पात्रता तपासा आणि तुमची जागा सुरक्षित करा.",
+        "hero-enquiry": "चौकशी सुरू करा",
+        "hero-ai": "गौतमी एआयचा सल्ला घ्या",
+        "explore-title": "आमचे कार्यक्रम शोधा",
+        "explore-desc": "कॅम्पस ब्लॉक्स आणि शैक्षणिक शाखांनुसार अभ्यासक्रम फिल्टर करा"
       }
     };
 
@@ -1442,6 +1456,7 @@
         let text = "Language set to English";
         if (lang === 'hi') text = "भाषा हिन्दी में बदल दी गई है";
         if (lang === 'gj') text = "ભાષા ગુજરાતીમાં બદલવામાં આવી છે";
+        if (lang === 'mr') text = "भाषा मराठीमध्ये बदलण्यात आली आहे";
         showToast(text, "info");
       }
     }
