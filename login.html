@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Login - Sri Gowthami Educational Institutions</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts: Urbanist & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght=0,100..900;1,100..900&family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind Custom Config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Urbanist', 'Inter', 'sans-serif'],
+          },
+          animation: {
+            'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float-slow': 'float 12s ease-in-out infinite',
+            'float-reverse': 'floatReverse 15s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) scale(1)' },
+              '50%': { transform: 'translateY(-20px) scale(1.05)' },
+            },
+            floatReverse: {
+              '0%, 100%': { transform: 'translateY(0px) scale(1.05)' },
+              '50%': { transform: 'translateY(25px) scale(0.95)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.04);
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 4px 20px 0 rgba(148, 163, 184, 0.08);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-input {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      transition: all 0.2s ease;
+    }
+
+    .glass-input:focus {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: rgba(16, 185, 129, 0.5);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
+
+    /* Dark Mode Glassmorphic Styling */
+    .dark .glass-panel {
+      background: rgba(15, 23, 42, 0.55);
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+    
+    .dark .glass-card {
+      background: rgba(15, 23, 42, 0.6);
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .dark .glass-input {
+      background: rgba(15, 23, 42, 0.45);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: rgba(241, 245, 249, 0.9);
+    }
+
+    .dark .glass-input:focus {
+      background: rgba(15, 23, 42, 0.8);
+      border-color: rgba(16, 185, 129, 0.6);
+    }
+  </style>
+  
+  <script>
+    // Apply theme immediately to prevent layout flash
+    const savedTheme = localStorage.getItem("sg_theme");
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-700 dark:bg-slate-950 dark:text-slate-300 min-h-screen relative overflow-x-hidden font-sans antialiased flex flex-col justify-between transition-colors duration-350">
+
+  <!-- Glowing Abstract Blur Blobs -->
+  <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-200/30 dark:bg-emerald-900/10 blur-[140px] pointer-events-none animate-float-slow -z-10"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-sky-200/25 dark:bg-sky-900/10 blur-[160px] pointer-events-none animate-float-reverse -z-10"></div>
+
+  <!-- Header Section -->
+  <header class="w-full glass-panel border-b border-slate-200/40 dark:border-slate-800/40 shrink-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center space-x-3 cursor-pointer">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-white font-bold text-xl">
+          SG
+        </div>
+        <div>
+          <h1 class="text-xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight leading-tight">Sri Gowthami</h1>
+          <span class="text-xs font-semibold tracking-wider text-teal-600 dark:text-teal-400 uppercase">Educational Institutions</span>
+        </div>
+      </a>
+      
+      <!-- Back Link & Theme utilities -->
+      <div class="flex items-center space-x-4">
+        <a href="index.html" class="text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-450 transition-colors flex items-center space-x-1.5">
+          <i class="fa-solid fa-arrow-left text-xs"></i>
+          <span>Student Portal</span>
+        </a>
+
+        <button onclick="toggleDarkMode()" id="dark-mode-toggle" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-slate-750 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 border border-slate-200/50 dark:border-slate-700/50 transition-colors" title="Toggle Light/Dark Theme">
+          <i class="fa-solid fa-moon text-lg"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Login Main Content Card -->
+  <main class="flex-1 flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-md p-6 md:p-8 rounded-3xl border border-white/60 dark:border-slate-800/60 shadow-xl space-y-6 relative overflow-hidden animate-float-slow">
+      <div class="absolute -top-10 -right-10 w-32 h-32 bg-emerald-100/40 dark:bg-emerald-950/20 rounded-full blur-2xl -z-10"></div>
+      
+      <!-- Header Info -->
+      <div class="text-center space-y-2">
+        <div class="inline-flex w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 items-center justify-center shadow-lg shadow-emerald-500/20 text-white font-bold text-2xl mb-2">
+          SG
+        </div>
+        <h3 class="text-xl font-extrabold text-slate-800 dark:text-slate-100">Staff Portal Authentication</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">Verify identity parameters to access operations hub</p>
+      </div>
+
+      <!-- Login Form -->
+      <form onsubmit="handleLoginSubmit(event)" id="login-form" class="space-y-4">
+        <!-- Username -->
+        <div class="space-y-1">
+          <label class="text-xs font-extrabold text-slate-500 dark:text-slate-450 uppercase tracking-wider block">Username</label>
+          <div class="relative">
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
+              <i class="fa-solid fa-user"></i>
+            </span>
+            <input type="text" id="login-username" required placeholder="Enter username" class="w-full glass-input pl-10 pr-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200">
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="space-y-1">
+          <label class="text-xs font-extrabold text-slate-500 dark:text-slate-450 uppercase tracking-wider block">Password</label>
+          <div class="relative">
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
+              <i class="fa-solid fa-lock"></i>
+            </span>
+            <input type="password" id="login-password" required placeholder="Enter password" class="w-full glass-input pl-10 pr-10 py-2.5 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200">
+            <button type="button" onclick="toggleLoginPassword()" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-650 dark:hover:text-slate-300 transition-colors focus:outline-none">
+              <i id="login-password-eye" class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="login-submit-btn" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-3 rounded-xl shadow-md shadow-emerald-600/10 hover:shadow-lg hover:shadow-emerald-600/20 transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center space-x-2">
+          <span>Authenticate Session</span>
+          <i id="login-spinner" class="fa-solid fa-circle-notch fa-spin hidden"></i>
+        </button>
+      </form>
+
+      <!-- Credentials Helper Box -->
+      <div class="bg-slate-100/50 dark:bg-slate-900/40 p-4 rounded-2xl border border-slate-200/40 dark:border-slate-800/40 space-y-2 text-xs leading-relaxed text-slate-500 dark:text-slate-400 font-semibold">
+        <span class="font-extrabold text-slate-700 dark:text-slate-350 block uppercase tracking-wider text-[10px]">Testing Credentials Guide:</span>
+        <div class="grid grid-cols-2 gap-2 text-[10px]">
+          <div>
+            <span class="text-emerald-750 dark:text-emerald-400 block font-bold">Admin Level:</span>
+            <span>User: <code class="bg-white/80 dark:bg-slate-800 px-1 rounded">admin</code></span><br>
+            <span>Pass: <code class="bg-white/80 dark:bg-slate-800 px-1 rounded">password123</code></span>
+          </div>
+          <div>
+            <span class="text-teal-600 dark:text-teal-400 block font-bold">Counselor Level:</span>
+            <span>User: <code class="bg-white/80 dark:bg-slate-800 px-1 rounded">counselor1</code> ... <code class="bg-white/80 dark:bg-slate-800 px-1 rounded">4</code></span><br>
+            <span>Pass: <code class="bg-white/80 dark:bg-slate-800 px-1 rounded">password123</code></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full glass-panel border-t border-slate-200/40 py-6 shrink-0 mt-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-slate-400 text-xs font-semibold">
+      <p>&copy; 2026 Sri Gowthami Educational Institutions. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-3 pointer-events-none max-w-sm w-full"></div>
+
+  <!-- Script Logic -->
+  <script>
+    const LOGIN_API_URL = "http://localhost:8080/api/login";
+
+    // Initialize Theme toggle visual on page load
+    window.onload = function() {
+      // Sync theme button icon
+      const btn = document.getElementById("dark-mode-toggle");
+      if (document.documentElement.classList.contains("dark")) {
+        btn.innerHTML = `<i class="fa-solid fa-sun text-lg text-amber-400 animate-pulse"></i>`;
+      } else {
+        btn.innerHTML = `<i class="fa-solid fa-moon text-lg"></i>`;
+      }
+      
+      // If already logged in, redirect directly to admin.html
+      if (localStorage.getItem("sg_auth_token")) {
+        window.location.replace("admin.html");
+      }
+    };
+
+    function toggleDarkMode() {
+      const doc = document.documentElement;
+      const btn = document.getElementById("dark-mode-toggle");
+      if (doc.classList.contains("dark")) {
+        doc.classList.remove("dark");
+        btn.innerHTML = `<i class="fa-solid fa-moon text-lg"></i>`;
+        localStorage.setItem("sg_theme", "light");
+        showToast("Switched to Light Theme", "info");
+      } else {
+        doc.classList.add("dark");
+        btn.innerHTML = `<i class="fa-solid fa-sun text-lg text-amber-400 animate-pulse"></i>`;
+        localStorage.setItem("sg_theme", "dark");
+        showToast("Switched to Dark Theme", "info");
+      }
+    }
+
+    function toggleLoginPassword() {
+      const pwd = document.getElementById("login-password");
+      const eye = document.getElementById("login-password-eye");
+      if (pwd.type === "password") {
+        pwd.type = "text";
+        eye.className = "fa-solid fa-eye-slash";
+      } else {
+        pwd.type = "password";
+        eye.className = "fa-solid fa-eye";
+      }
+    }
+
+    async function handleLoginSubmit(event) {
+      event.preventDefault();
+      
+      const usernameInput = document.getElementById("login-username");
+      const passwordInput = document.getElementById("login-password");
+      const submitBtn = document.getElementById("login-submit-btn");
+      const spinner = document.getElementById("login-spinner");
+      
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value;
+      
+      submitBtn.disabled = true;
+      spinner.classList.remove("hidden");
+      
+      try {
+        const response = await fetch(LOGIN_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          
+          // Store session data
+          localStorage.setItem("sg_auth_token", result.token);
+          localStorage.setItem("sg_auth_role", result.role);
+          localStorage.setItem("sg_auth_name", result.name);
+          localStorage.setItem("sg_auth_username", result.username);
+          
+          showToast(`Welcome, ${result.name}! Authenticating session...`, 'success');
+          
+          // Clear inputs
+          usernameInput.value = "";
+          passwordInput.value = "";
+          
+          // Redirect to Admin dashboard
+          setTimeout(() => {
+            window.location.href = "admin.html";
+          }, 800);
+        } else {
+          const errData = await response.json();
+          throw new Error(errData.detail || "Authentication failed");
+        }
+      } catch (err) {
+        console.error("Login request error: ", err);
+        // Fallback for local sandbox offline mode
+        const lowerUser = username.toLowerCase().trim();
+        const users = {
+          "admin": {role: "admin", name: "System Admin", token: "token-admin-123"},
+          "counselor": {role: "counselor", name: "Dr. K. Raghavan", token: "token-counselor-raghavan"},
+          "counselor1": {role: "counselor", name: "Dr. K. Raghavan", token: "token-counselor-raghavan"},
+          "counselor2": {role: "counselor", name: "Prof. S. Laxmi", token: "token-counselor-laxmi"},
+          "counselor3": {role: "counselor", name: "Mr. B. Srinivas", token: "token-counselor-srinivas"},
+          "counselor4": {role: "counselor", name: "Mrs. P. Shanti", token: "token-counselor-shanti"}
+        };
+        
+        if (users[lowerUser] && password === "password123") {
+          const user_info = users[lowerUser];
+          
+          localStorage.setItem("sg_auth_token", user_info.token);
+          localStorage.setItem("sg_auth_role", user_info.role);
+          localStorage.setItem("sg_auth_name", user_info.name);
+          localStorage.setItem("sg_auth_username", lowerUser);
+          
+          showToast(`Welcome, ${user_info.name}! Logged in (offline mode).`, 'success');
+          
+          usernameInput.value = "";
+          passwordInput.value = "";
+          
+          setTimeout(() => {
+            window.location.href = "admin.html";
+          }, 800);
+        } else {
+          showToast(err.message || "Invalid credentials. Please verify entry parameters.", "error");
+          
+          // Card shake micro-animation
+          const card = document.querySelector(".glass-panel");
+          if (card) {
+            card.classList.add("animate-bounce");
+            setTimeout(() => card.classList.remove("animate-bounce"), 800);
+          }
+        }
+      } finally {
+        submitBtn.disabled = false;
+        spinner.classList.add("hidden");
+      }
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById("toast-container");
+      const toastId = 'toast-' + Date.now();
+      
+      let iconColor = 'text-emerald-500';
+      let icon = 'fa-circle-check';
+      let accentBorder = 'border-emerald-500/30';
+      
+      if (type === 'warning') {
+        iconColor = 'text-amber-500';
+        icon = 'fa-triangle-exclamation';
+        accentBorder = 'border-amber-500/30';
+      } else if (type === 'error') {
+        iconColor = 'text-rose-500';
+        icon = 'fa-circle-xmark';
+        accentBorder = 'border-rose-500/30';
+      } else if (type === 'info') {
+        iconColor = 'text-sky-500';
+        icon = 'fa-circle-info';
+        accentBorder = 'border-sky-500/30';
+      }
+
+      const toastHtml = `
+        <div id="${toastId}" class="pointer-events-auto bg-white/70 dark:bg-slate-900/80 backdrop-blur-xl border ${accentBorder} shadow-lg rounded-2xl p-4 flex items-start space-x-3 transition-all duration-300 transform translate-y-2 opacity-0">
+          <div class="${iconColor} mt-0.5 text-base shrink-0">
+            <i class="fa-solid ${icon}"></i>
+          </div>
+          <div class="flex-1">
+            <p class="text-xs font-bold text-slate-800 dark:text-slate-200 leading-normal">${message}</p>
+          </div>
+          <button onclick="dismissToast('${toastId}')" class="text-slate-400 hover:text-slate-600 focus:outline-none">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
+      `;
+
+      container.insertAdjacentHTML('beforeend', toastHtml);
+
+      setTimeout(() => {
+        const el = document.getElementById(toastId);
+        if (el) {
+          el.classList.remove('translate-y-2', 'opacity-0');
+          el.classList.add('translate-y-0', 'opacity-100');
+        }
+      }, 50);
+
+      setTimeout(() => {
+        dismissToast(toastId);
+      }, 4500);
+    }
+
+    function dismissToast(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove('translate-y-0', 'opacity-100');
+        el.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => {
+          el.remove();
+        }, 300);
+      }
+    }
+  </script>
+</body>
+</html>

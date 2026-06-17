@@ -1,5 +1,6 @@
 import urllib.request
 import urllib.parse
+import urllib.error
 import json
 import sys
 
@@ -83,6 +84,40 @@ def test_restore_database():
     assert data["status"] == "success"
     assert len(data["data"]) == 5, f"Expected 5 entries after reset, got {len(data['data'])}"
 
+def test_login_success():
+    url = "http://localhost:8080/api/login"
+    payload = {"username": "admin", "password": "password123"}
+    status, data = make_request(url, method="POST", data=payload)
+    assert status == 200, f"Expected 200, got {status}"
+    assert data["status"] == "success"
+    assert data["role"] == "admin"
+    assert "token" in data
+
+def test_login_invalid():
+    url = "http://localhost:8080/api/login"
+    payload = {"username": "admin", "password": "wrongpassword"}
+    try:
+        make_request(url, method="POST", data=payload)
+        assert False, "Expected HTTPError for invalid credentials, but request succeeded"
+    except urllib.error.HTTPError as e:
+        assert e.code == 401, f"Expected 401 Unauthorized, got {e.code}"
+
+def test_verify_token_success():
+    url = "http://localhost:8080/api/verify_token"
+    payload = {"token": "token-admin-123"}
+    status, data = make_request(url, method="POST", data=payload)
+    assert status == 200, f"Expected 200, got {status}"
+    assert data["status"] == "valid"
+
+def test_verify_token_invalid():
+    url = "http://localhost:8080/api/verify_token"
+    payload = {"token": "invalid-dummy-token"}
+    try:
+        make_request(url, method="POST", data=payload)
+        assert False, "Expected HTTPError for invalid token, but request succeeded"
+    except urllib.error.HTTPError as e:
+        assert e.code == 401, f"Expected 401 Unauthorized, got {e.code}"
+
 if __name__ == "__main__":
     test_enquiry_id = None
     
@@ -92,6 +127,10 @@ if __name__ == "__main__":
         ("PUT /api/enquiries/{id}", test_update_enquiry),
         ("DELETE /api/enquiries/{id}", test_delete_enquiry),
         ("POST /api/enquiries/restore", test_restore_database),
+        ("POST /api/login (Success)", test_login_success),
+        ("POST /api/login (Invalid)", test_login_invalid),
+        ("POST /api/verify_token (Success)", test_verify_token_success),
+        ("POST /api/verify_token (Invalid)", test_verify_token_invalid),
     ]
     
     success = True

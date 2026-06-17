@@ -134,6 +134,20 @@ class ModifyEnquiry(BaseModel):
     staff: str
     notes: Optional[str] = ""
 
+class LoginCredentials(BaseModel):
+    username: str
+    password: str
+
+class LoginResponse(BaseModel):
+    status: str
+    token: str
+    username: str
+    role: str
+    name: str
+
+class TokenVerifyRequest(BaseModel):
+    token: str
+
 def load_db() -> List[Dict[str, Any]]:
     if not os.path.exists(DB_PATH):
         save_db(DEFAULT_ENQUIRIES)
@@ -219,3 +233,40 @@ def delete_enquiry(enquiry_id: str):
 def restore_db():
     save_db(DEFAULT_ENQUIRIES)
     return {"status": "success", "message": "Database restored to default demo records", "data": DEFAULT_ENQUIRIES}
+
+@app.post("/api/login", response_model=LoginResponse)
+def login(credentials: LoginCredentials):
+    users = {
+        "admin": {"password": "password123", "role": "admin", "name": "System Admin", "token": "token-admin-123"},
+        "counselor": {"password": "password123", "role": "counselor", "name": "Dr. K. Raghavan", "token": "token-counselor-raghavan"},
+        "counselor1": {"password": "password123", "role": "counselor", "name": "Dr. K. Raghavan", "token": "token-counselor-raghavan"},
+        "counselor2": {"password": "password123", "role": "counselor", "name": "Prof. S. Laxmi", "token": "token-counselor-laxmi"},
+        "counselor3": {"password": "password123", "role": "counselor", "name": "Mr. B. Srinivas", "token": "token-counselor-srinivas"},
+        "counselor4": {"password": "password123", "role": "counselor", "name": "Mrs. P. Shanti", "token": "token-counselor-shanti"}
+    }
+    
+    username = credentials.username.lower().strip()
+    if username in users and users[username]["password"] == credentials.password:
+        user_info = users[username]
+        return LoginResponse(
+            status="success",
+            token=user_info["token"],
+            username=username,
+            role=user_info["role"],
+            name=user_info["name"]
+        )
+        
+    raise HTTPException(status_code=401, detail="Invalid username or password")
+
+@app.post("/api/verify_token")
+def verify_token(payload: TokenVerifyRequest):
+    valid_tokens = {
+        "token-admin-123",
+        "token-counselor-raghavan",
+        "token-counselor-laxmi",
+        "token-counselor-srinivas",
+        "token-counselor-shanti"
+    }
+    if payload.token in valid_tokens:
+        return {"status": "valid"}
+    raise HTTPException(status_code=401, detail="Invalid session token")

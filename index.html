@@ -162,10 +162,10 @@
           <i class="fa-solid fa-graduation-cap"></i>
           <span data-i18n="nav-student">Student Portal</span>
         </button>
-        <button onclick="switchTab('admin-dashboard')" id="nav-admin-dashboard" class="nav-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
+        <a href="admin.html" id="nav-admin-dashboard" class="nav-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
           <i class="fa-solid fa-chart-line"></i>
-          <span data-i18n="nav-admin">Operations Dashboard</span>
-        </button>
+          <span data-i18n="nav-admin">Admin Page</span>
+        </a>
         <button onclick="switchTab('gowthami-ai')" id="nav-gowthami-ai" class="nav-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
           <i class="fa-solid fa-wand-magic-sparkles"></i>
           <span data-i18n="nav-ai">Gowthami AI</span>
@@ -210,10 +210,10 @@
         <i class="fa-solid fa-graduation-cap"></i>
         <span>Student Portal</span>
       </button>
-      <button onclick="switchTab('admin-dashboard'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold flex items-center space-x-3 text-slate-600 hover:bg-white/40">
+      <a href="admin.html" class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold flex items-center space-x-3 text-slate-600 hover:bg-white/40">
         <i class="fa-solid fa-chart-line"></i>
-        <span>Operations Dashboard</span>
-      </button>
+        <span>Admin Page</span>
+      </a>
       <button onclick="switchTab('gowthami-ai'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold flex items-center space-x-3 text-slate-600 hover:bg-white/40">
         <i class="fa-solid fa-wand-magic-sparkles"></i>
         <span>Gowthami AI Assistant</span>
@@ -565,141 +565,7 @@
             </div>
           </div>
 
-        </div>
-      </div>
-
-    </section>
-
-
-    <!-- 2. ADMINISTRATIVE & OPERATIONS DASHBOARD -->
-    <section id="panel-admin-dashboard" class="tab-panel hidden space-y-8">
-      
-      <!-- Dashboard Header -->
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">Staff Operations Hub</span>
-          <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">Admission Enquiry Dashboard</h2>
-        </div>
-        
-        <!-- Action Buttons (Export Systems) -->
-        <div class="flex flex-wrap items-center gap-2">
-          <button onclick="restoreDefaults()" class="glass-card px-4 py-2.5 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-2 hover:bg-white dark:hover:bg-slate-800 hover:border-amber-500/50 transition-colors" title="Restore default demo records">
-            <i class="fa-solid fa-rotate-left text-amber-500"></i>
-            <span>Restore Defaults</span>
-          </button>
-          <button onclick="exportData('csv')" class="glass-card px-4 py-2.5 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-2 hover:bg-white dark:hover:bg-slate-800 hover:border-emerald-500/50 transition-colors">
-            <i class="fa-solid fa-file-csv text-emerald-600"></i>
-            <span>Export CSV</span>
-          </button>
-          <button onclick="exportData('json')" class="glass-card px-4 py-2.5 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-2 hover:bg-white dark:hover:bg-slate-800 hover:border-teal-500/50 transition-colors">
-            <i class="fa-solid fa-file-code text-teal-600"></i>
-            <span>Export JSON</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- KPI Summary Cards Grid -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        
-        <!-- Total Enquiries -->
-        <div class="glass-panel p-5 rounded-2xl border border-white/60 shadow-sm flex items-center justify-between">
-          <div class="space-y-1">
-            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Enquiries</span>
-            <h4 id="kpi-total" class="text-2xl font-extrabold text-slate-800">0</h4>
-          </div>
-          <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
-            <i class="fa-solid fa-clipboard-list text-xl"></i>
-          </div>
-        </div>
-
-        <!-- Shortlisted / Eligible -->
-        <div class="glass-panel p-5 rounded-2xl border border-white/60 shadow-sm flex items-center justify-between">
-          <div class="space-y-1">
-            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Shortlisted</span>
-            <h4 id="kpi-shortlisted" class="text-2xl font-extrabold text-emerald-600">0</h4>
-          </div>
-          <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600">
-            <i class="fa-solid fa-user-check text-xl"></i>
-          </div>
-        </div>
-
-        <!-- Pending Review -->
-        <div class="glass-panel p-5 rounded-2xl border border-white/60 shadow-sm flex items-center justify-between">
-          <div class="space-y-1">
-            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Pending Review</span>
-            <h4 id="kpi-pending" class="text-2xl font-extrabold text-amber-500">0</h4>
-          </div>
-          <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-500">
-            <i class="fa-solid fa-hourglass-half text-xl"></i>
-          </div>
-        </div>
-
-        <!-- Ineligible Applications -->
-        <div class="glass-panel p-5 rounded-2xl border border-white/60 shadow-sm flex items-center justify-between">
-          <div class="space-y-1">
-            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ineligible</span>
-            <h4 id="kpi-ineligible" class="text-2xl font-extrabold text-rose-500">0</h4>
-          </div>
-          <div class="w-12 h-12 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600">
-            <i class="fa-solid fa-circle-xmark text-xl"></i>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Real-time Enquiry Log Table Panel -->
-      <div class="glass-panel rounded-3xl border border-white/60 shadow-xl shadow-slate-200/30 overflow-hidden">
-        
-        <!-- Table Search and Quick Filters -->
-        <div class="p-5 border-b border-slate-200/40 bg-white/40 flex flex-col md:flex-row items-center justify-between gap-4">
-          
-          <!-- Search input -->
-          <div class="relative w-full md:w-80">
-            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
-              <i class="fa-solid fa-magnifying-glass"></i>
-            </span>
-            <input type="text" id="table-search" oninput="renderEnquiryTable()" placeholder="Search applicants by name..." class="w-full glass-input pl-10 pr-4 py-2 rounded-xl text-sm font-semibold text-slate-700">
-          </div>
-
-          <!-- Status Filters -->
-          <div class="flex items-center space-x-1 bg-slate-200/40 p-1 rounded-xl border border-white/60 overflow-x-auto w-full md:w-auto">
-            <button onclick="setTableFilter('All')" id="table-filter-all" class="table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-slate-800 shadow-sm">
-              All
-            </button>
-            <button onclick="setTableFilter('Pending')" id="table-filter-pending" class="table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all">
-              Pending
-            </button>
-            <button onclick="setTableFilter('Shortlisted')" id="table-filter-shortlisted" class="table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all">
-              Shortlisted
-            </button>
-            <button onclick="setTableFilter('Approved')" id="table-filter-approved" class="table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all">
-              Approved
-            </button>
-            <button onclick="setTableFilter('Ineligible')" id="table-filter-ineligible" class="table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all">
-              Ineligible
-            </button>
-          </div>
-
-        </div>
-
-        <!-- Table Responsive Container -->
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="bg-slate-100/50 text-slate-500 text-xs font-extrabold uppercase border-b border-slate-200/40">
-                <th class="px-6 py-4">Applicant / Contact</th>
-                <th class="px-6 py-4">Selected Program</th>
-                <th class="px-6 py-4">Eligibility Score</th>
-                <th class="px-6 py-4">Counsel/Assignee</th>
-                <th class="px-6 py-4">Status</th>
-                <th class="px-6 py-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="enquiry-table-body" class="divide-y divide-slate-100/50 text-sm font-semibold text-slate-700">
-              <!-- Rendered dynamically -->
-            </tbody>
-          </table>
-        </div>
+         </div>
       </div>
 
     </section>
@@ -856,117 +722,7 @@
 
   </main>
 
-  <!-- Administrative Enquiry Manage Modal (Detail & Audit Log) -->
-  <div id="admin-modal" class="hidden fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md">
-    <div class="glass-panel w-full max-w-2xl rounded-3xl border border-white/80 shadow-2xl p-6 md:p-8 space-y-6 relative animate-float-slow">
-      
-      <!-- Close button -->
-      <button onclick="closeAdminModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100/50 flex items-center justify-center border border-white/60">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
 
-      <!-- Modal Title -->
-      <div class="flex items-center space-x-3 pb-3 border-b border-slate-200/40">
-        <div class="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600">
-          <i class="fa-solid fa-user-gear text-lg"></i>
-        </div>
-        <div>
-          <h3 class="text-xl font-extrabold text-slate-800">Manage Admission Enquiry</h3>
-          <p class="text-xs text-slate-500 font-semibold">Applicant Profile ID: <span id="modal-app-id" class="font-bold text-slate-700">#</span></p>
-        </div>
-      </div>
-
-      <!-- Applicant Details Details -->
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-xs font-semibold">
-        <div>
-          <span class="text-slate-400 uppercase tracking-wider block mb-1">Full Name</span>
-          <span id="modal-app-name" class="text-sm font-extrabold text-slate-800">-</span>
-        </div>
-        <div>
-          <span class="text-slate-400 uppercase tracking-wider block mb-1">Parent Name</span>
-          <span id="modal-app-parent" class="text-sm font-extrabold text-slate-800">-</span>
-        </div>
-        <div>
-          <span class="text-slate-400 uppercase tracking-wider block mb-1">Email Coordinates</span>
-          <span id="modal-app-email" class="text-sm font-extrabold text-slate-800 truncate block">-</span>
-        </div>
-        <div>
-          <span class="text-slate-400 uppercase tracking-wider block mb-1">Phone Coordinate</span>
-          <span id="modal-app-phone" class="text-sm font-extrabold text-slate-800">-</span>
-        </div>
-        <div>
-          <span class="text-slate-400 uppercase tracking-wider block mb-1">Preferred Program</span>
-          <span id="modal-app-course" class="text-sm font-extrabold text-slate-800">-</span>
-        </div>
-        <div>
-          <span class="text-slate-400 uppercase tracking-wider block mb-1">High School Score</span>
-          <span id="modal-app-marks" class="text-sm font-extrabold text-emerald-600">-</span>
-        </div>
-      </div>
-
-      <!-- Counselor Decisions -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-200/40">
-        
-        <!-- Change Status -->
-        <div class="space-y-1">
-          <label class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Application Status</label>
-          <div class="relative">
-            <select id="modal-status" class="w-full appearance-none glass-input px-4 py-2.5 pr-10 rounded-xl text-sm font-bold text-slate-700 cursor-pointer">
-              <option value="Pending">Pending</option>
-              <option value="Shortlisted">Shortlisted</option>
-              <option value="Approved">Approved</option>
-              <option value="Ineligible">Ineligible</option>
-            </select>
-            <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
-              <i class="fa-solid fa-chevron-down text-xs"></i>
-            </div>
-          </div>
-        </div>
-
-        <!-- Assign staff -->
-        <div class="space-y-1">
-          <label class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Assignee Counselor</label>
-          <div class="relative">
-            <select id="modal-staff" class="w-full appearance-none glass-input px-4 py-2.5 pr-10 rounded-xl text-sm font-bold text-slate-700 cursor-pointer">
-              <option value="Dr. K. Raghavan">Dr. K. Raghavan</option>
-              <option value="Prof. S. Laxmi">Prof. S. Laxmi</option>
-              <option value="Mr. B. Srinivas">Mr. B. Srinivas</option>
-              <option value="Mrs. P. Shanti">Mrs. P. Shanti</option>
-            </select>
-            <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
-              <i class="fa-solid fa-chevron-down text-xs"></i>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Add Administrative tracking note -->
-      <div class="space-y-2">
-        <label class="text-xs font-extrabold text-slate-500 uppercase tracking-wider block">Add Tracking Notes / Comments</label>
-        <textarea id="modal-notes" rows="3" placeholder="Enter status update notes here..." class="w-full glass-input px-4 py-3 rounded-xl text-sm font-semibold text-slate-700"></textarea>
-      </div>
-
-      <!-- Audit log history -->
-      <div class="space-y-2 pt-2">
-        <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider block">Profile Audit History</span>
-        <div id="modal-audit-log" class="max-h-[120px] overflow-y-auto space-y-2 bg-slate-100/50 border border-slate-200/20 p-3 rounded-xl text-xs text-slate-500">
-          <!-- History rows filled dynamically -->
-        </div>
-      </div>
-
-      <!-- Save & Action Footer -->
-      <div class="flex items-center justify-end space-x-3 pt-3">
-        <button onclick="closeAdminModal()" class="glass-card px-5 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:text-slate-800">
-          Discard
-        </button>
-        <button onclick="saveEnquiryModification()" class="bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl hover:bg-emerald-700 shadow-md shadow-emerald-500/10 hover:shadow-lg transition-all">
-          Save Adjustments
-        </button>
-      </div>
-
-    </div>
-  </div>
 
   <!-- Simulated Email Confirmation Modal -->
   <div id="email-modal" class="hidden fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md">
@@ -1302,11 +1058,9 @@
     ];
 
     let enquiries = [];
-    let activeTableFilter = 'All';
-    let currentEditEnquiryId = null;
     let selectedCampusFilter = 'all';
     let selectedDeptFilter = 'all';
-
+    
     // 2. LIFECYCLE MANAGEMENT & STATE RESTORATION
     const API_URL = "http://localhost:8080/api/enquiries";
 
@@ -1362,10 +1116,6 @@
       // Run live calculations for the first time
       runLiveCalculator();
 
-      // Render Dashboard KPI Cards & Table
-      updateDashboardKPIs();
-      renderEnquiryTable();
-
       // Initialize WhatsApp Chatbot
       initWhatsAppBot();
     };
@@ -1390,7 +1140,7 @@
       en: {
         "brand-subtitle": "Educational Institutions",
         "nav-student": "Student Portal",
-        "nav-admin": "Operations Dashboard",
+        "nav-admin": "Admin Page",
         "nav-ai": "Gowthami AI",
         "hero-badge": "Admissions Open 2026-27",
         "hero-title": 'Shape Your Future at <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">Sri Gowthami</span>',
@@ -1403,7 +1153,7 @@
       hi: {
         "brand-subtitle": "शैक्षणिक संस्थान",
         "nav-student": "छात्र पोर्टल",
-        "nav-admin": "संचालन डैशबोर्ड",
+        "nav-admin": "व्यवस्थापक पृष्ठ",
         "nav-ai": "गौतमी एआई",
         "hero-badge": "प्रवेश खुले हैं 2026-27",
         "hero-title": 'श्री गौतमी में अपना <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">भविष्य संवारें</span>',
@@ -1416,7 +1166,7 @@
       gj: {
         "brand-subtitle": "શૈક્ષણિક સંસ્થાઓ",
         "nav-student": "વિદ્યાર્થી પોર્ટલ",
-        "nav-admin": "ઓપરેશન ડેશબોર્ડ",
+        "nav-admin": "એડમિન પેજ",
         "nav-ai": "ગૌતમી એઆઈ",
         "hero-badge": "પ્રવેશ ખુલ્લા છે 2026-27",
         "hero-title": 'શ્રી ગૌતમીમાં તમારું <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">ભવિષ્ય ઉજ્જવળ બનાવો</span>',
@@ -1429,7 +1179,7 @@
       mr: {
         "brand-subtitle": "शैक्षणिक संस्था",
         "nav-student": "विद्यार्थी पोर्टल",
-        "nav-admin": "ऑपरेशन्स डॅशबोर्ड",
+        "nav-admin": "अ‍ॅडमिन पृष्ठ",
         "nav-ai": "गौतमी एआय",
         "hero-badge": "प्रवेश खुले आहेत २०२६-२७",
         "hero-title": 'श्री गौतमीमध्ये तुमचे <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">भविष्य घडवा</span>',
@@ -1464,29 +1214,6 @@
     // Helper to persist database modifications
     async function saveDatabaseState() {
       localStorage.setItem("sg_enquiries", JSON.stringify(enquiries));
-      updateDashboardKPIs();
-    }
-
-    async function restoreDefaults() {
-      if (confirm("Are you sure you want to restore the database to default demo entries? All current updates will be overwritten.")) {
-        try {
-          const response = await fetch(`${API_URL}/restore`, { method: 'POST' });
-          if (response.ok) {
-            const result = await response.json();
-            enquiries = result.data;
-            showToast("Database successfully restored to defaults.", "info");
-          } else {
-            throw new Error();
-          }
-        } catch (err) {
-          // Deep copy of DEFAULT_ENQUIRIES to avoid mutating reference
-          enquiries = JSON.parse(JSON.stringify(DEFAULT_ENQUIRIES));
-          saveDatabaseState();
-          showToast("Database successfully restored to defaults (offline mode).", "info");
-        }
-        renderEnquiryTable();
-        updateDashboardKPIs();
-      }
     }
 
     // 3. TOAST POPUP NOTIFICATION MANAGER
@@ -1556,6 +1283,8 @@
 
     // 4. VIEW / NAVIGATION CONTROLLER
     function switchTab(tabId) {
+      if (tabId !== 'student-portal' && tabId !== 'gowthami-ai') return;
+
       // Hide all panels
       document.querySelectorAll('.tab-panel').forEach(panel => {
         panel.classList.add('hidden');
@@ -1573,12 +1302,6 @@
       const activeBtn = document.getElementById('nav-' + tabId);
       if (activeBtn) {
         activeBtn.className = "nav-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center space-x-2 bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 shadow-sm border border-slate-200/40 dark:border-slate-700/40";
-      }
-
-      // Sync views
-      if (tabId === 'admin-dashboard') {
-        updateDashboardKPIs();
-        renderEnquiryTable();
       }
     }
 
@@ -2001,333 +1724,7 @@
       }, 800);
     }
 
-    // 9. ADMINISTRATIVE OPERATIONS CONTROL HUB
-    function updateDashboardKPIs() {
-      document.getElementById("kpi-total").innerText = enquiries.length;
-      document.getElementById("kpi-shortlisted").innerText = enquiries.filter(e => e.status === 'Shortlisted' || e.status === 'Approved').length;
-      document.getElementById("kpi-pending").innerText = enquiries.filter(e => e.status === 'Pending').length;
-      document.getElementById("kpi-ineligible").innerText = enquiries.filter(e => e.status === 'Ineligible').length;
-    }
 
-    function setTableFilter(status) {
-      activeTableFilter = status;
-      
-      // Update filter tabs UI classes
-      document.querySelectorAll('.table-filter-tab').forEach(tab => {
-        tab.className = "table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all";
-      });
-
-      const activeTab = document.getElementById(`table-filter-${status.toLowerCase()}`);
-      if (activeTab) {
-        activeTab.className = "table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm border border-slate-200/40";
-      }
-
-      renderEnquiryTable();
-    }
-
-    function renderEnquiryTable() {
-      const tbody = document.getElementById("enquiry-table-body");
-      const searchQuery = document.getElementById("table-search").value.toLowerCase().trim();
-
-      tbody.innerHTML = "";
-
-      // Apply Filters
-      const filtered = enquiries.filter(e => {
-        const matchesStatus = (activeTableFilter === 'All') || (e.status === activeTableFilter);
-        const matchesSearch = e.name.toLowerCase().includes(searchQuery) || e.course.toLowerCase().includes(searchQuery) || e.id.toLowerCase().includes(searchQuery);
-        return matchesStatus && matchesSearch;
-      });
-
-      if (filtered.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" class="px-6 py-12 text-center text-slate-400 font-semibold bg-white/10">
-              <i class="fa-solid fa-folder-open text-2xl text-slate-300 mb-2 block"></i>
-              No application enquiries found matching parameters.
-            </td>
-          </tr>
-        `;
-        return;
-      }
-
-      filtered.forEach(e => {
-        let badgeClass = "bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700";
-        if (e.status === 'Shortlisted') badgeClass = "bg-emerald-50 text-emerald-700 border-emerald-200/50 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800/50";
-        else if (e.status === 'Approved') badgeClass = "bg-teal-50 text-teal-700 border-teal-200/50 dark:bg-teal-950/30 dark:text-teal-400 dark:border-teal-800/50";
-        else if (e.status === 'Pending') badgeClass = "bg-amber-50 text-amber-700 border-amber-200/50 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800/50";
-        else if (e.status === 'Ineligible') badgeClass = "bg-rose-50 text-rose-700 border-rose-200/50 dark:bg-rose-950/30 dark:text-rose-450 dark:border-rose-800/50";
-
-        // Lead score styling
-        let scoreBadge = "";
-        const leadScore = e.leadScore || (e.marks >= 90 ? 'Hot' : (e.marks >= 65 ? 'Warm' : 'Cold'));
-        if (leadScore === 'Hot') {
-          scoreBadge = `<span class="inline-flex px-1.5 py-0.5 rounded bg-rose-100 dark:bg-rose-950/50 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-900/50 text-[10px] font-extrabold tracking-wide animate-pulse">HOT LEAD</span>`;
-        } else if (leadScore === 'Warm') {
-          scoreBadge = `<span class="inline-flex px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border border-amber-200/50 dark:border-amber-900/30 text-[10px] font-extrabold">WARM</span>`;
-        } else {
-          scoreBadge = `<span class="inline-flex px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 text-[10px] font-extrabold">COLD</span>`;
-        }
-
-        // Source icon
-        let sourceIcon = `<i class="fa-solid fa-globe text-slate-400 text-xs mr-1" title="Website Portal"></i>`;
-        if (e.source === 'WhatsApp Bot') {
-          sourceIcon = `<i class="fa-brands fa-whatsapp text-emerald-500 text-sm mr-1" title="WhatsApp Bot"></i>`;
-        }
-
-        const row = `
-          <tr class="hover:bg-white/30 dark:hover:bg-slate-800/20 transition-colors">
-            <td class="px-6 py-4">
-              <div class="space-y-0.5">
-                <span class="text-xs text-slate-400 font-bold flex items-center">
-                  ${sourceIcon}
-                  <span>${e.id}</span>
-                </span>
-                <span class="text-sm font-extrabold text-slate-800 dark:text-slate-200 block">${e.name}</span>
-                <span class="text-[11px] text-slate-500 dark:text-slate-400 font-semibold block">${e.phone} | ${e.email}</span>
-              </div>
-            </td>
-            <td class="px-6 py-4">
-              <div class="space-y-0.5">
-                <span class="text-sm font-extrabold text-slate-800 dark:text-slate-200 block">${e.course}</span>
-                <span class="text-xs text-slate-400 font-bold block"><i class="fa-solid fa-building"></i> ${e.campus}</span>
-              </div>
-            </td>
-            <td class="px-6 py-4">
-              <div class="flex items-center space-x-2">
-                <span class="text-sm font-extrabold text-slate-800 dark:text-slate-200">${e.marks}%</span>
-                <div class="w-12 bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
-                  <div class="bg-emerald-500 h-2" style="width: ${e.marks}%"></div>
-                </div>
-              </div>
-            </td>
-            <td class="px-6 py-4 text-xs font-bold text-slate-655 dark:text-slate-400">
-              <i class="fa-solid fa-user-tie text-slate-400 mr-1.5"></i>${e.staff || 'Unassigned'}
-            </td>
-            <td class="px-6 py-4">
-              <div class="flex flex-col space-y-1 items-start">
-                <span class="inline-flex px-2.5 py-1 rounded-lg text-xs font-bold border ${badgeClass}">
-                  ${e.status}
-                </span>
-                ${scoreBadge}
-              </div>
-            </td>
-            <td class="px-6 py-4 text-right">
-              <div class="flex items-center justify-end space-x-2">
-                <button onclick="openAdminModal('${e.id}')" class="bg-white/80 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-bold text-xs px-3 py-1.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80 hover:border-emerald-300 transition-colors">
-                  Manage
-                </button>
-                <button onclick="deleteEnquiry('${e.id}')" class="bg-white/80 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950 text-rose-600 dark:text-rose-400 font-bold text-xs px-2.5 py-1.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80 hover:border-rose-300 transition-colors" title="Delete record">
-                  <i class="fa-solid fa-trash-can"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-        `;
-        tbody.insertAdjacentHTML('beforeend', row);
-      });
-    }
-
-    async function deleteEnquiry(id) {
-      if (confirm(`Are you sure you want to delete enquiry record ${id}?`)) {
-        const index = enquiries.findIndex(e => e.id === id);
-        if (index !== -1) {
-          const removedName = enquiries[index].name;
-          try {
-            const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-            if (response.ok) {
-              enquiries.splice(index, 1);
-              showToast(`Deleted enquiry record for ${removedName} (${id})`, 'warning');
-            } else {
-              throw new Error("Delete failed");
-            }
-          } catch (err) {
-            enquiries.splice(index, 1);
-            saveDatabaseState();
-            showToast(`Deleted enquiry record for ${removedName} (${id}) (offline mode)`, 'warning');
-          }
-          renderEnquiryTable();
-          updateDashboardKPIs();
-        }
-      }
-    }
-
-    // 10. MODAL AUDIT MANAGER
-    function openAdminModal(id) {
-      const app = enquiries.find(e => e.id === id);
-      if (!app) return;
-
-      currentEditEnquiryId = id;
-
-      // Populate static fields
-      document.getElementById("modal-app-id").innerText = app.id;
-      document.getElementById("modal-app-name").innerText = app.name;
-      document.getElementById("modal-app-parent").innerText = app.parent;
-      document.getElementById("modal-app-email").innerText = app.email;
-      document.getElementById("modal-app-phone").innerText = app.phone;
-      document.getElementById("modal-app-course").innerText = app.course;
-      document.getElementById("modal-app-marks").innerText = `${app.marks}% Aggregate`;
-
-      // Set input defaults
-      document.getElementById("modal-status").value = app.status;
-      document.getElementById("modal-staff").value = app.staff || "Dr. K. Raghavan";
-      document.getElementById("modal-notes").value = "";
-
-      // Render audit log
-      renderAuditLog(app.history);
-
-      // Show Modal
-      document.getElementById("admin-modal").classList.remove("hidden");
-    }
-
-    function renderAuditLog(history) {
-      const container = document.getElementById("modal-audit-log");
-      container.innerHTML = "";
-
-      if (!history || history.length === 0) {
-        container.innerHTML = `<span class="italic text-slate-400">No log entries found.</span>`;
-        return;
-      }
-
-      history.forEach(log => {
-        const item = `
-          <div class="flex items-start justify-between border-b border-slate-200/20 pb-1.5 last:border-0 last:pb-0">
-            <span class="font-medium text-slate-600">${log.action}</span>
-            <span class="text-[10px] text-slate-400 font-semibold shrink-0 ml-4">${log.date}</span>
-          </div>
-        `;
-        container.insertAdjacentHTML('beforeend', item);
-      });
-    }
-
-    function closeAdminModal() {
-      document.getElementById("admin-modal").classList.add("hidden");
-      currentEditEnquiryId = null;
-    }
-
-    async function saveEnquiryModification() {
-      if (!currentEditEnquiryId) return;
-
-      const appIndex = enquiries.findIndex(e => e.id === currentEditEnquiryId);
-      if (appIndex === -1) return;
-
-      const app = enquiries[appIndex];
-      const newStatus = document.getElementById("modal-status").value;
-      const newStaff = document.getElementById("modal-staff").value;
-      const noteInput = document.getElementById("modal-notes").value.trim();
-
-      const now = new Date();
-      const dateStr = now.toISOString().split('T')[0] + ' ' + now.toTimeString().split(' ')[0].substring(0, 5);
-
-      try {
-        const response = await fetch(`${API_URL}/${currentEditEnquiryId}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            status: newStatus,
-            staff: newStaff,
-            notes: noteInput
-          })
-        });
-        if (response.ok) {
-          const updatedItem = await response.json();
-          enquiries[appIndex] = updatedItem;
-          showToast(`Profile ${updatedItem.id} changes recorded successfully.`, 'success');
-        } else {
-          throw new Error("Update failed");
-        }
-      } catch (err) {
-        let historyAdded = false;
-
-        // Status changed logging
-        if (app.status !== newStatus) {
-          app.history.push({
-            date: dateStr,
-            action: `Status changed to ${newStatus} by admin counselor`
-          });
-          app.status = newStatus;
-          historyAdded = true;
-        }
-
-        // Counselor assigned logging
-        if (app.staff !== newStaff) {
-          app.history.push({
-            date: dateStr,
-            action: `Assigned counselor updated to ${newStaff}`
-          });
-          app.staff = newStaff;
-          historyAdded = true;
-        }
-
-        // Add text note logging
-        if (noteInput) {
-          app.history.push({
-            date: dateStr,
-            action: `Note added: "${noteInput}"`
-          });
-          app.notes = noteInput;
-          historyAdded = true;
-        }
-
-        if (historyAdded) {
-          saveDatabaseState();
-          showToast(`Profile ${app.id} changes recorded (offline mode).`, 'success');
-        }
-      }
-
-      renderEnquiryTable();
-      updateDashboardKPIs();
-      closeAdminModal();
-    }
-
-    // 11. DATA EXPORT PORT (CSV / JSON)
-    function exportData(format) {
-      if (enquiries.length === 0) {
-        showToast("No enquiries available to export.", "warning");
-        return;
-      }
-
-      let dataStr = "";
-      let mimeType = "";
-      let filename = "";
-
-      if (format === 'json') {
-        dataStr = JSON.stringify(enquiries, null, 2);
-        mimeType = "application/json";
-        filename = "sg_admissions_enquiries_log.json";
-      } else if (format === 'csv') {
-        const headers = ["ID", "Name", "Parent", "Email", "Phone", "Course", "Campus", "Marks", "Status", "Assignee Staff", "Notes"];
-        const rows = enquiries.map(e => [
-          e.id,
-          `"${e.name.replace(/"/g, '""')}"`,
-          `"${e.parent.replace(/"/g, '""')}"`,
-          e.email,
-          e.phone,
-          `"${e.course}"`,
-          `"${e.campus}"`,
-          e.marks,
-          e.status,
-          `"${e.staff || ''}"`,
-          `"${(e.notes || '').replace(/"/g, '""')}"`
-        ]);
-
-        dataStr = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
-        mimeType = "text/csv";
-        filename = "sg_admissions_enquiries_log.csv";
-      }
-
-      // Generate Download File Triggers
-      const blob = new Blob([dataStr], { type: mimeType });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.setAttribute("href", url);
-      link.setAttribute("download", filename);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      showToast(`Exported ${enquiries.length} enquiries as ${format.toUpperCase()}`, 'success');
-    }
 
     // 12. WHATSAPP AI CHATBOT & DIALOGUE MANAGER
     let waState = {
@@ -2750,7 +2147,6 @@
           // Append and save to database
           enquiries.unshift(newEnquiry);
           saveDatabaseState();
-          renderEnquiryTable();
 
           if (lang === 'en') {
             renderWAMessage(`🎉 **Counseling Slot Confirmed!**\n\n👤 Candidate Name: ${waState.leadData.name}\n📅 Date: ${waState.leadData.date}\n🕒 Time Slot: ${waState.leadData.time}\n📍 Course: ${waState.course}\n\nOur counseling director **Dr. K. Raghavan** has been assigned to your profile. A confirmation WhatsApp notification has been dispatched to **${waState.leadData.phone}**.\n\nThank you for choosing Sri Gowthami!`, 'bot');

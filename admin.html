@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Sri Gowthami Educational Institutions</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts: Urbanist & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght=0,100..900;1,100..900&family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind Custom Config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Urbanist', 'Inter', 'sans-serif'],
+          },
+          animation: {
+            'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float-slow': 'float 12s ease-in-out infinite',
+            'float-reverse': 'floatReverse 15s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) scale(1)' },
+              '50%': { transform: 'translateY(-20px) scale(1.05)' },
+            },
+            floatReverse: {
+              '0%, 100%': { transform: 'translateY(0px) scale(1.05)' },
+              '50%': { transform: 'translateY(25px) scale(0.95)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(241, 245, 249, 0.5);
+      backdrop-filter: blur(10px);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(16, 185, 129, 0.2);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(16, 185, 129, 0.4);
+    }
+    
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.04);
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 4px 20px 0 rgba(148, 163, 184, 0.08);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: rgba(16, 185, 129, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px 0 rgba(16, 185, 129, 0.08);
+    }
+
+    .glass-input {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      transition: all 0.2s ease;
+    }
+
+    .glass-input:focus {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: rgba(16, 185, 129, 0.5);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
+
+    /* Dark Mode Glassmorphic Styling */
+    .dark .glass-panel {
+      background: rgba(15, 23, 42, 0.55);
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+    
+    .dark .glass-card {
+      background: rgba(15, 23, 42, 0.6);
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .dark .glass-card:hover {
+      background: rgba(15, 23, 42, 0.85);
+      border-color: rgba(16, 185, 129, 0.5);
+    }
+
+    .dark .glass-input {
+      background: rgba(15, 23, 42, 0.45);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: rgba(241, 245, 249, 0.9);
+    }
+
+    .dark .glass-input:focus {
+      background: rgba(15, 23, 42, 0.8);
+      border-color: rgba(16, 185, 129, 0.6);
+    }
+  </style>
+  
+  <script>
+    // 1. EARLY AUTHENTICATION REDIRECT GUARD
+    const token = localStorage.getItem("sg_auth_token");
+    const role = localStorage.getItem("sg_auth_role");
+    const name = localStorage.getItem("sg_auth_name");
+    const username = localStorage.getItem("sg_auth_username");
+    
+    if (!token || !role || !name) {
+      window.location.replace("login.html");
+    } else {
+      // Validate token with backend to prevent custom localStorage token injection bypasses
+      fetch("http://localhost:8080/api/verify_token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: token })
+      })
+      .then(response => {
+        if (response.status === 401) {
+          throw new Error("Unauthorized");
+        }
+      })
+      .catch(err => {
+        if (err.message === "Unauthorized") {
+          localStorage.removeItem("sg_auth_token");
+          localStorage.removeItem("sg_auth_role");
+          localStorage.removeItem("sg_auth_name");
+          localStorage.removeItem("sg_auth_username");
+          window.location.replace("login.html");
+        }
+      });
+    }
+
+    // Apply dark mode immediately
+    const savedTheme = localStorage.getItem("sg_theme");
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-700 dark:bg-slate-950 dark:text-slate-300 min-h-screen relative overflow-x-hidden font-sans antialiased selection:bg-emerald-100 selection:text-emerald-900 transition-colors duration-350 flex flex-col justify-between">
+
+  <!-- Glowing Abstract Blur Blobs -->
+  <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-200/30 dark:bg-emerald-900/10 blur-[140px] pointer-events-none animate-float-slow -z-10"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-sky-200/25 dark:bg-sky-900/10 blur-[160px] pointer-events-none animate-float-reverse -z-10"></div>
+
+  <!-- Header Section -->
+  <header class="sticky top-0 z-40 w-full glass-panel border-b border-slate-200/40 dark:border-slate-800/40 shrink-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center space-x-3 cursor-pointer">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-white font-bold text-xl">
+          SG
+        </div>
+        <div>
+          <h1 class="text-xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight leading-tight">Sri Gowthami</h1>
+          <span class="text-xs font-semibold tracking-wider text-teal-600 dark:text-teal-400 uppercase">Educational Institutions</span>
+        </div>
+      </a>
+      
+      <!-- Center Title -->
+      <div class="hidden md:flex items-center space-x-2 bg-slate-200/40 dark:bg-slate-800/40 px-4 py-2 rounded-2xl border border-white/60 dark:border-slate-700/60 font-bold text-sm text-emerald-850 dark:text-emerald-400">
+        <i class="fa-solid fa-chart-line text-xs"></i>
+        <span>Admissions Operations Board</span>
+      </div>
+
+      <!-- Utilities & Logout Badges -->
+      <div class="flex items-center space-x-3">
+        <!-- Language Selector -->
+        <div class="relative">
+          <select id="lang-selector" onchange="changeWebsiteLanguage(this.value)" class="glass-panel text-slate-700 dark:text-slate-200 bg-white/40 dark:bg-slate-800/40 text-xs font-extrabold px-3.5 py-2 rounded-xl border border-slate-250/50 dark:border-slate-700/50 cursor-pointer focus:outline-none appearance-none pr-8">
+            <option value="en" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">English</option>
+            <option value="hi" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">हिन्दी</option>
+            <option value="gj" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">ગુજરાતી</option>
+            <option value="mr" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">मराठी</option>
+          </select>
+          <div class="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-[10px]">
+            <i class="fa-solid fa-globe"></i>
+          </div>
+        </div>
+
+        <button onclick="toggleDarkMode()" id="dark-mode-toggle" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-slate-750 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 border border-slate-200/50 dark:border-slate-700/50 transition-colors" title="Toggle Light/Dark Theme">
+          <i class="fa-solid fa-moon text-lg"></i>
+        </button>
+
+        <!-- Profile Badge -->
+        <div id="user-profile-badge" class="flex items-center space-x-2 bg-slate-200/40 dark:bg-slate-800/40 px-3 py-1.5 rounded-xl border border-white/60 dark:border-slate-700/60 shadow-sm">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+          <div class="text-[11px] font-bold text-slate-700 dark:text-slate-250 leading-tight">
+            <span id="user-badge-name" class="block truncate max-w-[90px]">-</span>
+            <span id="user-badge-role" class="block text-[9px] text-teal-650 dark:text-teal-400 font-extrabold uppercase">-</span>
+          </div>
+          <button onclick="handleLogout()" class="w-7 h-7 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/30 text-slate-500 hover:text-rose-600 dark:hover:text-rose-455 flex items-center justify-center border border-transparent hover:border-rose-200/30 transition-all focus:outline-none" title="Log Out Session">
+            <i class="fa-solid fa-right-from-bracket text-xs"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 flex-1 w-full space-y-8">
+    
+    <!-- Dashboard Header -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-650 dark:text-emerald-400">Staff Operations Hub</span>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight">Admission Enquiry Dashboard</h2>
+      </div>
+      
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="restoreDefaults()" id="restore-db-btn" class="glass-card px-4 py-2.5 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-2 hover:bg-white dark:hover:bg-slate-800 hover:border-amber-500/50 transition-colors" title="Restore default demo records">
+          <i class="fa-solid fa-rotate-left text-amber-500"></i>
+          <span>Restore Defaults</span>
+        </button>
+        <button onclick="exportData('csv')" class="glass-card px-4 py-2.5 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-2 hover:bg-white dark:hover:bg-slate-800 hover:border-emerald-500/50 transition-colors">
+          <i class="fa-solid fa-file-csv text-emerald-600"></i>
+          <span>Export CSV</span>
+        </button>
+        <button onclick="exportData('json')" class="glass-card px-4 py-2.5 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-2 hover:bg-white dark:hover:bg-slate-800 hover:border-teal-500/50 transition-colors">
+          <i class="fa-solid fa-file-code text-teal-600"></i>
+          <span>Export JSON</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- KPI Summary Cards Grid -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <!-- Total Enquiries -->
+      <div class="glass-panel p-5 rounded-2xl border border-white/60 dark:border-slate-800/60 shadow-sm flex items-center justify-between">
+        <div class="space-y-1">
+          <span class="text-xs font-bold text-slate-400 dark:text-slate-550 uppercase tracking-wider">Total Enquiries</span>
+          <h4 id="kpi-total" class="text-2xl font-extrabold text-slate-800 dark:text-slate-100">0</h4>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400">
+          <i class="fa-solid fa-clipboard-list text-xl"></i>
+        </div>
+      </div>
+
+      <!-- Shortlisted -->
+      <div class="glass-panel p-5 rounded-2xl border border-white/60 dark:border-slate-800/60 shadow-sm flex items-center justify-between">
+        <div class="space-y-1">
+          <span class="text-xs font-bold text-slate-400 dark:text-slate-550 uppercase tracking-wider">Shortlisted</span>
+          <h4 id="kpi-shortlisted" class="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400">0</h4>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+          <i class="fa-solid fa-user-check text-xl"></i>
+        </div>
+      </div>
+
+      <!-- Pending Review -->
+      <div class="glass-panel p-5 rounded-2xl border border-white/60 dark:border-slate-800/60 shadow-sm flex items-center justify-between">
+        <div class="space-y-1">
+          <span class="text-xs font-bold text-slate-400 dark:text-slate-550 uppercase tracking-wider">Pending Review</span>
+          <h4 id="kpi-pending" class="text-2xl font-extrabold text-amber-500 dark:text-amber-400">0</h4>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/30 flex items-center justify-center text-amber-500 dark:text-amber-400">
+          <i class="fa-solid fa-hourglass-half text-xl"></i>
+        </div>
+      </div>
+
+      <!-- Ineligible -->
+      <div class="glass-panel p-5 rounded-2xl border border-white/60 dark:border-slate-800/60 shadow-sm flex items-center justify-between">
+        <div class="space-y-1">
+          <span class="text-xs font-bold text-slate-400 dark:text-slate-550 uppercase tracking-wider">Ineligible</span>
+          <h4 id="kpi-ineligible" class="text-2xl font-extrabold text-rose-500 dark:text-rose-400">0</h4>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-100 dark:border-rose-900/30 flex items-center justify-center text-rose-600 dark:text-rose-455">
+          <i class="fa-solid fa-circle-xmark text-xl"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Real-time Enquiry Log Table Panel -->
+    <div class="glass-panel rounded-3xl border border-white/60 dark:border-slate-800/60 shadow-xl overflow-hidden">
+      <!-- Search and Filters -->
+      <div class="p-5 border-b border-slate-200/40 dark:border-slate-800/40 bg-white/40 dark:bg-slate-900/20 flex flex-col md:flex-row items-center justify-between gap-4">
+        <!-- Search -->
+        <div class="relative w-full md:w-80">
+          <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </span>
+          <input type="text" id="table-search" oninput="renderEnquiryTable()" placeholder="Search applicants by name, course, code..." class="w-full glass-input pl-10 pr-4 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200">
+        </div>
+
+        <!-- Status Filter tabs -->
+        <div class="flex items-center space-x-1 bg-slate-200/40 dark:bg-slate-800/30 p-1 rounded-xl border border-white/60 dark:border-slate-700/60 overflow-x-auto w-full md:w-auto">
+          <button onclick="setTableFilter('All')" id="table-filter-all" class="table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 shadow-sm">
+            All
+          </button>
+          <button onclick="setTableFilter('Pending')" id="table-filter-pending" class="table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 dark:hover:text-slate-250 transition-all">
+            Pending
+          </button>
+          <button onclick="setTableFilter('Shortlisted')" id="table-filter-shortlisted" class="table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 dark:hover:text-slate-250 transition-all">
+            Shortlisted
+          </button>
+          <button onclick="setTableFilter('Approved')" id="table-filter-approved" class="table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 dark:hover:text-slate-250 transition-all">
+            Approved
+          </button>
+          <button onclick="setTableFilter('Ineligible')" id="table-filter-ineligible" class="table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 dark:hover:text-slate-250 transition-all">
+            Ineligible
+          </button>
+        </div>
+      </div>
+
+      <!-- Log Table -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-100/50 dark:bg-slate-900/30 text-slate-550 dark:text-slate-400 text-xs font-extrabold uppercase border-b border-slate-200/40 dark:border-slate-800/40">
+              <th class="px-6 py-4">Applicant / Contact</th>
+              <th class="px-6 py-4">Selected Program</th>
+              <th class="px-6 py-4">Eligibility Score</th>
+              <th class="px-6 py-4">Counsel/Assignee</th>
+              <th class="px-6 py-4">Status</th>
+              <th class="px-6 py-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="enquiry-table-body" class="divide-y divide-slate-100/50 dark:divide-slate-800/40 text-sm font-semibold text-slate-700 dark:text-slate-300">
+            <!-- Dynamic rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Audit & Modification Modal -->
+  <div id="admin-modal" class="hidden fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md">
+    <div class="glass-panel w-full max-w-2xl rounded-3xl border border-white/80 dark:border-slate-750 shadow-2xl p-6 md:p-8 space-y-6 relative animate-float-slow">
+      
+      <button onclick="closeAdminModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 w-8 h-8 rounded-full bg-slate-100/50 dark:bg-slate-800 flex items-center justify-center border border-white/60 dark:border-slate-700/60">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex items-center space-x-3 pb-3 border-b border-slate-200/40 dark:border-slate-800/40">
+        <div class="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-950/40 border border-teal-100 dark:border-teal-900/30 flex items-center justify-center text-teal-600 dark:text-teal-400">
+          <i class="fa-solid fa-user-gear text-lg"></i>
+        </div>
+        <div>
+          <h3 class="text-xl font-extrabold text-slate-800 dark:text-slate-100">Manage Admission Enquiry</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">Applicant Profile ID: <span id="modal-app-id" class="font-bold text-slate-700 dark:text-slate-300">#</span></p>
+        </div>
+      </div>
+
+      <!-- Applicant static details -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-xs font-semibold">
+        <div>
+          <span class="text-slate-450 dark:text-slate-500 uppercase tracking-wider block mb-1">Full Name</span>
+          <span id="modal-app-name" class="text-sm font-extrabold text-slate-800 dark:text-slate-200">-</span>
+        </div>
+        <div>
+          <span class="text-slate-450 dark:text-slate-500 uppercase tracking-wider block mb-1">Parent Name</span>
+          <span id="modal-app-parent" class="text-sm font-extrabold text-slate-800 dark:text-slate-200">-</span>
+        </div>
+        <div>
+          <span class="text-slate-450 dark:text-slate-500 uppercase tracking-wider block mb-1">Email Coordinates</span>
+          <span id="modal-app-email" class="text-sm font-extrabold text-slate-800 dark:text-slate-200 truncate block">-</span>
+        </div>
+        <div>
+          <span class="text-slate-450 dark:text-slate-500 uppercase tracking-wider block mb-1">Phone Coordinate</span>
+          <span id="modal-app-phone" class="text-sm font-extrabold text-slate-800 dark:text-slate-200">-</span>
+        </div>
+        <div>
+          <span class="text-slate-450 dark:text-slate-500 uppercase tracking-wider block mb-1">Preferred Program</span>
+          <span id="modal-app-course" class="text-sm font-extrabold text-slate-800 dark:text-slate-200">-</span>
+        </div>
+        <div>
+          <span class="text-slate-450 dark:text-slate-500 uppercase tracking-wider block mb-1">High School Score</span>
+          <span id="modal-app-marks" class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">-</span>
+        </div>
+      </div>
+
+      <!-- Decisions Editor -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-200/40 dark:border-slate-800/40">
+        <!-- Status select -->
+        <div class="space-y-1">
+          <label class="text-xs font-extrabold text-slate-500 dark:text-slate-450 uppercase tracking-wider">Application Status</label>
+          <div class="relative">
+            <select id="modal-status" class="w-full appearance-none glass-input px-4 py-2.5 pr-10 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 cursor-pointer">
+              <option value="Pending">Pending</option>
+              <option value="Shortlisted">Shortlisted</option>
+              <option value="Approved">Approved</option>
+              <option value="Ineligible">Ineligible</option>
+            </select>
+            <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
+              <i class="fa-solid fa-chevron-down text-xs"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Counselor Assignee select -->
+        <div class="space-y-1">
+          <label class="text-xs font-extrabold text-slate-500 dark:text-slate-450 uppercase tracking-wider">Assignee Counselor</label>
+          <div class="relative">
+            <select id="modal-staff" class="w-full appearance-none glass-input px-4 py-2.5 pr-10 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 cursor-pointer">
+              <option value="Dr. K. Raghavan">Dr. K. Raghavan</option>
+              <option value="Prof. S. Laxmi">Prof. S. Laxmi</option>
+              <option value="Mr. B. Srinivas">Mr. B. Srinivas</option>
+              <option value="Mrs. P. Shanti">Mrs. P. Shanti</option>
+            </select>
+            <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
+              <i class="fa-solid fa-chevron-down text-xs"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Comments/Notes -->
+      <div class="space-y-2">
+        <label class="text-xs font-extrabold text-slate-500 dark:text-slate-450 uppercase tracking-wider block">Add Tracking Notes / Comments</label>
+        <textarea id="modal-notes" rows="3" placeholder="Enter status update notes here..." class="w-full glass-input px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200"></textarea>
+      </div>
+
+      <!-- Audit History -->
+      <div class="space-y-2 pt-2">
+        <span class="text-xs font-extrabold text-slate-400 dark:text-slate-550 uppercase tracking-wider block">Profile Audit History</span>
+        <div id="modal-audit-log" class="max-h-[120px] overflow-y-auto space-y-2 bg-slate-100/50 dark:bg-slate-900/40 border border-slate-250/20 dark:border-slate-800/40 p-3 rounded-xl text-xs text-slate-500 dark:text-slate-400">
+          <!-- audit items -->
+        </div>
+      </div>
+
+      <!-- Footer Actions -->
+      <div class="flex items-center justify-end space-x-3 pt-3">
+        <button onclick="closeAdminModal()" class="glass-card px-5 py-2.5 rounded-xl text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200">
+          Discard
+        </button>
+        <button onclick="saveEnquiryModification()" class="bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl hover:bg-emerald-700 shadow-md shadow-emerald-500/10 hover:shadow-lg transition-all">
+          Save Adjustments
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-3 pointer-events-none max-w-sm w-full"></div>
+
+  <!-- Footer -->
+  <footer class="w-full glass-panel border-t border-slate-200/40 py-8 shrink-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-slate-400 text-xs font-semibold">
+      <p>&copy; 2026 Sri Gowthami Educational Institutions. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Script logic -->
+  <script>
+    const API_URL = "http://localhost:8080/api/enquiries";
+
+    let enquiries = [];
+    let activeTableFilter = 'All';
+    let currentEditEnquiryId = null;
+
+    let isLoggedIn = true;
+    let currentUser = {
+      token: token,
+      role: role,
+      name: name,
+      username: username
+    };
+
+    // Translations support for header and titles
+    const TRANSLATIONS = {
+      en: {
+        "brand-subtitle": "Educational Institutions",
+      },
+      hi: {
+        "brand-subtitle": "शैक्षणिक संस्थान",
+      },
+      gj: {
+        "brand-subtitle": "શૈક્ષણિક સંસ્થાઓ",
+      },
+      mr: {
+        "brand-subtitle": "शैक्षणिक संस्था",
+      }
+    };
+
+    // Load functions on page start
+    window.onload = async function() {
+      // Sync badge layout details
+      document.getElementById("user-badge-name").innerText = currentUser.name;
+      document.getElementById("user-badge-role").innerText = currentUser.role === 'admin' ? 'Admin' : 'Counselor';
+
+      // Sync restore default button display based on roles
+      if (currentUser.role === 'counselor') {
+        document.getElementById("restore-db-btn").classList.add("hidden");
+      }
+
+      // Sync theme button icon
+      const btn = document.getElementById("dark-mode-toggle");
+      if (document.documentElement.classList.contains("dark")) {
+        btn.innerHTML = `<i class="fa-solid fa-sun text-lg text-amber-400 animate-pulse"></i>`;
+      } else {
+        btn.innerHTML = `<i class="fa-solid fa-moon text-lg"></i>`;
+      }
+
+      // Sync language from localStorage
+      const savedLang = localStorage.getItem("sg_lang") || "en";
+      const langSelector = document.getElementById("lang-selector");
+      if (langSelector) langSelector.value = savedLang;
+      changeWebsiteLanguage(savedLang);
+
+      // Load database from API server
+      await loadEnquiriesFromServer();
+
+      // Render logs
+      updateDashboardKPIs();
+      renderEnquiryTable();
+    };
+
+    async function loadEnquiriesFromServer() {
+      try {
+        const response = await fetch(API_URL);
+        if (response.ok) {
+          enquiries = await response.json();
+        } else {
+          throw new Error();
+        }
+      } catch (err) {
+        console.warn("Backend server not reachable, using localStorage fallback.");
+        const savedEnquiries = localStorage.getItem("sg_enquiries");
+        if (savedEnquiries) {
+          enquiries = JSON.parse(savedEnquiries);
+        } else {
+          enquiries = [];
+        }
+      }
+    }
+
+    function toggleDarkMode() {
+      const doc = document.documentElement;
+      const btn = document.getElementById("dark-mode-toggle");
+      if (doc.classList.contains("dark")) {
+        doc.classList.remove("dark");
+        btn.innerHTML = `<i class="fa-solid fa-moon text-lg"></i>`;
+        localStorage.setItem("sg_theme", "light");
+        showToast("Switched to Light Theme", "info");
+      } else {
+        doc.classList.add("dark");
+        btn.innerHTML = `<i class="fa-solid fa-sun text-lg text-amber-400 animate-pulse"></i>`;
+        localStorage.setItem("sg_theme", "dark");
+        showToast("Switched to Dark Theme", "info");
+      }
+    }
+
+    function changeWebsiteLanguage(lang) {
+      localStorage.setItem("sg_lang", lang);
+      // Change title subtitle tags
+      const sub = document.querySelector("header span");
+      if (sub && TRANSLATIONS[lang] && TRANSLATIONS[lang]["brand-subtitle"]) {
+        sub.innerText = TRANSLATIONS[lang]["brand-subtitle"];
+      }
+    }
+
+    function handleLogout() {
+      if (confirm("Are you sure you want to log out and close your active session?")) {
+        localStorage.removeItem("sg_auth_token");
+        localStorage.removeItem("sg_auth_role");
+        localStorage.removeItem("sg_auth_name");
+        localStorage.removeItem("sg_auth_username");
+        
+        window.location.replace("login.html");
+      }
+    }
+
+    function updateDashboardKPIs() {
+      let activeList = enquiries;
+      if (currentUser.role === 'counselor') {
+        activeList = enquiries.filter(e => e.staff === currentUser.name);
+      }
+      
+      document.getElementById("kpi-total").innerText = activeList.length;
+      document.getElementById("kpi-shortlisted").innerText = activeList.filter(e => e.status === 'Shortlisted' || e.status === 'Approved').length;
+      document.getElementById("kpi-pending").innerText = activeList.filter(e => e.status === 'Pending').length;
+      document.getElementById("kpi-ineligible").innerText = activeList.filter(e => e.status === 'Ineligible').length;
+    }
+
+    function setTableFilter(status) {
+      activeTableFilter = status;
+      
+      document.querySelectorAll('.table-filter-tab').forEach(tab => {
+        tab.className = "table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-all";
+      });
+
+      const activeTab = document.getElementById(`table-filter-${status.toLowerCase()}`);
+      if (activeTab) {
+        activeTab.className = "table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 shadow-sm border border-slate-200/40 dark:border-slate-700/60";
+      }
+
+      renderEnquiryTable();
+    }
+
+    function renderEnquiryTable() {
+      const tbody = document.getElementById("enquiry-table-body");
+      const searchQuery = document.getElementById("table-search").value.toLowerCase().trim();
+
+      tbody.innerHTML = "";
+
+      let activeList = enquiries;
+      if (currentUser.role === 'counselor') {
+        activeList = enquiries.filter(e => e.staff === currentUser.name);
+      }
+
+      // Filter
+      const filtered = activeList.filter(e => {
+        const matchesStatus = (activeTableFilter === 'All') || (e.status === activeTableFilter);
+        const matchesSearch = e.name.toLowerCase().includes(searchQuery) || e.course.toLowerCase().includes(searchQuery) || e.id.toLowerCase().includes(searchQuery);
+        return matchesStatus && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="px-6 py-12 text-center text-slate-400 font-semibold bg-white/10 dark:bg-slate-900/10">
+              <i class="fa-solid fa-folder-open text-2xl text-slate-300 mb-2 block"></i>
+              No application enquiries found matching parameters.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      filtered.forEach(e => {
+        let badgeClass = "bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700";
+        if (e.status === 'Shortlisted') badgeClass = "bg-emerald-50 text-emerald-700 border-emerald-200/50 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800/50";
+        else if (e.status === 'Approved') badgeClass = "bg-teal-50 text-teal-700 border-teal-200/50 dark:bg-teal-950/30 dark:text-teal-400 dark:border-teal-800/50";
+        else if (e.status === 'Pending') badgeClass = "bg-amber-50 text-amber-700 border-amber-200/50 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800/50";
+        else if (e.status === 'Ineligible') badgeClass = "bg-rose-50 text-rose-700 border-rose-200/50 dark:bg-rose-950/30 dark:text-rose-450 dark:border-rose-800/50";
+
+        let scoreBadge = "";
+        const leadScore = e.leadScore || (e.marks >= 90 ? 'Hot' : (e.marks >= 65 ? 'Warm' : 'Cold'));
+        if (leadScore === 'Hot') {
+          scoreBadge = `<span class="inline-flex px-1.5 py-0.5 rounded bg-rose-100 dark:bg-rose-950/50 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-900/50 text-[10px] font-extrabold tracking-wide animate-pulse">HOT LEAD</span>`;
+        } else if (leadScore === 'Warm') {
+          scoreBadge = `<span class="inline-flex px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border border-amber-200/50 dark:border-amber-900/30 text-[10px] font-extrabold">WARM</span>`;
+        } else {
+          scoreBadge = `<span class="inline-flex px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 text-[10px] font-extrabold">COLD</span>`;
+        }
+
+        let sourceIcon = `<i class="fa-solid fa-globe text-slate-400 text-xs mr-1" title="Website Portal"></i>`;
+        if (e.source === 'WhatsApp Bot') {
+          sourceIcon = `<i class="fa-brands fa-whatsapp text-emerald-500 text-sm mr-1" title="WhatsApp Bot"></i>`;
+        }
+
+        const deleteBtnHtml = (currentUser.role === 'admin') ? `
+          <button onclick="deleteEnquiry('${e.id}')" class="bg-white/80 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950 text-rose-600 dark:text-rose-400 font-bold text-xs px-2.5 py-1.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80 hover:border-rose-300 transition-colors" title="Delete record">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        ` : '';
+
+        const row = `
+          <tr class="hover:bg-white/30 dark:hover:bg-slate-800/20 transition-colors">
+            <td class="px-6 py-4">
+              <div class="space-y-0.5">
+                <span class="text-xs text-slate-400 font-bold flex items-center">
+                  ${sourceIcon}
+                  <span>${e.id}</span>
+                </span>
+                <span class="text-sm font-extrabold text-slate-800 dark:text-slate-200 block">${e.name}</span>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400 font-semibold block">${e.phone} | ${e.email}</span>
+              </div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="space-y-0.5">
+                <span class="text-sm font-extrabold text-slate-800 dark:text-slate-200 block">${e.course}</span>
+                <span class="text-xs text-slate-400 font-bold block"><i class="fa-solid fa-building"></i> ${e.campus}</span>
+              </div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="flex items-center space-x-2">
+                <span class="text-sm font-extrabold text-slate-800 dark:text-slate-200">${e.marks}%</span>
+                <div class="w-12 bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                  <div class="bg-emerald-500 h-2" style="width: ${e.marks}%"></div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 text-xs font-bold text-slate-655 dark:text-slate-400">
+              <i class="fa-solid fa-user-tie text-slate-400 mr-1.5"></i>${e.staff || 'Unassigned'}
+            </td>
+            <td class="px-6 py-4">
+              <div class="flex flex-col space-y-1 items-start">
+                <span class="inline-flex px-2.5 py-1 rounded-lg text-xs font-bold border ${badgeClass}">
+                  ${e.status}
+                </span>
+                ${scoreBadge}
+              </div>
+            </td>
+            <td class="px-6 py-4 text-right">
+              <div class="flex items-center justify-end space-x-2">
+                <button onclick="openAdminModal('${e.id}')" class="bg-white/80 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-bold text-xs px-3 py-1.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80 hover:border-emerald-300 transition-colors">
+                  Manage
+                </button>
+                ${deleteBtnHtml}
+              </div>
+            </td>
+          </tr>
+        `;
+        tbody.insertAdjacentHTML('beforeend', row);
+      });
+    }
+
+    async function deleteEnquiry(id) {
+      if (confirm(`Are you sure you want to delete enquiry record ${id}?`)) {
+        const index = enquiries.findIndex(e => e.id === id);
+        if (index !== -1) {
+          const removedName = enquiries[index].name;
+          try {
+            const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+            if (response.ok) {
+              enquiries.splice(index, 1);
+              showToast(`Deleted enquiry record for ${removedName} (${id})`, 'warning');
+            } else {
+              throw new Error();
+            }
+          } catch (err) {
+            enquiries.splice(index, 1);
+            saveDatabaseState();
+            showToast(`Deleted enquiry record for ${removedName} (${id}) (offline mode)`, 'warning');
+          }
+          renderEnquiryTable();
+          updateDashboardKPIs();
+        }
+      }
+    }
+
+    function openAdminModal(id) {
+      const app = enquiries.find(e => e.id === id);
+      if (!app) return;
+
+      currentEditEnquiryId = id;
+
+      document.getElementById("modal-app-id").innerText = app.id;
+      document.getElementById("modal-app-name").innerText = app.name;
+      document.getElementById("modal-app-parent").innerText = app.parent;
+      document.getElementById("modal-app-email").innerText = app.email;
+      document.getElementById("modal-app-phone").innerText = app.phone;
+      document.getElementById("modal-app-course").innerText = app.course;
+      document.getElementById("modal-app-marks").innerText = `${app.marks}% Aggregate`;
+
+      document.getElementById("modal-status").value = app.status;
+      document.getElementById("modal-staff").value = app.staff || "Dr. K. Raghavan";
+      
+      const staffSelect = document.getElementById("modal-staff");
+      if (currentUser.role === 'counselor') {
+        staffSelect.disabled = true;
+      } else {
+        staffSelect.disabled = false;
+      }
+      
+      document.getElementById("modal-notes").value = "";
+      renderAuditLog(app.history);
+      document.getElementById("admin-modal").classList.remove("hidden");
+    }
+
+    function renderAuditLog(history) {
+      const container = document.getElementById("modal-audit-log");
+      container.innerHTML = "";
+
+      if (!history || history.length === 0) {
+        container.innerHTML = `<span class="italic text-slate-400">No log entries found.</span>`;
+        return;
+      }
+
+      history.forEach(log => {
+        const item = `
+          <div class="flex items-start justify-between border-b border-slate-200/20 dark:border-slate-800/20 pb-1.5 last:border-0 last:pb-0">
+            <span class="font-medium text-slate-600 dark:text-slate-400">${log.action}</span>
+            <span class="text-[10px] text-slate-400 font-semibold shrink-0 ml-4">${log.date}</span>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', item);
+      });
+    }
+
+    function closeAdminModal() {
+      document.getElementById("admin-modal").classList.add("hidden");
+      currentEditEnquiryId = null;
+    }
+
+    async function saveEnquiryModification() {
+      if (!currentEditEnquiryId) return;
+
+      const appIndex = enquiries.findIndex(e => e.id === currentEditEnquiryId);
+      if (appIndex === -1) return;
+
+      const app = enquiries[appIndex];
+      const newStatus = document.getElementById("modal-status").value;
+      const newStaff = document.getElementById("modal-staff").value;
+      const noteInput = document.getElementById("modal-notes").value.trim();
+
+      const now = new Date();
+      const dateStr = now.toISOString().split('T')[0] + ' ' + now.toTimeString().split(' ')[0].substring(0, 5);
+
+      try {
+        const response = await fetch(`${API_URL}/${currentEditEnquiryId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            status: newStatus,
+            staff: newStaff,
+            notes: noteInput
+          })
+        });
+        if (response.ok) {
+          const updatedItem = await response.json();
+          enquiries[appIndex] = updatedItem;
+          showToast(`Profile ${updatedItem.id} changes recorded successfully.`, 'success');
+        } else {
+          throw new Error();
+        }
+      } catch (err) {
+        let historyAdded = false;
+
+        if (app.status !== newStatus) {
+          app.history.push({
+            date: dateStr,
+            action: `Status changed to ${newStatus} by admin counselor`
+          });
+          app.status = newStatus;
+          historyAdded = true;
+        }
+
+        if (app.staff !== newStaff) {
+          app.history.push({
+            date: dateStr,
+            action: `Assigned counselor updated to ${newStaff}`
+          });
+          app.staff = newStaff;
+          historyAdded = true;
+        }
+
+        if (noteInput) {
+          app.history.push({
+            date: dateStr,
+            action: `Note added: "${noteInput}"`
+          });
+          app.notes = noteInput;
+          historyAdded = true;
+        }
+
+        if (historyAdded) {
+          saveDatabaseState();
+          showToast(`Profile ${app.id} changes recorded (offline mode).`, 'success');
+        }
+      }
+
+      renderEnquiryTable();
+      updateDashboardKPIs();
+      closeAdminModal();
+    }
+
+    async function saveDatabaseState() {
+      localStorage.setItem("sg_enquiries", JSON.stringify(enquiries));
+      updateDashboardKPIs();
+    }
+
+    async function restoreDefaults() {
+      if (confirm("Are you sure you want to restore the database to default demo entries? All current updates will be overwritten.")) {
+        try {
+          const response = await fetch(`${API_URL}/restore`, { method: 'POST' });
+          if (response.ok) {
+            const result = await response.json();
+            enquiries = result.data;
+            showToast("Database successfully restored to defaults.", "info");
+          } else {
+            throw new Error();
+          }
+        } catch (err) {
+          // Fallback load
+          enquiries = [
+            {
+              "id": "ENQ1091",
+              "name": "Aravind Swamy",
+              "parent": "A. Rama Swamy",
+              "email": "aravind@gmail.com",
+              "phone": "9876543210",
+              "course": "B.Tech Computer Science & Engineering",
+              "campus": "Main Campus",
+              "marks": 88,
+              "status": "Shortlisted",
+              "staff": "Dr. K. Raghavan",
+              "notes": "Excellent academic record. Sent initial acceptance schedule.",
+              "history": [
+                { "date": "2026-06-16 10:15", "action": "Submitted Admission Enquiry Form" },
+                { "date": "2026-06-16 11:20", "action": "Assigned counselor Dr. K. Raghavan" },
+                { "date": "2026-06-16 11:20", "action": "Status updated to Shortlisted by Dr. K. Raghavan" }
+              ]
+            },
+            {
+              "id": "ENQ1092",
+              "name": "Divya Reddy",
+              "parent": "D. Prabhakar Reddy",
+              "email": "divya.reddy@yahoo.com",
+              "phone": "9123456780",
+              "course": "MBA Business Management",
+              "campus": "City Campus",
+              "marks": 76,
+              "status": "Shortlisted",
+              "staff": "Prof. S. Laxmi",
+              "notes": "Undergraduate documents verified, waiting for fee confirmation.",
+              "history": [
+                { "date": "2026-06-15 14:02", "action": "Submitted Admission Enquiry Form" },
+                { "date": "2026-06-15 15:30", "action": "Status updated to Shortlisted by Prof. S. Laxmi" }
+              ]
+            },
+            {
+              "id": "ENQ1093",
+              "name": "Rahul Kumar",
+              "parent": "Satish Kumar",
+              "email": "rahulkumar@outlook.com",
+              "phone": "9988776655",
+              "course": "B.Tech Civil Engineering",
+              "campus": "Engineering Block",
+              "marks": 52,
+              "status": "Pending",
+              "staff": "Mr. B. Srinivas",
+              "notes": "Enquired about campus hostel accommodation facilities.",
+              "history": [
+                { "date": "2026-06-16 09:45", "action": "Submitted Admission Enquiry Form" }
+              ]
+            },
+            {
+              "id": "ENQ1094",
+              "name": "Sneha Rao",
+              "parent": "P. Venkateswara Rao",
+              "email": "sneha.rao@gmail.com",
+              "phone": "9554321098",
+              "course": "B.Tech Electronics & Comm. Eng.",
+              "campus": "Main Campus",
+              "marks": 45,
+              "status": "Ineligible",
+              "staff": "Mrs. P. Shanti",
+              "notes": "Marks are below the minimum threshold required for ECE (55%).",
+              "history": [
+                { "date": "2026-06-16 08:30", "action": "Submitted Admission Enquiry Form" },
+                { "date": "2026-06-16 08:31", "action": "System auto-marked Ineligible due to insufficient marks" }
+              ]
+            },
+            {
+              "id": "ENQ1095",
+              "name": "Vineeth Naidu",
+              "parent": "V. Krishna Naidu",
+              "email": "vineeth.naidu@gmail.com",
+              "phone": "9440123456",
+              "course": "B.Tech Artificial Intelligence & ML",
+              "campus": "Engineering Block",
+              "marks": 92,
+              "status": "Approved",
+              "staff": "Dr. K. Raghavan",
+              "notes": "Direct Admission approved under merit bracket. Seat reservation fee processed.",
+              "history": [
+                { "date": "2026-06-14 11:12", "action": "Submitted Admission Enquiry Form" },
+                { "date": "2026-06-14 12:00", "action": "Assigned to counselor Dr. K. Raghavan" },
+                { "date": "2026-06-14 16:30", "action": "Status updated to Approved by Dr. K. Raghavan" }
+              ]
+            }
+          ];
+          saveDatabaseState();
+          showToast("Database successfully restored to defaults (offline mode).", "info");
+        }
+        renderEnquiryTable();
+        updateDashboardKPIs();
+      }
+    }
+
+    function exportData(format) {
+      let activeList = enquiries;
+      if (currentUser.role === 'counselor') {
+        activeList = enquiries.filter(e => e.staff === currentUser.name);
+      }
+
+      if (activeList.length === 0) {
+        showToast("No enquiries available to export.", "warning");
+        return;
+      }
+
+      let dataStr = "";
+      let mimeType = "";
+      let filename = "";
+
+      if (format === 'json') {
+        dataStr = JSON.stringify(activeList, null, 2);
+        mimeType = "application/json";
+        filename = `sg_enquiries_${currentUser.username}.json`;
+      } else if (format === 'csv') {
+        const headers = ["ID", "Name", "Parent", "Email", "Phone", "Course", "Campus", "Marks", "Status", "Assignee Staff", "Notes"];
+        const rows = activeList.map(e => [
+          e.id,
+          `"${e.name.replace(/"/g, '""')}"`,
+          `"${e.parent.replace(/"/g, '""')}"`,
+          e.email,
+          e.phone,
+          `"${e.course}"`,
+          `"${e.campus}"`,
+          e.marks,
+          e.status,
+          `"${e.staff || ''}"`,
+          `"${(e.notes || '').replace(/"/g, '""')}"`
+        ]);
+
+        dataStr = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+        mimeType = "text/csv";
+        filename = `sg_enquiries_${currentUser.username}.csv`;
+      }
+
+      const blob = new Blob([dataStr], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      showToast(`Exported ${activeList.length} caseload records as ${format.toUpperCase()}`, 'success');
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById("toast-container");
+      const toastId = 'toast-' + Date.now();
+      
+      let iconColor = 'text-emerald-500';
+      let icon = 'fa-circle-check';
+      let accentBorder = 'border-emerald-500/30';
+      
+      if (type === 'warning') {
+        iconColor = 'text-amber-500';
+        icon = 'fa-triangle-exclamation';
+        accentBorder = 'border-amber-500/30';
+      } else if (type === 'error') {
+        iconColor = 'text-rose-500';
+        icon = 'fa-circle-xmark';
+        accentBorder = 'border-rose-500/30';
+      } else if (type === 'info') {
+        iconColor = 'text-sky-500';
+        icon = 'fa-circle-info';
+        accentBorder = 'border-sky-500/30';
+      }
+
+      const toastHtml = `
+        <div id="${toastId}" class="pointer-events-auto bg-white/70 dark:bg-slate-900/80 backdrop-blur-xl border ${accentBorder} shadow-lg rounded-2xl p-4 flex items-start space-x-3 transition-all duration-300 transform translate-y-2 opacity-0">
+          <div class="${iconColor} mt-0.5 text-base shrink-0">
+            <i class="fa-solid ${icon}"></i>
+          </div>
+          <div class="flex-1">
+            <p class="text-xs font-bold text-slate-800 dark:text-slate-200 leading-normal">${message}</p>
+          </div>
+          <button onclick="dismissToast('${toastId}')" class="text-slate-400 hover:text-slate-600 focus:outline-none">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
+      `;
+
+      container.insertAdjacentHTML('beforeend', toastHtml);
+
+      setTimeout(() => {
+        const el = document.getElementById(toastId);
+        if (el) {
+          el.classList.remove('translate-y-2', 'opacity-0');
+          el.classList.add('translate-y-0', 'opacity-100');
+        }
+      }, 50);
+
+      setTimeout(() => {
+        dismissToast(toastId);
+      }, 4500);
+    }
+
+    function dismissToast(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove('translate-y-0', 'opacity-100');
+        el.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => {
+          el.remove();
+        }, 300);
+      }
+    }
+  </script>
+</body>
+</html>
