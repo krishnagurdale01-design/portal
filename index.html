@@ -1,0 +1,2949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sri Gowthami Educational Institutions - Course & Program Portal</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- jsPDF CDN for dynamic PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
+  <!-- Google Fonts: Urbanist & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght=0,100..900;1,100..900&family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind Custom Config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Urbanist', 'Inter', 'sans-serif'],
+          },
+          animation: {
+            'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float-slow': 'float 12s ease-in-out infinite',
+            'float-reverse': 'floatReverse 15s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) scale(1)' },
+              '50%': { transform: 'translateY(-20px) scale(1.05)' },
+            },
+            floatReverse: {
+              '0%, 100%': { transform: 'translateY(0px) scale(1.05)' },
+              '50%': { transform: 'translateY(25px) scale(0.95)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar for premium aesthetic */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(241, 245, 249, 0.5);
+      backdrop-filter: blur(10px);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(16, 185, 129, 0.2);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(16, 185, 129, 0.4);
+    }
+    
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.04);
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 4px 20px 0 rgba(148, 163, 184, 0.08);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: rgba(16, 185, 129, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px 0 rgba(16, 185, 129, 0.08), 0 4px 12px 0 rgba(31, 38, 135, 0.03);
+    }
+
+    .glass-input {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      transition: all 0.2s ease;
+    }
+
+    .glass-input:focus {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: rgba(16, 185, 129, 0.5);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
+
+    /* Dark Mode Glassmorphic Styling */
+    .dark .glass-panel {
+      background: rgba(15, 23, 42, 0.55);
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+    
+    .dark .glass-card {
+      background: rgba(15, 23, 42, 0.6);
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .dark .glass-card:hover {
+      background: rgba(15, 23, 42, 0.85);
+      border-color: rgba(16, 185, 129, 0.5);
+    }
+
+    .dark .glass-input {
+      background: rgba(15, 23, 42, 0.45);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: rgba(241, 245, 249, 0.9);
+    }
+
+    .dark .glass-input:focus {
+      background: rgba(15, 23, 42, 0.8);
+      border-color: rgba(16, 185, 129, 0.6);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-700 dark:bg-slate-950 dark:text-slate-300 min-h-screen relative overflow-x-hidden font-sans antialiased selection:bg-emerald-100 selection:text-emerald-900 transition-colors duration-350">
+
+  <!-- Glowing Abstract Blur Blobs -->
+  <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-200/30 dark:bg-emerald-900/10 blur-[140px] pointer-events-none animate-float-slow -z-10"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-sky-200/25 dark:bg-sky-900/10 blur-[160px] pointer-events-none animate-float-reverse -z-10"></div>
+  <div class="absolute top-[35%] left-[25%] w-[45%] h-[45%] rounded-full bg-indigo-100/30 dark:bg-indigo-950/10 blur-[120px] pointer-events-none animate-pulse-slow -z-10"></div>
+
+  <!-- Header Section -->
+  <header class="sticky top-0 z-40 w-full glass-panel border-b border-slate-200/40 dark:border-slate-800/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('student-portal')">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-white font-bold text-xl">
+          SG
+        </div>
+        <div>
+          <h1 class="text-xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight leading-tight">Sri Gowthami</h1>
+          <span class="text-xs font-semibold tracking-wider text-teal-600 dark:text-teal-400 uppercase">Educational Institutions</span>
+        </div>
+      </div>
+      
+      <!-- View Navigation Switcher (Desktop) -->
+      <nav class="hidden md:flex items-center space-x-2 bg-slate-200/40 dark:bg-slate-800/40 p-1.5 rounded-2xl border border-white/60 dark:border-slate-700/60">
+        <button onclick="switchTab('student-portal')" id="nav-student-portal" class="nav-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center space-x-2 bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 shadow-sm">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>Student Portal</span>
+        </button>
+        <button onclick="switchTab('admin-dashboard')" id="nav-admin-dashboard" class="nav-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Operations Dashboard</span>
+        </button>
+        <button onclick="switchTab('gowthami-ai')" id="nav-gowthami-ai" class="nav-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span>Gowthami AI</span>
+        </button>
+      </nav>
+
+      <!-- Utility Contact & Mobile Toggle -->
+      <div class="flex items-center space-x-3">
+        <button onclick="toggleDarkMode()" id="dark-mode-toggle" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-slate-750 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 border border-slate-200/50 dark:border-slate-700/50 transition-colors" title="Toggle Light/Dark Theme">
+          <i class="fa-solid fa-moon text-lg"></i>
+        </button>
+
+        <a href="#enquiry-form" onclick="scrollToEnquiry()" class="hidden lg:inline-flex items-center space-x-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold px-5 py-2.5 rounded-xl shadow-md shadow-emerald-600/10 hover:shadow-lg hover:shadow-emerald-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">
+          <span>Apply Now</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </a>
+        
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobile-menu-btn" class="md:hidden w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-slate-700 hover:text-slate-900 border border-slate-200/50">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-slate-200/40 p-4 absolute top-20 left-0 w-full flex flex-col space-y-2 shadow-2xl transition-all duration-300">
+      <button onclick="switchTab('student-portal'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold flex items-center space-x-3 bg-white text-emerald-700 shadow-sm">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <span>Student Portal</span>
+      </button>
+      <button onclick="switchTab('admin-dashboard'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold flex items-center space-x-3 text-slate-600 hover:bg-white/40">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Operations Dashboard</span>
+      </button>
+      <button onclick="switchTab('gowthami-ai'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold flex items-center space-x-3 text-slate-600 hover:bg-white/40">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span>Gowthami AI Assistant</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+    <!-- 1. PUBLIC STUDENT PORTAL -->
+    <section id="panel-student-portal" class="tab-panel space-y-12">
+      
+      <!-- Hero Banner -->
+      <div class="glass-panel p-8 md:p-12 rounded-3xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between border border-white/60 shadow-xl shadow-slate-200/30">
+        <div class="max-w-xl space-y-4 text-center md:text-left z-10">
+          <span class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-100/60 border border-emerald-200/50 text-emerald-700 text-xs font-bold uppercase tracking-wider">
+            <i class="fa-solid fa-sparkles animate-pulse"></i>
+            <span>Admissions Open 2026-27</span>
+          </span>
+          <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            Shape Your Future at <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">Sri Gowthami</span>
+          </h2>
+          <p class="text-slate-600 font-medium text-base md:text-lg">
+            Empowering students with cutting-edge B.Tech and management programs. Discover campus profiles, verify eligibility, and secure your seat today.
+          </p>
+          <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2">
+            <button onclick="scrollToEnquiry()" class="bg-slate-800 text-white font-bold px-6 py-3 rounded-xl shadow-md shadow-slate-900/10 hover:bg-slate-900 hover:scale-[1.02] transition-all">
+              Start Enquiry
+            </button>
+            <button onclick="switchTab('gowthami-ai')" class="glass-card px-6 py-3 rounded-xl font-bold text-emerald-700 flex items-center space-x-2 hover:bg-white">
+              <i class="fa-solid fa-robot"></i>
+              <span>Consult Gowthami AI</span>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Interactive Graphics -->
+        <div class="relative w-72 h-72 hidden md:flex items-center justify-center mt-8 md:mt-0 z-10">
+          <div class="w-64 h-64 rounded-2xl glass-panel border border-white/80 shadow-2xl flex flex-col justify-between p-6 rotate-3 hover:rotate-0 transition-transform duration-500">
+            <div class="flex justify-between items-start">
+              <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Eligibility Checker</span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+            </div>
+            <div class="space-y-3">
+              <div class="h-2 w-16 bg-slate-300/40 rounded"></div>
+              <div class="h-4 w-40 bg-slate-800/80 rounded"></div>
+              <div class="h-2 w-28 bg-slate-300/40 rounded"></div>
+            </div>
+            <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100 flex items-center justify-between">
+              <span class="text-xs font-bold text-emerald-700">Eligible Status</span>
+              <span class="text-xs bg-emerald-500 text-white px-2 py-0.5 rounded-md font-extrabold">75%</span>
+            </div>
+          </div>
+          <!-- Decorative Blur Blob Inside Banner -->
+          <div class="absolute -bottom-4 -left-4 w-32 h-32 bg-teal-300/30 rounded-full blur-2xl -z-10"></div>
+        </div>
+      </div>
+
+      <!-- Campus Profile & Department Filter Panel -->
+      <div class="space-y-6">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <h3 class="text-2xl font-extrabold text-slate-800 tracking-tight">Explore Our Programs</h3>
+            <p class="text-slate-500 font-semibold text-sm">Filter courses by campus blocks and academic disciplines</p>
+          </div>
+          
+          <!-- Filters Group (Pill Buttons) -->
+          <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center">
+            
+            <!-- Campus Filter Pills -->
+            <div class="space-y-1">
+              <span class="text-xs font-extrabold text-slate-500 uppercase tracking-wider block">Campus Block</span>
+              <div class="flex flex-wrap gap-2">
+                <button onclick="setCampusFilter('all')" class="campus-pill px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 bg-emerald-600 text-white shadow-md shadow-emerald-500/20 border border-emerald-500/20">All</button>
+                <button onclick="setCampusFilter('Main Campus')" class="campus-pill px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 bg-white/50 text-slate-600 hover:bg-white/80 border border-white/60">Main Campus</button>
+                <button onclick="setCampusFilter('City Campus')" class="campus-pill px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 bg-white/50 text-slate-600 hover:bg-white/80 border border-white/60">City Campus</button>
+                <button onclick="setCampusFilter('Engineering Block')" class="campus-pill px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 bg-white/50 text-slate-600 hover:bg-white/80 border border-white/60">Engineering Block</button>
+              </div>
+            </div>
+
+            <!-- Department Filter Pills -->
+            <div class="space-y-1">
+              <span class="text-xs font-extrabold text-slate-500 uppercase tracking-wider block">Department</span>
+              <div class="flex flex-wrap gap-2">
+                <button onclick="setDeptFilter('all')" class="dept-pill px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 bg-emerald-600 text-white shadow-md shadow-emerald-500/20 border border-emerald-500/20">All</button>
+                <button onclick="setDeptFilter('Engineering')" class="dept-pill px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 bg-white/50 text-slate-600 hover:bg-white/80 border border-white/60">Engineering</button>
+                <button onclick="setDeptFilter('Management')" class="dept-pill px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 bg-white/50 text-slate-600 hover:bg-white/80 border border-white/60">Management</button>
+                <button onclick="setDeptFilter('Science')" class="dept-pill px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 bg-white/50 text-slate-600 hover:bg-white/80 border border-white/60">Science</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Course Cards Grid -->
+        <div id="course-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Dynamic Course Cards will be rendered here by script -->
+        </div>
+      </div>
+
+      <!-- Stepper / Admission Process Timeline -->
+      <div class="glass-panel p-8 md:p-10 rounded-3xl border border-white/60 shadow-xl shadow-slate-200/30 space-y-8">
+        <div class="text-center max-w-lg mx-auto space-y-2">
+          <h3 class="text-2xl font-extrabold text-slate-800 tracking-tight">Your Journey to Seat Allocation</h3>
+          <p class="text-slate-500 font-semibold text-sm">Click on each process stage below to understand the admission workflow</p>
+        </div>
+
+        <!-- Horizontal/Vertical Stepper -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+          <!-- Connector line (desktop only) -->
+          <div class="hidden md:block absolute top-[28px] left-[10%] right-[10%] h-[3px] bg-slate-200 -z-10"></div>
+          
+          <!-- Step 1 -->
+          <div onclick="showStepDetails(1)" id="step-btn-1" class="step-card group cursor-pointer text-center flex flex-col items-center p-4 rounded-2xl border border-white/60 bg-white/60 shadow-sm transition-all duration-300 hover:bg-white hover:shadow-md">
+            <div id="step-num-1" class="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-base shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+              1
+            </div>
+            <span class="mt-3 block text-sm font-extrabold text-slate-800">Online Enquiry</span>
+            <span class="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Start Here</span>
+          </div>
+
+          <!-- Step 2 -->
+          <div onclick="showStepDetails(2)" id="step-btn-2" class="step-card group cursor-pointer text-center flex flex-col items-center p-4 rounded-2xl border border-white/40 bg-white/30 shadow-sm transition-all duration-300 hover:bg-white hover:shadow-md">
+            <div id="step-num-2" class="w-12 h-12 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-base group-hover:scale-105 transition-transform">
+              2
+            </div>
+            <span class="mt-3 block text-sm font-extrabold text-slate-700">Screening & Review</span>
+            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Evaluation</span>
+          </div>
+
+          <!-- Step 3 -->
+          <div onclick="showStepDetails(3)" id="step-btn-3" class="step-card group cursor-pointer text-center flex flex-col items-center p-4 rounded-2xl border border-white/40 bg-white/30 shadow-sm transition-all duration-300 hover:bg-white hover:shadow-md">
+            <div id="step-num-3" class="w-12 h-12 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-base group-hover:scale-105 transition-transform">
+              3
+            </div>
+            <span class="mt-3 block text-sm font-extrabold text-slate-700">Doc Verification</span>
+            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Verification</span>
+          </div>
+
+          <!-- Step 4 -->
+          <div onclick="showStepDetails(4)" id="step-btn-4" class="step-card group cursor-pointer text-center flex flex-col items-center p-4 rounded-2xl border border-white/40 bg-white/30 shadow-sm transition-all duration-300 hover:bg-white hover:shadow-md">
+            <div id="step-num-4" class="w-12 h-12 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-base group-hover:scale-105 transition-transform">
+              4
+            </div>
+            <span class="mt-3 block text-sm font-extrabold text-slate-700">Counselling Session</span>
+            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Seat Selection</span>
+          </div>
+
+          <!-- Step 5 -->
+          <div onclick="showStepDetails(5)" id="step-btn-5" class="step-card group cursor-pointer text-center flex flex-col items-center p-4 rounded-2xl border border-white/40 bg-white/30 shadow-sm transition-all duration-300 hover:bg-white hover:shadow-md">
+            <div id="step-num-5" class="w-12 h-12 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-base group-hover:scale-105 transition-transform">
+              5
+            </div>
+            <span class="mt-3 block text-sm font-extrabold text-slate-700">Seat Allocation</span>
+            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Final Step</span>
+          </div>
+        </div>
+
+        <!-- Step Explanation Detail Card -->
+        <div id="step-explanation-box" class="bg-white/70 p-6 rounded-2xl border border-white/80 shadow-inner space-y-2 transition-all duration-300">
+          <h4 id="step-explain-title" class="text-base font-extrabold text-slate-800">Stage 1: Submit Online Admission Enquiry</h4>
+          <p id="step-explain-desc" class="text-slate-600 text-sm leading-relaxed">
+            Fill out the integrated Admission Enquiry Form below with candidate information, contact coordinates, preferred campus block, and high school board marks. The system instantly screens academic marks to provide a preliminary eligibility score.
+          </p>
+        </div>
+      </div>
+
+      <!-- Student Enquiry Form & Eligibility Calculator Grid -->
+      <div id="enquiry-form" class="grid grid-cols-1 lg:grid-cols-12 gap-8 scroll-mt-24">
+        
+        <!-- Left Column: The Form -->
+        <form onsubmit="handleFormSubmit(event)" class="lg:col-span-7 glass-panel p-6 md:p-8 rounded-3xl border border-white/60 shadow-xl shadow-slate-200/30 space-y-6">
+          <div class="flex items-center space-x-3 pb-2 border-b border-slate-200/50">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600">
+              <i class="fa-solid fa-file-pen text-lg"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-extrabold text-slate-800">Admission Enquiry Form</h3>
+              <p class="text-xs text-slate-500 font-semibold">Enter accurate details for instant verification</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Student Name -->
+            <div class="space-y-1">
+              <label class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Student Full Name</label>
+              <input type="text" id="form-name" required placeholder="eg. Rama Krishna" class="w-full glass-input px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700">
+            </div>
+
+            <!-- Parent Name -->
+            <div class="space-y-1">
+              <label class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Parent/Guardian Name</label>
+              <input type="text" id="form-parent" required placeholder="eg. Venkata Rao" class="w-full glass-input px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700">
+            </div>
+
+            <!-- Email -->
+            <div class="space-y-1">
+              <label class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Email Address</label>
+              <input type="email" id="form-email" required placeholder="name@domain.com" class="w-full glass-input px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700">
+            </div>
+
+            <!-- Phone -->
+            <div class="space-y-1">
+              <label class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Phone Number</label>
+              <input type="tel" id="form-phone" required pattern="[0-9]{10}" placeholder="10-digit number" class="w-full glass-input px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700">
+            </div>
+
+            <!-- Preferred Campus -->
+            <div class="space-y-1">
+              <label class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Preferred Campus Block</label>
+              <div class="relative">
+                <select id="form-campus" onchange="syncFormCourseOptions()" class="w-full appearance-none glass-input px-4 py-2.5 pr-10 rounded-xl text-sm font-semibold text-slate-700 cursor-pointer">
+                  <option value="Main Campus">Main Campus</option>
+                  <option value="City Campus">City Campus</option>
+                  <option value="Engineering Block">Engineering Block</option>
+                </select>
+                <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
+                  <i class="fa-solid fa-chevron-down text-xs"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Preferred Course -->
+            <div class="space-y-1">
+              <label class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Preferred Program</label>
+              <div class="relative">
+                <select id="form-course" onchange="runLiveCalculator()" class="w-full appearance-none glass-input px-4 py-2.5 pr-10 rounded-xl text-sm font-semibold text-slate-700 cursor-pointer">
+                  <!-- Options filled dynamically based on Campus -->
+                </select>
+                <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
+                  <i class="fa-solid fa-chevron-down text-xs"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Academic Performance Marks -->
+          <div class="space-y-2 pt-2">
+            <div class="flex justify-between items-center">
+              <label class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">High School Board Marks (%)</label>
+              <div class="flex items-center space-x-1">
+                <input type="number" id="form-marks-input" min="0" max="100" value="80" oninput="updateMarksFromInput()" class="w-16 text-right glass-input px-2.5 py-1 rounded-xl text-xs font-extrabold text-slate-800 border border-slate-200 focus:outline-none">
+                <span class="text-xs font-extrabold text-slate-500">%</span>
+              </div>
+            </div>
+            <input type="range" id="form-marks" min="0" max="100" value="80" oninput="updateMarksDisplay()" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600">
+            <p class="text-[11px] text-slate-500 font-semibold italic">Slide or type to match your aggregate board marks percentage.</p>
+          </div>
+
+          <!-- Form Action Button -->
+          <button type="submit" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-600/10 hover:shadow-xl hover:shadow-emerald-600/25 transition-all duration-300 hover:scale-[1.01] active:scale-[0.99]">
+            Submit Enquiry & File Review
+          </button>
+        </form>
+
+        <!-- Right Column: Live Eligibility Calculator Card -->
+        <div class="lg:col-span-5 flex flex-col justify-between glass-panel p-6 md:p-8 rounded-3xl border border-white/60 shadow-xl shadow-slate-200/30 relative overflow-hidden space-y-6">
+          <div class="absolute -top-10 -right-10 w-40 h-40 bg-emerald-100/40 rounded-full blur-2xl -z-10"></div>
+          
+          <div class="space-y-4">
+            <div>
+              <span class="text-[11px] font-extrabold tracking-wider text-teal-600 uppercase">Interactive Hub</span>
+              <h3 class="text-xl font-extrabold text-slate-800">Live Screening Assessment</h3>
+            </div>
+
+            <!-- Target Program Widget -->
+            <div class="bg-white/60 p-4 rounded-2xl border border-white/70 shadow-sm space-y-2">
+              <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Target Program</span>
+              <h4 id="calc-course-name" class="text-base font-extrabold text-slate-800">-</h4>
+              <div class="flex items-center justify-between text-xs text-slate-500 font-semibold">
+                <span>Required Percentage:</span>
+                <span id="calc-course-req" class="font-bold text-slate-800">-</span>
+              </div>
+            </div>
+
+            <!-- Dynamic Indicator Circle / Progress Bar -->
+            <div class="space-y-2 pt-2">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Board Grade Assessment</span>
+                <span id="calc-score-pct" class="text-base font-extrabold text-emerald-600">80%</span>
+              </div>
+              <div class="w-full bg-slate-200/50 rounded-full h-3.5 border border-slate-200/30 p-0.5">
+                <div id="calc-progress-bar" class="bg-gradient-to-r from-emerald-500 to-teal-500 h-2.5 rounded-full transition-all duration-500" style="width: 80%"></div>
+              </div>
+            </div>
+
+            <!-- Decision Box -->
+            <div id="calc-decision-box" class="p-4 rounded-2xl border flex items-start space-x-3 transition-colors duration-300">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Alternative Recommendations Box -->
+          <div class="pt-4 border-t border-slate-200/50 space-y-3">
+            <span class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider block">Recommended Alternative Paths:</span>
+            <div id="calc-recommendations-list" class="space-y-2">
+              <!-- Dynamic recommendations based on marks -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ Section Accordions -->
+      <div class="space-y-6">
+        <div class="text-center max-w-lg mx-auto space-y-2">
+          <h3 class="text-2xl font-extrabold text-slate-800 tracking-tight">Frequently Answered Queries</h3>
+          <p class="text-slate-500 font-semibold text-sm">Have queries about admission criteria, scholarships, or board approvals?</p>
+        </div>
+
+        <div class="max-w-3xl mx-auto space-y-3">
+          
+          <!-- Accordion Item 1 -->
+          <div class="glass-card rounded-2xl overflow-hidden border border-white/60 shadow-sm">
+            <button onclick="toggleAccordion('faq-1')" class="w-full px-6 py-4 flex items-center justify-between text-left font-bold text-slate-800 hover:text-emerald-700 transition-colors focus:outline-none">
+              <span>What is the minimum eligibility criteria for engineering admissions?</span>
+              <i id="faq-icon-faq-1" class="fa-solid fa-chevron-down text-slate-500 text-xs transition-transform duration-300"></i>
+            </button>
+            <div id="faq-1" class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+              <div class="px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100/50 pt-3">
+                For CSE and AI/ML, candidate must secure at least 60% and 65% aggregate respectively in physics, chemistry, and mathematics (PCM) of state boards or equivalent. For ECE and Civil branches, eligibility limits are set at 55% and 50% respectively.
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion Item 2 -->
+          <div class="glass-card rounded-2xl overflow-hidden border border-white/60 shadow-sm">
+            <button onclick="toggleAccordion('faq-2')" class="w-full px-6 py-4 flex items-center justify-between text-left font-bold text-slate-800 hover:text-emerald-700 transition-colors focus:outline-none">
+              <span>Are there institutional scholarship pathways for meritorious students?</span>
+              <i id="faq-icon-faq-2" class="fa-solid fa-chevron-down text-slate-500 text-xs transition-transform duration-300"></i>
+            </button>
+            <div id="faq-2" class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+              <div class="px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100/50 pt-3">
+                Yes! Sri Gowthami provides a 50% tuition fee waiver for board scores exceeding 90% and a 25% fee waiver for board scores exceeding 85%. Direct admission selection is automatically provisioned for scores above 90%.
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion Item 3 -->
+          <div class="glass-card rounded-2xl overflow-hidden border border-white/60 shadow-sm">
+            <button onclick="toggleAccordion('faq-3')" class="w-full px-6 py-4 flex items-center justify-between text-left font-bold text-slate-800 hover:text-emerald-700 transition-colors focus:outline-none">
+              <span>Can I choose to shift my preferred course or campus block after submission?</span>
+              <i id="faq-icon-faq-3" class="fa-solid fa-chevron-down text-slate-500 text-xs transition-transform duration-300"></i>
+            </button>
+            <div id="faq-3" class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+              <div class="px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100/50 pt-3">
+                Students can revise their chosen courses and campuses during the Counselling stage (Step 4 of the process timeline). Alternatively, write to the counsellor assigned to your profile in the Admin dashboard records.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- 2. ADMINISTRATIVE & OPERATIONS DASHBOARD -->
+    <section id="panel-admin-dashboard" class="tab-panel hidden space-y-8">
+      
+      <!-- Dashboard Header -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">Staff Operations Hub</span>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">Admission Enquiry Dashboard</h2>
+        </div>
+        
+        <!-- Action Buttons (Export Systems) -->
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="restoreDefaults()" class="glass-card px-4 py-2.5 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-2 hover:bg-white dark:hover:bg-slate-800 hover:border-amber-500/50 transition-colors" title="Restore default demo records">
+            <i class="fa-solid fa-rotate-left text-amber-500"></i>
+            <span>Restore Defaults</span>
+          </button>
+          <button onclick="exportData('csv')" class="glass-card px-4 py-2.5 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-2 hover:bg-white dark:hover:bg-slate-800 hover:border-emerald-500/50 transition-colors">
+            <i class="fa-solid fa-file-csv text-emerald-600"></i>
+            <span>Export CSV</span>
+          </button>
+          <button onclick="exportData('json')" class="glass-card px-4 py-2.5 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-2 hover:bg-white dark:hover:bg-slate-800 hover:border-teal-500/50 transition-colors">
+            <i class="fa-solid fa-file-code text-teal-600"></i>
+            <span>Export JSON</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Summary Cards Grid -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        
+        <!-- Total Enquiries -->
+        <div class="glass-panel p-5 rounded-2xl border border-white/60 shadow-sm flex items-center justify-between">
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Enquiries</span>
+            <h4 id="kpi-total" class="text-2xl font-extrabold text-slate-800">0</h4>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
+            <i class="fa-solid fa-clipboard-list text-xl"></i>
+          </div>
+        </div>
+
+        <!-- Shortlisted / Eligible -->
+        <div class="glass-panel p-5 rounded-2xl border border-white/60 shadow-sm flex items-center justify-between">
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Shortlisted</span>
+            <h4 id="kpi-shortlisted" class="text-2xl font-extrabold text-emerald-600">0</h4>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600">
+            <i class="fa-solid fa-user-check text-xl"></i>
+          </div>
+        </div>
+
+        <!-- Pending Review -->
+        <div class="glass-panel p-5 rounded-2xl border border-white/60 shadow-sm flex items-center justify-between">
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Pending Review</span>
+            <h4 id="kpi-pending" class="text-2xl font-extrabold text-amber-500">0</h4>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-500">
+            <i class="fa-solid fa-hourglass-half text-xl"></i>
+          </div>
+        </div>
+
+        <!-- Ineligible Applications -->
+        <div class="glass-panel p-5 rounded-2xl border border-white/60 shadow-sm flex items-center justify-between">
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ineligible</span>
+            <h4 id="kpi-ineligible" class="text-2xl font-extrabold text-rose-500">0</h4>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600">
+            <i class="fa-solid fa-circle-xmark text-xl"></i>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Real-time Enquiry Log Table Panel -->
+      <div class="glass-panel rounded-3xl border border-white/60 shadow-xl shadow-slate-200/30 overflow-hidden">
+        
+        <!-- Table Search and Quick Filters -->
+        <div class="p-5 border-b border-slate-200/40 bg-white/40 flex flex-col md:flex-row items-center justify-between gap-4">
+          
+          <!-- Search input -->
+          <div class="relative w-full md:w-80">
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+            <input type="text" id="table-search" oninput="renderEnquiryTable()" placeholder="Search applicants by name..." class="w-full glass-input pl-10 pr-4 py-2 rounded-xl text-sm font-semibold text-slate-700">
+          </div>
+
+          <!-- Status Filters -->
+          <div class="flex items-center space-x-1 bg-slate-200/40 p-1 rounded-xl border border-white/60 overflow-x-auto w-full md:w-auto">
+            <button onclick="setTableFilter('All')" id="table-filter-all" class="table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-slate-800 shadow-sm">
+              All
+            </button>
+            <button onclick="setTableFilter('Pending')" id="table-filter-pending" class="table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all">
+              Pending
+            </button>
+            <button onclick="setTableFilter('Shortlisted')" id="table-filter-shortlisted" class="table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all">
+              Shortlisted
+            </button>
+            <button onclick="setTableFilter('Approved')" id="table-filter-approved" class="table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all">
+              Approved
+            </button>
+            <button onclick="setTableFilter('Ineligible')" id="table-filter-ineligible" class="table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all">
+              Ineligible
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Table Responsive Container -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-100/50 text-slate-500 text-xs font-extrabold uppercase border-b border-slate-200/40">
+                <th class="px-6 py-4">Applicant / Contact</th>
+                <th class="px-6 py-4">Selected Program</th>
+                <th class="px-6 py-4">Eligibility Score</th>
+                <th class="px-6 py-4">Counsel/Assignee</th>
+                <th class="px-6 py-4">Status</th>
+                <th class="px-6 py-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="enquiry-table-body" class="divide-y divide-slate-100/50 text-sm font-semibold text-slate-700">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- 3. AI INTELLIGENT ASSISTANT PANEL ("GOWTHAMI AI - WHATSAPP BOT") -->
+    <section id="panel-gowthami-ai" class="tab-panel hidden space-y-8">
+      
+      <!-- Split Layout: Left WhatsApp Chat, Right Admin Config Panel -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left: WhatsApp Inspired Chat Interface (span 7) -->
+        <div class="lg:col-span-7 glass-panel rounded-3xl border border-white/60 shadow-xl shadow-slate-200/30 overflow-hidden flex flex-col h-[650px] justify-between relative">
+          
+          <!-- WhatsApp Chat Header -->
+          <div class="bg-[#075E54] text-white p-4 flex items-center justify-between shrink-0 shadow-md">
+            <div class="flex items-center space-x-3">
+              <div class="relative">
+                <div class="w-11 h-11 rounded-full bg-white flex items-center justify-center text-[#075E54] text-lg font-extrabold shadow-md">
+                  <i class="fa-solid fa-user-tie"></i>
+                </div>
+                <!-- Online Green Dot Indicator -->
+                <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#075E54]"></span>
+              </div>
+              <div>
+                <h4 class="text-sm font-extrabold tracking-tight flex items-center">
+                  <span>Sri Gowthami Admissions Officer</span>
+                  <i class="fa-solid fa-circle-check text-sky-400 text-xs ml-1.5" title="Verified Assistant"></i>
+                </h4>
+                <span id="chat-sub-status" class="text-[11px] text-teal-100 font-semibold">online</span>
+              </div>
+            </div>
+            
+            <div class="flex items-center space-x-4 text-emerald-100">
+              <button onclick="clearWhatsAppChat()" class="hover:text-white transition-colors focus:outline-none" title="Reset Conversation">
+                <i class="fa-solid fa-arrow-rotate-left text-sm"></i>
+              </button>
+              <i class="fa-solid fa-phone text-sm cursor-pointer hover:text-white"></i>
+              <i class="fa-solid fa-ellipsis-vertical text-sm cursor-pointer hover:text-white"></i>
+            </div>
+          </div>
+
+          <!-- WhatsApp Chat Messages Body -->
+          <div id="wa-chat-body" class="flex-1 p-5 overflow-y-auto space-y-4 bg-[#ece5dd]/80 relative" style="background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); background-blend-mode: overlay;">
+            
+            <!-- Messages populated dynamically by the WhatsApp Dialog Manager -->
+            
+          </div>
+
+          <!-- WhatsApp Quick Reply Buttons Tray -->
+          <div id="wa-quick-replies" class="p-2 border-t border-slate-200/20 bg-[#ece5dd]/50 flex flex-wrap gap-2 shrink-0 justify-center">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <!-- WhatsApp Chat Input Tray -->
+          <div class="p-3 bg-[#f0f0f0] border-t border-slate-200 flex items-center space-x-2 shrink-0">
+            <!-- Simulated Audio Mic Icon -->
+            <button onclick="toggleVoiceInputSim()" id="wa-mic-btn" class="w-10 h-10 rounded-full bg-white text-slate-500 flex items-center justify-center hover:bg-slate-100 transition-colors focus:outline-none">
+              <i class="fa-solid fa-microphone text-sm"></i>
+            </button>
+            
+            <!-- Voice Waveform (Hidden by default) -->
+            <div id="wa-voice-waveform" class="hidden flex-1 h-10 items-center justify-center space-x-1.5 bg-slate-100 rounded-xl px-4 text-emerald-600 font-extrabold text-xs">
+              <span class="w-1 h-4 bg-emerald-500 rounded animate-pulse"></span>
+              <span class="w-1 h-6 bg-emerald-500 rounded animate-pulse" style="animation-delay: 0.15s"></span>
+              <span class="w-1 h-3 bg-emerald-500 rounded animate-pulse" style="animation-delay: 0.3s"></span>
+              <span class="w-1 h-7 bg-emerald-500 rounded animate-pulse" style="animation-delay: 0.45s"></span>
+              <span>Listening... Click mic to stop</span>
+            </div>
+
+            <!-- Standard Chat Inputs -->
+            <form id="wa-chat-form" onsubmit="handleSendWhatsApp(event)" class="flex-1 flex items-center space-x-2">
+              <input type="text" id="wa-chat-input" placeholder="Type a message..." class="flex-1 px-4 py-2.5 rounded-full border border-slate-300 focus:border-emerald-600 focus:outline-none text-sm font-semibold text-slate-700 bg-white">
+              <button type="submit" class="w-10 h-10 rounded-full bg-[#075E54] text-white flex items-center justify-center hover:bg-[#128C7E] transition-all shadow-md">
+                <i class="fa-solid fa-paper-plane text-xs"></i>
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+        <!-- Right: Admin Configuration Panel & Statistics (span 5) -->
+        <div class="lg:col-span-5 flex flex-col gap-6">
+          
+          <!-- simulated Cloud API credentials -->
+          <div class="glass-panel p-5 rounded-3xl border border-white/60 shadow-sm space-y-4">
+            <div class="flex items-center space-x-3 pb-2 border-b border-slate-200/40">
+              <div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600">
+                <i class="fa-solid fa-gears text-base"></i>
+              </div>
+              <div>
+                <h4 class="text-sm font-extrabold text-slate-800">WhatsApp Cloud API Config</h4>
+                <p class="text-[10px] text-slate-400 font-semibold">Mock integration credentials settings</p>
+              </div>
+            </div>
+            
+            <div class="space-y-3 text-xs">
+              <div class="space-y-1">
+                <label class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">WhatsApp Phone ID</label>
+                <input type="text" id="wa-config-phone-id" value="109283746561029" class="w-full glass-input px-3 py-2 rounded-xl font-semibold text-slate-700">
+              </div>
+              <div class="space-y-1">
+                <label class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Bearer Access Token</label>
+                <input type="password" id="wa-config-token" value="EAAGkZB9pPZBc0BAOfdshj2389asdhjk12h" class="w-full glass-input px-3 py-2 rounded-xl font-semibold text-slate-700">
+              </div>
+              <div class="flex justify-between items-center pt-1">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Webhook Sync Status</span>
+                <span class="text-[10px] font-extrabold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">ACTIVE - Port 8000</span>
+              </div>
+              <button onclick="saveWhatsAppConfig()" class="w-full bg-slate-800 text-white font-bold py-2 rounded-xl hover:bg-slate-900 transition-all">
+                Update Settings
+              </button>
+            </div>
+          </div>
+
+          <!-- Brochure & Follow-Up Simulator Card -->
+          <div class="glass-panel p-5 rounded-3xl border border-white/60 shadow-sm space-y-4">
+            <div class="flex items-center space-x-3 pb-2 border-b border-slate-200/40">
+              <div class="w-9 h-9 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600">
+                <i class="fa-solid fa-paper-plane text-base"></i>
+              </div>
+              <div>
+                <h4 class="text-sm font-extrabold text-slate-800">Simulated Campaigns & Alerts</h4>
+                <p class="text-[10px] text-slate-400 font-semibold">Simulated follow-ups and brochure downloads</p>
+              </div>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <div class="bg-white/40 p-3 rounded-xl border border-white/60 space-y-2">
+                <div class="flex justify-between items-center">
+                  <span class="font-extrabold text-slate-700">Institutional Brochure</span>
+                  <span class="text-[9px] font-bold text-slate-400">PDF - 4.2 MB</span>
+                </div>
+                <p class="text-[10px] text-slate-500 leading-relaxed font-semibold">Contains detailed curriculum structures, fee waivers, counseling procedures, and list of JNTU affiliations.</p>
+                <button onclick="downloadMockBrochure()" class="w-full bg-emerald-50 text-emerald-700 hover:bg-emerald-500 hover:text-white transition-all font-bold py-2 rounded-xl border border-emerald-100">
+                  <i class="fa-solid fa-file-pdf mr-1.5"></i>Download Brochure
+                </button>
+              </div>
+
+              <div class="bg-white/40 p-3 rounded-xl border border-white/60 space-y-2">
+                <span class="font-extrabold text-slate-700 block">Automated Campaign Log</span>
+                <div id="wa-campaign-logs" class="max-h-[100px] overflow-y-auto space-y-1 text-[10px] text-slate-500 font-semibold leading-relaxed pr-1">
+                  <div class="text-slate-400 italic text-center py-2">No follow-ups logged yet. Submit a lead via chatbot to schedule.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Administrative Enquiry Manage Modal (Detail & Audit Log) -->
+  <div id="admin-modal" class="hidden fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md">
+    <div class="glass-panel w-full max-w-2xl rounded-3xl border border-white/80 shadow-2xl p-6 md:p-8 space-y-6 relative animate-float-slow">
+      
+      <!-- Close button -->
+      <button onclick="closeAdminModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100/50 flex items-center justify-center border border-white/60">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Modal Title -->
+      <div class="flex items-center space-x-3 pb-3 border-b border-slate-200/40">
+        <div class="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600">
+          <i class="fa-solid fa-user-gear text-lg"></i>
+        </div>
+        <div>
+          <h3 class="text-xl font-extrabold text-slate-800">Manage Admission Enquiry</h3>
+          <p class="text-xs text-slate-500 font-semibold">Applicant Profile ID: <span id="modal-app-id" class="font-bold text-slate-700">#</span></p>
+        </div>
+      </div>
+
+      <!-- Applicant Details Details -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-xs font-semibold">
+        <div>
+          <span class="text-slate-400 uppercase tracking-wider block mb-1">Full Name</span>
+          <span id="modal-app-name" class="text-sm font-extrabold text-slate-800">-</span>
+        </div>
+        <div>
+          <span class="text-slate-400 uppercase tracking-wider block mb-1">Parent Name</span>
+          <span id="modal-app-parent" class="text-sm font-extrabold text-slate-800">-</span>
+        </div>
+        <div>
+          <span class="text-slate-400 uppercase tracking-wider block mb-1">Email Coordinates</span>
+          <span id="modal-app-email" class="text-sm font-extrabold text-slate-800 truncate block">-</span>
+        </div>
+        <div>
+          <span class="text-slate-400 uppercase tracking-wider block mb-1">Phone Coordinate</span>
+          <span id="modal-app-phone" class="text-sm font-extrabold text-slate-800">-</span>
+        </div>
+        <div>
+          <span class="text-slate-400 uppercase tracking-wider block mb-1">Preferred Program</span>
+          <span id="modal-app-course" class="text-sm font-extrabold text-slate-800">-</span>
+        </div>
+        <div>
+          <span class="text-slate-400 uppercase tracking-wider block mb-1">High School Score</span>
+          <span id="modal-app-marks" class="text-sm font-extrabold text-emerald-600">-</span>
+        </div>
+      </div>
+
+      <!-- Counselor Decisions -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-200/40">
+        
+        <!-- Change Status -->
+        <div class="space-y-1">
+          <label class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Application Status</label>
+          <div class="relative">
+            <select id="modal-status" class="w-full appearance-none glass-input px-4 py-2.5 pr-10 rounded-xl text-sm font-bold text-slate-700 cursor-pointer">
+              <option value="Pending">Pending</option>
+              <option value="Shortlisted">Shortlisted</option>
+              <option value="Approved">Approved</option>
+              <option value="Ineligible">Ineligible</option>
+            </select>
+            <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
+              <i class="fa-solid fa-chevron-down text-xs"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assign staff -->
+        <div class="space-y-1">
+          <label class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Assignee Counselor</label>
+          <div class="relative">
+            <select id="modal-staff" class="w-full appearance-none glass-input px-4 py-2.5 pr-10 rounded-xl text-sm font-bold text-slate-700 cursor-pointer">
+              <option value="Dr. K. Raghavan">Dr. K. Raghavan</option>
+              <option value="Prof. S. Laxmi">Prof. S. Laxmi</option>
+              <option value="Mr. B. Srinivas">Mr. B. Srinivas</option>
+              <option value="Mrs. P. Shanti">Mrs. P. Shanti</option>
+            </select>
+            <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
+              <i class="fa-solid fa-chevron-down text-xs"></i>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Add Administrative tracking note -->
+      <div class="space-y-2">
+        <label class="text-xs font-extrabold text-slate-500 uppercase tracking-wider block">Add Tracking Notes / Comments</label>
+        <textarea id="modal-notes" rows="3" placeholder="Enter status update notes here..." class="w-full glass-input px-4 py-3 rounded-xl text-sm font-semibold text-slate-700"></textarea>
+      </div>
+
+      <!-- Audit log history -->
+      <div class="space-y-2 pt-2">
+        <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider block">Profile Audit History</span>
+        <div id="modal-audit-log" class="max-h-[120px] overflow-y-auto space-y-2 bg-slate-100/50 border border-slate-200/20 p-3 rounded-xl text-xs text-slate-500">
+          <!-- History rows filled dynamically -->
+        </div>
+      </div>
+
+      <!-- Save & Action Footer -->
+      <div class="flex items-center justify-end space-x-3 pt-3">
+        <button onclick="closeAdminModal()" class="glass-card px-5 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:text-slate-800">
+          Discard
+        </button>
+        <button onclick="saveEnquiryModification()" class="bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl hover:bg-emerald-700 shadow-md shadow-emerald-500/10 hover:shadow-lg transition-all">
+          Save Adjustments
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Simulated Email Confirmation Modal -->
+  <div id="email-modal" class="hidden fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md">
+    <div class="glass-panel w-full max-w-xl rounded-3xl border border-white/80 shadow-2xl p-6 md:p-8 space-y-6 relative animate-float-slow">
+      
+      <!-- Close button -->
+      <button onclick="closeEmailModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100/50 flex items-center justify-center border border-white/60">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="flex items-center space-x-3 pb-3 border-b border-slate-200/40">
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600">
+          <i class="fa-solid fa-envelope-open-text text-lg"></i>
+        </div>
+        <div>
+          <h3 class="text-xl font-extrabold text-slate-800">Simulated Email Received</h3>
+          <p class="text-xs text-slate-500 font-semibold">An auto-generated email confirmation has been dispatched</p>
+        </div>
+      </div>
+
+      <!-- Notification Tabs Switcher -->
+      <div class="flex border-b border-slate-200/40">
+        <button id="modal-tab-btn-student" onclick="switchModalTab('student')" class="px-4 py-2 text-sm font-extrabold text-emerald-700 border-b-2 border-emerald-600 focus:outline-none">
+          <i class="fa-solid fa-user-graduate mr-1"></i> Student Email
+        </button>
+        <button id="modal-tab-btn-parent" onclick="switchModalTab('parent')" class="px-4 py-2 text-sm font-bold text-slate-500 hover:text-slate-800 border-b-2 border-transparent focus:outline-none ml-2">
+          <i class="fa-solid fa-user-shield mr-1"></i> Parent Alerts (SMS & Email)
+        </button>
+      </div>
+
+      <!-- Tab 1: Student Email Client -->
+      <div id="modal-content-student" class="bg-white rounded-2xl border border-slate-200 shadow-inner overflow-hidden text-sm">
+        <!-- Email Metadata Header -->
+        <div class="bg-slate-50 p-4 border-b border-slate-200 space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-slate-400">From:</span>
+            <span class="font-bold text-slate-700">Sri Gowthami Admissions &lt;admissions@srigowthami.edu.in&gt;</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-slate-400">To:</span>
+            <span id="email-to-addr" class="font-semibold text-slate-600">-</span>
+          </div>
+          <div class="flex items-center justify-between pt-1">
+            <span class="text-xs font-semibold text-slate-400">Subject:</span>
+            <span id="email-subject" class="font-bold text-slate-800">-</span>
+          </div>
+        </div>
+
+        <!-- Email Content Body -->
+        <div class="p-6 space-y-4 max-h-[300px] overflow-y-auto font-sans leading-relaxed text-slate-600">
+          <!-- Institutional Header -->
+          <div class="text-center pb-4 border-b border-slate-100">
+            <div class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 text-white font-bold text-lg mb-2">SG</div>
+            <h4 class="font-extrabold text-slate-800 text-base">Sri Gowthami Educational Institutions</h4>
+            <p class="text-[10px] text-teal-600 uppercase font-bold tracking-wider">Admissions Confirmation Board</p>
+          </div>
+
+          <p class="font-semibold text-slate-800">Dear <span id="email-student-name">-</span>,</p>
+          <p>
+            We are pleased to confirm receipt of your online admission enquiry. Your profile has been registered in our central admissions portal for the academic year 2026-27.
+          </p>
+
+          <!-- Key Details Grid -->
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60 space-y-2 text-xs font-semibold">
+            <div class="flex justify-between">
+              <span class="text-slate-400">Application ID:</span>
+              <span id="email-app-id" class="text-slate-800 font-bold">-</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Preferred Program:</span>
+              <span id="email-app-course" class="text-slate-800 font-bold">-</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Campus Block:</span>
+              <span id="email-app-campus" class="text-slate-800 font-bold">-</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Board Aggregate Score:</span>
+              <span id="email-app-marks" class="text-slate-800 font-bold">-</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Initial Status:</span>
+              <span id="email-app-status" class="px-2 py-0.5 rounded text-[10px] font-bold">-</span>
+            </div>
+            <div class="flex justify-between border-t border-slate-200 pt-2 mt-1">
+              <span class="text-slate-400">Assigned Counselor:</span>
+              <span id="email-app-staff" class="text-emerald-700 font-bold">-</span>
+            </div>
+          </div>
+
+          <p>
+            Your assigned counselor will verify your academic records shortly. You can track status developments under your registered coordinates.
+          </p>
+          
+          <div class="pt-4 border-t border-slate-100 text-center text-[10px] text-slate-400">
+            This is an automated confirmation email. Please do not reply directly to this message.
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Parent Alerts (SMS & Copy Email) -->
+      <div id="modal-content-parent" class="hidden space-y-4">
+        
+        <!-- Parent SMS Screen Mock -->
+        <div class="bg-slate-950 text-white rounded-2xl p-4 font-mono text-[11px] space-y-2 relative border border-slate-800 shadow-xl">
+          <div class="flex items-center justify-between border-b border-slate-850 pb-2 mb-2 text-slate-400">
+            <span class="flex items-center"><i class="fa-solid fa-mobile-screen-button mr-1.5 text-xs"></i> Parent SMS Channel</span>
+            <span class="text-[9px] font-bold bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded">DELIVERED</span>
+          </div>
+          <p class="text-slate-400 text-[9px] uppercase tracking-wider font-sans">To: <span id="sms-parent-phone">-</span> (Parent Phone)</p>
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-slate-200 leading-normal">
+            Dear Parent (<span id="sms-parent-name">-</span>), your ward <span id="sms-student-name">-</span> has applied to Sri Gowthami for <span id="sms-app-course">-</span>. App Code: <span id="sms-app-id">-</span>. Counselor <span id="sms-app-staff">-</span> will audit academic files shortly. Helpline: 1800-200-3344.
+          </div>
+        </div>
+
+        <!-- Parent Email Copy -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-inner overflow-hidden text-sm">
+          <div class="bg-slate-50 p-3 border-b border-slate-200 text-xs">
+            <div class="flex justify-between">
+              <span class="font-semibold text-slate-400">To:</span>
+              <span class="font-semibold text-slate-700"><span id="email-parent-name">-</span> &lt;<span id="email-parent-addr">-</span>&gt;</span>
+            </div>
+            <div class="flex justify-between pt-1">
+              <span class="font-semibold text-slate-400">Subject:</span>
+              <span class="font-bold text-slate-800">Ward Admission Application Registered: <span id="email-parent-app-id">-</span></span>
+            </div>
+          </div>
+          <div class="p-4 space-y-2.5 max-h-[180px] overflow-y-auto text-slate-600 text-xs leading-relaxed">
+            <p>Dear Parent,</p>
+            <p>
+              Your ward, <strong><span id="email-parent-student-name">-</span></strong>, has submitted a direct admission assessment form for <strong><span id="email-parent-course">-</span></strong> under our <strong><span id="email-parent-campus">-</span></strong> campus.
+            </p>
+            <p>
+              We have dispatched counselor credentials to their registered phone number. Verification will occur automatically based on their high school board score of <strong id="email-parent-marks">-</strong>.
+            </p>
+            <p class="pt-2 border-t border-slate-100 text-[10px] text-slate-400">
+              Sri Gowthami Registrar & Admissions Board.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="flex items-center justify-end">
+        <button onclick="closeEmailModal()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-6 py-2.5 rounded-xl shadow-md transition-all">
+          Close Email Client
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Custom Glassmorphic Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-3 pointer-events-none max-w-sm w-full">
+    <!-- Toasts rendered dynamically -->
+  </div>
+
+  <!-- Footer -->
+  <footer class="w-full glass-panel border-t border-slate-200/40 mt-16 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3 text-slate-400 text-xs font-semibold">
+      <p>&copy; 2026 Sri Gowthami Educational Institutions. All Rights Reserved.</p>
+      <p class="text-[10px] text-slate-400/80">Affiliated with State Board of Technical Education, JNTU & AICTE Approved. Dev Review 2 Sandbox Edition.</p>
+    </div>
+  </footer>
+
+  <!-- Core Javascript Implementation -->
+  <script>
+    
+    // 1. DATA INITIALIZATION (Simulated Database)
+    const ACADEMIC_COURSES = [
+      {
+        id: "cse",
+        name: "B.Tech Computer Science & Engineering",
+        shortName: "CSE",
+        dept: "Engineering",
+        campus: "Main Campus",
+        duration: "4 Years",
+        fee: "₹1,20,000 / Year",
+        eligibility: 60,
+        desc: "Specialized streams in Software Engineering, Cloud Architectures, and Database Architectures.",
+        icon: "fa-laptop-code"
+      },
+      {
+        id: "aiml",
+        name: "B.Tech Artificial Intelligence & ML",
+        shortName: "AI/ML",
+        dept: "Engineering",
+        campus: "Engineering Block",
+        duration: "4 Years",
+        fee: "₹1,30,000 / Year",
+        eligibility: 65,
+        desc: "Advanced modules in Machine Learning algorithms, Deep Learning models, and Neural Networks.",
+        icon: "fa-robot"
+      },
+      {
+        id: "ece",
+        name: "B.Tech Electronics & Comm. Eng.",
+        shortName: "ECE",
+        dept: "Engineering",
+        campus: "Main Campus",
+        duration: "4 Years",
+        fee: "₹1,00,000 / Year",
+        eligibility: 55,
+        desc: "Core communication protocols, signal processing mechanisms, and VLSI circuit designs.",
+        icon: "fa-microchip"
+      },
+      {
+        id: "civil",
+        name: "B.Tech Civil Engineering",
+        shortName: "Civil",
+        dept: "Engineering",
+        campus: "Engineering Block",
+        duration: "4 Years",
+        fee: "₹90,000 / Year",
+        eligibility: 50,
+        desc: "Infrastructure planning, structural dynamics modeling, and green material sciences.",
+        icon: "fa-helmet-safety"
+      },
+      {
+        id: "mba",
+        name: "MBA Business Management",
+        shortName: "MBA",
+        dept: "Management",
+        campus: "City Campus",
+        duration: "2 Years",
+        fee: "₹1,50,000 / Year",
+        eligibility: 50,
+        desc: "Marketing analytics, supply chain optimizations, and corporate finance frameworks.",
+        icon: "fa-briefcase"
+      },
+      {
+        id: "ds",
+        name: "B.Sc Data Science",
+        shortName: "B.Sc DS",
+        dept: "Science",
+        campus: "City Campus",
+        duration: "3 Years",
+        fee: "₹80,000 / Year",
+        eligibility: 55,
+        desc: "Mathematical probability distributions, Big Data analytics tools, and Python programming.",
+        icon: "fa-chart-pie"
+      }
+    ];
+
+    const DEFAULT_ENQUIRIES = [
+      {
+        id: "ENQ1091",
+        name: "Aravind Swamy",
+        parent: "A. Rama Swamy",
+        email: "aravind@gmail.com",
+        phone: "9876543210",
+        course: "B.Tech Computer Science & Engineering",
+        campus: "Main Campus",
+        marks: 88,
+        status: "Shortlisted",
+        staff: "Dr. K. Raghavan",
+        notes: "Excellent academic record. Sent initial acceptance schedule.",
+        history: [
+          { date: "2026-06-16 10:15", action: "Submitted Admission Enquiry Form" },
+          { date: "2026-06-16 11:20", action: "Assigned counselor Dr. K. Raghavan" },
+          { date: "2026-06-16 11:20", action: "Status updated to Shortlisted by Dr. K. Raghavan" }
+        ]
+      },
+      {
+        id: "ENQ1092",
+        name: "Divya Reddy",
+        parent: "D. Prabhakar Reddy",
+        email: "divya.reddy@yahoo.com",
+        phone: "9123456780",
+        course: "MBA Business Management",
+        campus: "City Campus",
+        marks: 76,
+        status: "Shortlisted",
+        staff: "Prof. S. Laxmi",
+        notes: "Undergraduate documents verified, waiting for fee confirmation.",
+        history: [
+          { date: "2026-06-15 14:02", action: "Submitted Admission Enquiry Form" },
+          { date: "2026-06-15 15:30", action: "Status updated to Shortlisted by Prof. S. Laxmi" }
+        ]
+      },
+      {
+        id: "ENQ1093",
+        name: "Rahul Kumar",
+        parent: "Satish Kumar",
+        email: "rahulkumar@outlook.com",
+        phone: "9988776655",
+        course: "B.Tech Civil Engineering",
+        campus: "Engineering Block",
+        marks: 52,
+        status: "Pending",
+        staff: "Mr. B. Srinivas",
+        notes: "Enquired about campus hostel accommodation facilities.",
+        history: [
+          { date: "2026-06-16 09:45", action: "Submitted Admission Enquiry Form" }
+        ]
+      },
+      {
+        id: "ENQ1094",
+        name: "Sneha Rao",
+        parent: "P. Venkateswara Rao",
+        email: "sneha.rao@gmail.com",
+        phone: "9554321098",
+        course: "B.Tech Electronics & Comm. Eng.",
+        campus: "Main Campus",
+        marks: 45,
+        status: "Ineligible",
+        staff: "Mrs. P. Shanti",
+        notes: "Marks are below the minimum threshold required for ECE (55%).",
+        history: [
+          { date: "2026-06-16 08:30", action: "Submitted Admission Enquiry Form" },
+          { date: "2026-06-16 08:31", action: "System auto-marked Ineligible due to insufficient marks" }
+        ]
+      },
+      {
+        id: "ENQ1095",
+        name: "Vineeth Naidu",
+        parent: "V. Krishna Naidu",
+        email: "vineeth.naidu@gmail.com",
+        phone: "9440123456",
+        course: "B.Tech Artificial Intelligence & ML",
+        campus: "Engineering Block",
+        marks: 92,
+        status: "Approved",
+        staff: "Dr. K. Raghavan",
+        notes: "Direct Admission approved under merit bracket. Seat reservation fee processed.",
+        history: [
+          { date: "2026-06-14 11:12", action: "Submitted Admission Enquiry Form" },
+          { date: "2026-06-14 12:00", action: "Assigned to counselor Dr. K. Raghavan" },
+          { date: "2026-06-14 16:30", action: "Status updated to Approved by Dr. K. Raghavan" }
+        ]
+      }
+    ];
+
+    let enquiries = [];
+    let activeTableFilter = 'All';
+    let currentEditEnquiryId = null;
+    let selectedCampusFilter = 'all';
+    let selectedDeptFilter = 'all';
+
+    // 2. LIFECYCLE MANAGEMENT & STATE RESTORATION
+    window.onload = function() {
+      // Initialize theme from storage
+      const savedTheme = localStorage.getItem("sg_theme");
+      const doc = document.documentElement;
+      const btn = document.getElementById("dark-mode-toggle");
+      if (savedTheme === 'dark') {
+        doc.classList.add("dark");
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-sun text-lg text-amber-400 animate-pulse"></i>`;
+      } else {
+        doc.classList.remove("dark");
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-moon text-lg"></i>`;
+      }
+
+      // Load from localStorage or initialize with dummy entries
+      const savedEnquiries = localStorage.getItem("sg_enquiries");
+      if (savedEnquiries) {
+        enquiries = JSON.parse(savedEnquiries);
+      } else {
+        enquiries = [...DEFAULT_ENQUIRIES];
+        localStorage.setItem("sg_enquiries", JSON.stringify(enquiries));
+      }
+
+      // Render Dynamic Course Catalog
+      renderCourseCards();
+      
+      // Initialize form defaults & dynamic dropdown elements
+      syncFormCourseOptions();
+
+      // Run live calculations for the first time
+      runLiveCalculator();
+
+      // Render Dashboard KPI Cards & Table
+      updateDashboardKPIs();
+      renderEnquiryTable();
+
+      // Initialize WhatsApp Chatbot
+      initWhatsAppBot();
+    };
+
+    function toggleDarkMode() {
+      const doc = document.documentElement;
+      const btn = document.getElementById("dark-mode-toggle");
+      if (doc.classList.contains("dark")) {
+        doc.classList.remove("dark");
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-moon text-lg"></i>`;
+        localStorage.setItem("sg_theme", "light");
+        showToast("Switched to Light Theme", "info");
+      } else {
+        doc.classList.add("dark");
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-sun text-lg text-amber-400 animate-pulse"></i>`;
+        localStorage.setItem("sg_theme", "dark");
+        showToast("Switched to Dark Theme", "info");
+      }
+    }
+
+    // Helper to persist database modifications
+    function saveDatabaseState() {
+      localStorage.setItem("sg_enquiries", JSON.stringify(enquiries));
+      updateDashboardKPIs();
+    }
+
+    function restoreDefaults() {
+      if (confirm("Are you sure you want to restore the database to default demo entries? All current updates will be overwritten.")) {
+        // Deep copy of DEFAULT_ENQUIRIES to avoid mutating reference
+        enquiries = JSON.parse(JSON.stringify(DEFAULT_ENQUIRIES));
+        saveDatabaseState();
+        renderEnquiryTable();
+        showToast("Database successfully restored to defaults.", "info");
+      }
+    }
+
+    // 3. TOAST POPUP NOTIFICATION MANAGER
+    function showToast(message, type = 'success') {
+      const container = document.getElementById("toast-container");
+      const toastId = 'toast-' + Date.now();
+      
+      let iconColor = 'text-emerald-500';
+      let icon = 'fa-circle-check';
+      let accentBorder = 'border-emerald-500/30';
+      
+      if (type === 'warning') {
+        iconColor = 'text-amber-500';
+        icon = 'fa-triangle-exclamation';
+        accentBorder = 'border-amber-500/30';
+      } else if (type === 'error') {
+        iconColor = 'text-rose-500';
+        icon = 'fa-circle-xmark';
+        accentBorder = 'border-rose-500/30';
+      } else if (type === 'info') {
+        iconColor = 'text-sky-500';
+        icon = 'fa-circle-info';
+        accentBorder = 'border-sky-500/30';
+      }
+
+      const toastHtml = `
+        <div id="${toastId}" class="pointer-events-auto bg-white/70 backdrop-blur-xl border ${accentBorder} shadow-lg rounded-2xl p-4 flex items-start space-x-3 transition-all duration-300 transform translate-y-2 opacity-0">
+          <div class="${iconColor} mt-0.5 text-base shrink-0">
+            <i class="fa-solid ${icon}"></i>
+          </div>
+          <div class="flex-1">
+            <p class="text-xs font-bold text-slate-800 leading-normal">${message}</p>
+          </div>
+          <button onclick="dismissToast('${toastId}')" class="text-slate-400 hover:text-slate-600 focus:outline-none">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
+      `;
+
+      container.insertAdjacentHTML('beforeend', toastHtml);
+
+      // Slide in animation
+      setTimeout(() => {
+        const el = document.getElementById(toastId);
+        if (el) {
+          el.classList.remove('translate-y-2', 'opacity-0');
+          el.classList.add('translate-y-0', 'opacity-100');
+        }
+      }, 50);
+
+      // Auto Dismiss after 4.5 seconds
+      setTimeout(() => {
+        dismissToast(toastId);
+      }, 4500);
+    }
+
+    function dismissToast(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove('translate-y-0', 'opacity-100');
+        el.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => {
+          el.remove();
+        }, 300);
+      }
+    }
+
+    // 4. VIEW / NAVIGATION CONTROLLER
+    function switchTab(tabId) {
+      // Hide all panels
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.add('hidden');
+      });
+
+      // Show selected panel
+      document.getElementById('panel-' + tabId).classList.remove('hidden');
+
+      // Update Navigation styling classes
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.className = "nav-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200";
+      });
+
+      // Set active styling on clicked tab button
+      const activeBtn = document.getElementById('nav-' + tabId);
+      if (activeBtn) {
+        activeBtn.className = "nav-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center space-x-2 bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 shadow-sm border border-slate-200/40 dark:border-slate-700/40";
+      }
+
+      // Sync views
+      if (tabId === 'admin-dashboard') {
+        updateDashboardKPIs();
+        renderEnquiryTable();
+      }
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById("mobile-menu");
+      if (menu.classList.contains("hidden")) {
+        menu.classList.remove("hidden");
+      } else {
+        menu.classList.add("hidden");
+      }
+    }
+
+    document.getElementById("mobile-menu-btn").onclick = function() {
+      toggleMobileMenu();
+    };
+
+    function scrollToEnquiry() {
+      const element = document.getElementById("enquiry-form");
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // 5. TIMELINE / STEPPER ACTIONS
+    function showStepDetails(stepNum) {
+      // Set active border/bg class for buttons
+      for (let i = 1; i <= 5; i++) {
+        const btn = document.getElementById(`step-btn-${i}`);
+        const num = document.getElementById(`step-num-${i}`);
+        
+        if (i <= stepNum) {
+          // Passed or active steps
+          num.className = `w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-base shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform`;
+          btn.className = `step-card group cursor-pointer text-center flex flex-col items-center p-4 rounded-2xl border border-emerald-200/50 bg-white/60 shadow-sm transition-all duration-300 hover:bg-white hover:shadow-md`;
+        } else {
+          // Future steps
+          num.className = `w-12 h-12 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-base group-hover:scale-105 transition-transform`;
+          btn.className = `step-card group cursor-pointer text-center flex flex-col items-center p-4 rounded-2xl border border-white/40 bg-white/30 shadow-sm transition-all duration-300 hover:bg-white hover:shadow-md`;
+        }
+      }
+
+      const titleEl = document.getElementById("step-explain-title");
+      const descEl = document.getElementById("step-explain-desc");
+
+      const descriptions = {
+        1: {
+          title: "Stage 1: Submit Online Admission Enquiry",
+          desc: "Fill out the integrated Admission Enquiry Form below with candidate information, contact coordinates, preferred campus block, and high school board marks. The system instantly screens academic marks to provide a preliminary eligibility score."
+        },
+        2: {
+          title: "Stage 2: Live Eligibility Screening & Automated Verification",
+          desc: "Our counselor board tracks submissions on the Admin Dashboard interface. Profiles showing meeting minimum percentage marks thresholds will have their file updated to 'Shortlisted' status."
+        },
+        3: {
+          title: "Stage 3: Physical Document Verification & Authentication",
+          desc: "Shortlisted candidates will receive digital invitations to submit their official high school marks memos, identity documents, and proof of transfer coordinates. Verified candidates transition to 'Shortlisted' counselor queues."
+        },
+        4: {
+          title: "Stage 4: Interactive Counselling Session & Branch Locking",
+          desc: "Attend a physical or virtual counseling panel to choose your final branch block. Candidates can consult branch heads to switch preferences and locking branch choice."
+        },
+        5: {
+          title: "Stage 5: Final Seat Allocation & Admission Completion",
+          desc: "Receive formal institutional allotment orders. Settle academic seat reserve fee structure on your portal profile to lock seats. Congratulations, your direct admission is officially completed!"
+        }
+      };
+
+      titleEl.innerText = descriptions[stepNum].title;
+      descEl.innerText = descriptions[stepNum].desc;
+      
+      showToast(`Reviewing details for Step ${stepNum}: ${descriptions[stepNum].title.split(': ')[1]}`, 'info');
+    }
+
+    // 6. DYNAMIC FAQ EXPANDER
+    function toggleAccordion(faqId) {
+      const faq = document.getElementById(faqId);
+      const icon = document.getElementById(`faq-icon-${faqId}`);
+      
+      // Close all other accordions
+      document.querySelectorAll('.faq-content').forEach(content => {
+        if (content.id !== faqId) {
+          content.style.maxHeight = null;
+          const otherIcon = document.getElementById(`faq-icon-${content.id}`);
+          if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+        }
+      });
+
+      if (faq.style.maxHeight) {
+        faq.style.maxHeight = null;
+        icon.style.transform = 'rotate(0deg)';
+      } else {
+        faq.style.maxHeight = faq.scrollHeight + "px";
+        icon.style.transform = 'rotate(180deg)';
+      }
+    }
+
+    // 7. COURSE RENDERING & FILTERS
+    function renderCourseCards() {
+      const grid = document.getElementById("course-grid");
+      
+      grid.innerHTML = "";
+
+      const filteredCourses = ACADEMIC_COURSES.filter(course => {
+        const campusMatch = (selectedCampusFilter === 'all') || (course.campus === selectedCampusFilter);
+        const deptMatch = (selectedDeptFilter === 'all') || (course.dept === selectedDeptFilter);
+        return campusMatch && deptMatch;
+      });
+
+      if (filteredCourses.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-12 text-center text-slate-400 dark:text-slate-500 font-semibold glass-panel rounded-2xl border border-white/60 dark:border-slate-700/40">
+            <i class="fa-solid fa-magnifying-glass-chart text-3xl text-slate-300 dark:text-slate-600 mb-3 block"></i>
+            No programs found matching the selected filters.
+          </div>
+        `;
+        return;
+      }
+
+      filteredCourses.forEach(course => {
+        const cardHtml = `
+          <div class="glass-card p-6 rounded-2xl flex flex-col justify-between space-y-4">
+            
+            <!-- Card Header -->
+            <div class="space-y-3">
+              <div class="flex justify-between items-start">
+                <span class="text-[10px] font-extrabold tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 rounded-md border border-emerald-100 dark:border-emerald-900/30 uppercase">
+                  ${course.dept}
+                </span>
+                <span class="text-xs font-bold text-slate-400 dark:text-slate-500 flex items-center space-x-1">
+                  <i class="fa-solid fa-location-dot"></i>
+                  <span>${course.campus}</span>
+                </span>
+              </div>
+              <div class="flex items-start space-x-3 pt-1">
+                <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-350 text-lg shrink-0">
+                  <i class="fa-solid ${course.icon}"></i>
+                </div>
+                <div>
+                  <h4 class="text-base font-extrabold text-slate-800 dark:text-slate-200 leading-snug tracking-tight">${course.name}</h4>
+                  <span class="text-xs font-semibold text-slate-400 dark:text-slate-550">Duration: ${course.duration}</span>
+                </div>
+              </div>
+              <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed font-semibold pt-1">${course.desc}</p>
+            </div>
+
+            <!-- Card Action Footer -->
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-800/40 flex items-center justify-between">
+              <div class="space-y-0.5">
+                <span class="text-[10px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider block">Course Fees</span>
+                <span class="text-xs font-extrabold text-slate-800 dark:text-slate-200">${course.fee}</span>
+              </div>
+              <button onclick="selectCourseForEnquiry('${course.campus}', '${course.name}')" class="bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 font-bold text-xs px-3.5 py-2 rounded-lg border border-emerald-100 dark:border-emerald-900/30 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-600 transition-colors">
+                Apply Here
+              </button>
+            </div>
+
+          </div>
+        `;
+        grid.insertAdjacentHTML('beforeend', cardHtml);
+      });
+    }
+
+    function setCampusFilter(value) {
+      selectedCampusFilter = value;
+      
+      // Update button styles
+      const pills = document.querySelectorAll('.campus-pill');
+      const options = ['all', 'Main Campus', 'City Campus', 'Engineering Block'];
+      pills.forEach((pill, idx) => {
+        if (options[idx] === value) {
+          pill.className = "campus-pill px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 bg-emerald-600 text-white shadow-md shadow-emerald-500/20 border border-emerald-500/20";
+        } else {
+          pill.className = "campus-pill px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 bg-white/50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-350 hover:bg-white/80 dark:hover:bg-slate-700 border border-white/60 dark:border-slate-700/60";
+        }
+      });
+
+      renderCourseCards();
+      showToast(`Filtered by Campus: ${value === 'all' ? 'All Campuses' : value}`, 'info');
+    }
+
+    function setDeptFilter(value) {
+      selectedDeptFilter = value;
+      
+      // Update button styles
+      const pills = document.querySelectorAll('.dept-pill');
+      const options = ['all', 'Engineering', 'Management', 'Science'];
+      pills.forEach((pill, idx) => {
+        if (options[idx] === value) {
+          pill.className = "dept-pill px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 bg-emerald-600 text-white shadow-md shadow-emerald-500/20 border border-emerald-500/20";
+        } else {
+          pill.className = "dept-pill px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 bg-white/50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-350 hover:bg-white/80 dark:hover:bg-slate-700 border border-white/60 dark:border-slate-700/60";
+        }
+      });
+
+      renderCourseCards();
+      showToast(`Filtered by Department: ${value === 'all' ? 'All Departments' : value}`, 'info');
+    }
+
+    function selectCourseForEnquiry(campus, courseName) {
+      document.getElementById("form-campus").value = campus;
+      syncFormCourseOptions();
+      document.getElementById("form-course").value = courseName;
+      runLiveCalculator();
+      scrollToEnquiry();
+      showToast(`Set application target: ${courseName} (${campus})`, 'success');
+    }
+
+    // 8. INTERACTIVE ENQUIRY FORM & LIVE CALCULATOR
+    function syncFormCourseOptions() {
+      const campusSelect = document.getElementById("form-campus").value;
+      const courseSelect = document.getElementById("form-course");
+      
+      courseSelect.innerHTML = "";
+      
+      // Find courses matches current campus
+      const campusCourses = ACADEMIC_COURSES.filter(c => c.campus === campusSelect);
+      campusCourses.forEach(c => {
+        const option = document.createElement("option");
+        option.value = c.name;
+        option.text = c.name;
+        courseSelect.appendChild(option);
+      });
+
+      runLiveCalculator();
+    }
+
+    function updateMarksDisplay() {
+      const marksVal = document.getElementById("form-marks").value;
+      document.getElementById("form-marks-input").value = marksVal;
+      runLiveCalculator();
+    }
+
+    function updateMarksFromInput() {
+      let val = parseInt(document.getElementById("form-marks-input").value);
+      if (isNaN(val)) val = 0;
+      if (val > 100) val = 100;
+      if (val < 0) val = 0;
+      document.getElementById("form-marks-input").value = val;
+      document.getElementById("form-marks").value = val;
+      runLiveCalculator();
+    }
+
+    function runLiveCalculator() {
+      const marks = parseInt(document.getElementById("form-marks").value);
+      const selectedCourseName = document.getElementById("form-course").value;
+      
+      if (!selectedCourseName) return;
+
+      const courseObj = ACADEMIC_COURSES.find(c => c.name === selectedCourseName);
+      if (!courseObj) return;
+
+      // Update Calculator visual cards
+      document.getElementById("calc-course-name").innerText = courseObj.name;
+      document.getElementById("calc-course-req").innerText = `${courseObj.eligibility}% Aggregate`;
+      document.getElementById("calc-score-pct").innerText = `${marks}%`;
+      
+      // Update progress bar width
+      const bar = document.getElementById("calc-progress-bar");
+      bar.style.width = `${marks}%`;
+
+      // Update progress bar colors based on eligibility status
+      if (marks >= courseObj.eligibility) {
+        bar.className = "bg-gradient-to-r from-emerald-500 to-teal-500 h-2.5 rounded-full transition-all duration-500";
+        document.getElementById("calc-score-pct").className = "text-base font-extrabold text-emerald-600";
+      } else {
+        bar.className = "bg-gradient-to-r from-rose-500 to-amber-500 h-2.5 rounded-full transition-all duration-500";
+        document.getElementById("calc-score-pct").className = "text-base font-extrabold text-rose-500";
+      }
+
+      // Compute Decision Box layout
+      const decisionBox = document.getElementById("calc-decision-box");
+      if (marks >= courseObj.eligibility) {
+        let meritScholarshipText = "";
+        if (marks >= 90) {
+          meritScholarshipText = `<div class="mt-1 text-[11px] font-bold text-emerald-700 bg-emerald-100/60 border border-emerald-200/50 px-2 py-1 rounded-md">Eligible for 50% Tuition Fee Merit Scholarship!</div>`;
+        } else if (marks >= 85) {
+          meritScholarshipText = `<div class="mt-1 text-[11px] font-bold text-emerald-700 bg-emerald-100/60 border border-emerald-200/50 px-2 py-1 rounded-md">Eligible for 25% Tuition Fee Merit Scholarship!</div>`;
+        }
+
+        decisionBox.className = "p-4 rounded-2xl border border-emerald-500/20 bg-emerald-50/50 flex items-start space-x-3 transition-colors duration-300";
+        decisionBox.innerHTML = `
+          <div class="text-emerald-600 text-lg mt-0.5 shrink-0">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <div>
+            <h5 class="text-xs font-bold text-emerald-800">Meets Admissions Cutoff</h5>
+            <p class="text-[11px] text-slate-500 font-semibold leading-relaxed mt-0.5">Your board score of ${marks}% satisfies the threshold parameters for ${courseObj.shortName}.</p>
+            ${meritScholarshipText}
+          </div>
+        `;
+      } else {
+        decisionBox.className = "p-4 rounded-2xl border border-rose-500/20 bg-rose-50/50 flex items-start space-x-3 transition-colors duration-300";
+        decisionBox.innerHTML = `
+          <div class="text-rose-500 text-lg mt-0.5 shrink-0">
+            <i class="fa-solid fa-circle-exclamation"></i>
+          </div>
+          <div>
+            <h5 class="text-xs font-bold text-rose-800">Below Course Threshold</h5>
+            <p class="text-[11px] text-slate-500 font-semibold leading-relaxed mt-0.5">Minimum ${courseObj.eligibility}% aggregate is required. You require ${courseObj.eligibility - marks}% more points to lock admissions eligibility.</p>
+          </div>
+        `;
+      }
+
+      // Compute alternative recommendations list
+      const recsList = document.getElementById("calc-recommendations-list");
+      recsList.innerHTML = "";
+
+      const alternativeCourses = ACADEMIC_COURSES.filter(c => c.name !== selectedCourseName && marks >= c.eligibility);
+      if (alternativeCourses.length === 0) {
+        recsList.innerHTML = `<span class="text-slate-400 text-xs italic block pt-1">No alternative matching courses found for this score.</span>`;
+      } else {
+        alternativeCourses.slice(0, 2).forEach(c => {
+          const item = document.createElement("div");
+          item.className = "flex items-center justify-between bg-white/40 p-2.5 rounded-xl border border-white/60 hover:bg-white/70 transition-colors cursor-pointer";
+          item.onclick = function() {
+            selectCourseForEnquiry(c.campus, c.name);
+          };
+          item.innerHTML = `
+            <div class="flex items-center space-x-2">
+              <i class="fa-solid ${c.icon} text-slate-500 text-xs"></i>
+              <span class="text-xs font-extrabold text-slate-700">${c.shortName} (${c.campus.split(' ')[0]})</span>
+            </div>
+            <span class="text-[10px] font-extrabold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">Match</span>
+          `;
+          recsList.appendChild(item);
+        });
+      }
+    }
+
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      
+      const name = document.getElementById("form-name").value.trim();
+      const parent = document.getElementById("form-parent").value.trim();
+      const email = document.getElementById("form-email").value.trim();
+      const phone = document.getElementById("form-phone").value.trim();
+      const campus = document.getElementById("form-campus").value;
+      const course = document.getElementById("form-course").value;
+      const marks = parseInt(document.getElementById("form-marks").value);
+
+      if (!name || !parent || !email || !phone || !course || !campus) {
+        showToast("Please complete all compulsory fields.", "error");
+        return;
+      }
+
+      const courseObj = ACADEMIC_COURSES.find(c => c.name === course);
+      if (!courseObj) return;
+
+      // Determine initial state status
+      let initialStatus = 'Pending';
+      if (marks < courseObj.eligibility) {
+        initialStatus = 'Ineligible';
+      } else if (marks >= 90) {
+        initialStatus = 'Shortlisted'; // High marks automatically shortlisted
+      }
+
+      // Assign counselors dynamically based on course
+      let staff = "Dr. K. Raghavan";
+      if (courseObj.dept === 'Management') staff = "Prof. S. Laxmi";
+      else if (courseObj.dept === 'Science') staff = "Mr. B. Srinivas";
+      else if (courseObj.shortName === 'Civil') staff = "Mrs. P. Shanti";
+
+      const now = new Date();
+      const dateStr = now.toISOString().split('T')[0] + ' ' + now.toTimeString().split(' ')[0].substring(0, 5);
+
+      const newEnquiry = {
+        id: "ENQ" + (1000 + enquiries.length + 1),
+        name: name,
+        parent: parent,
+        email: email,
+        phone: phone,
+        course: course,
+        campus: campus,
+        marks: marks,
+        status: initialStatus,
+        staff: staff,
+        notes: initialStatus === 'Ineligible' ? "Marks are below the threshold." : "New online admission request filed.",
+        history: [
+          { date: dateStr, action: `Submitted Enquiry Form for ${courseObj.shortName}` }
+        ]
+      };
+
+      if (initialStatus === 'Ineligible') {
+        newEnquiry.history.push({ date: dateStr, action: "System auto-marked Ineligible due to score criteria" });
+      }
+
+      // Append and save
+      enquiries.unshift(newEnquiry);
+      saveDatabaseState();
+
+      // Clear Form Fields
+      document.getElementById("form-name").value = "";
+      document.getElementById("form-parent").value = "";
+      document.getElementById("form-email").value = "";
+      document.getElementById("form-phone").value = "";
+      document.getElementById("form-marks").value = "80";
+      updateMarksDisplay();
+
+      // Show Custom Success Toast
+      if (initialStatus === 'Ineligible') {
+        showToast(`Enquiry logged, but board score (${marks}%) is below the required threshold of ${courseObj.eligibility}%.`, 'warning');
+      } else {
+        showToast(`Congratulations! Admission enquiry successfully logged for ${name}. Code: ${newEnquiry.id}`, 'success');
+      }
+
+      // Trigger Simulated Email Confirmation modal immediately
+      setTimeout(() => {
+        showSimulatedEmail(newEnquiry);
+      }, 800);
+    }
+
+    // 9. ADMINISTRATIVE OPERATIONS CONTROL HUB
+    function updateDashboardKPIs() {
+      document.getElementById("kpi-total").innerText = enquiries.length;
+      document.getElementById("kpi-shortlisted").innerText = enquiries.filter(e => e.status === 'Shortlisted' || e.status === 'Approved').length;
+      document.getElementById("kpi-pending").innerText = enquiries.filter(e => e.status === 'Pending').length;
+      document.getElementById("kpi-ineligible").innerText = enquiries.filter(e => e.status === 'Ineligible').length;
+    }
+
+    function setTableFilter(status) {
+      activeTableFilter = status;
+      
+      // Update filter tabs UI classes
+      document.querySelectorAll('.table-filter-tab').forEach(tab => {
+        tab.className = "table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all";
+      });
+
+      const activeTab = document.getElementById(`table-filter-${status.toLowerCase()}`);
+      if (activeTab) {
+        activeTab.className = "table-filter-tab px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm border border-slate-200/40";
+      }
+
+      renderEnquiryTable();
+    }
+
+    function renderEnquiryTable() {
+      const tbody = document.getElementById("enquiry-table-body");
+      const searchQuery = document.getElementById("table-search").value.toLowerCase().trim();
+
+      tbody.innerHTML = "";
+
+      // Apply Filters
+      const filtered = enquiries.filter(e => {
+        const matchesStatus = (activeTableFilter === 'All') || (e.status === activeTableFilter);
+        const matchesSearch = e.name.toLowerCase().includes(searchQuery) || e.course.toLowerCase().includes(searchQuery) || e.id.toLowerCase().includes(searchQuery);
+        return matchesStatus && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="px-6 py-12 text-center text-slate-400 font-semibold bg-white/10">
+              <i class="fa-solid fa-folder-open text-2xl text-slate-300 mb-2 block"></i>
+              No application enquiries found matching parameters.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      filtered.forEach(e => {
+        let badgeClass = "bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700";
+        if (e.status === 'Shortlisted') badgeClass = "bg-emerald-50 text-emerald-700 border-emerald-200/50 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800/50";
+        else if (e.status === 'Approved') badgeClass = "bg-teal-50 text-teal-700 border-teal-200/50 dark:bg-teal-950/30 dark:text-teal-400 dark:border-teal-800/50";
+        else if (e.status === 'Pending') badgeClass = "bg-amber-50 text-amber-700 border-amber-200/50 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800/50";
+        else if (e.status === 'Ineligible') badgeClass = "bg-rose-50 text-rose-700 border-rose-200/50 dark:bg-rose-950/30 dark:text-rose-450 dark:border-rose-800/50";
+
+        // Lead score styling
+        let scoreBadge = "";
+        const leadScore = e.leadScore || (e.marks >= 90 ? 'Hot' : (e.marks >= 65 ? 'Warm' : 'Cold'));
+        if (leadScore === 'Hot') {
+          scoreBadge = `<span class="inline-flex px-1.5 py-0.5 rounded bg-rose-100 dark:bg-rose-950/50 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-900/50 text-[10px] font-extrabold tracking-wide animate-pulse">HOT LEAD</span>`;
+        } else if (leadScore === 'Warm') {
+          scoreBadge = `<span class="inline-flex px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border border-amber-200/50 dark:border-amber-900/30 text-[10px] font-extrabold">WARM</span>`;
+        } else {
+          scoreBadge = `<span class="inline-flex px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 text-[10px] font-extrabold">COLD</span>`;
+        }
+
+        // Source icon
+        let sourceIcon = `<i class="fa-solid fa-globe text-slate-400 text-xs mr-1" title="Website Portal"></i>`;
+        if (e.source === 'WhatsApp Bot') {
+          sourceIcon = `<i class="fa-brands fa-whatsapp text-emerald-500 text-sm mr-1" title="WhatsApp Bot"></i>`;
+        }
+
+        const row = `
+          <tr class="hover:bg-white/30 dark:hover:bg-slate-800/20 transition-colors">
+            <td class="px-6 py-4">
+              <div class="space-y-0.5">
+                <span class="text-xs text-slate-400 font-bold flex items-center">
+                  ${sourceIcon}
+                  <span>${e.id}</span>
+                </span>
+                <span class="text-sm font-extrabold text-slate-800 dark:text-slate-200 block">${e.name}</span>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400 font-semibold block">${e.phone} | ${e.email}</span>
+              </div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="space-y-0.5">
+                <span class="text-sm font-extrabold text-slate-800 dark:text-slate-200 block">${e.course}</span>
+                <span class="text-xs text-slate-400 font-bold block"><i class="fa-solid fa-building"></i> ${e.campus}</span>
+              </div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="flex items-center space-x-2">
+                <span class="text-sm font-extrabold text-slate-800 dark:text-slate-200">${e.marks}%</span>
+                <div class="w-12 bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                  <div class="bg-emerald-500 h-2" style="width: ${e.marks}%"></div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 text-xs font-bold text-slate-655 dark:text-slate-400">
+              <i class="fa-solid fa-user-tie text-slate-400 mr-1.5"></i>${e.staff || 'Unassigned'}
+            </td>
+            <td class="px-6 py-4">
+              <div class="flex flex-col space-y-1 items-start">
+                <span class="inline-flex px-2.5 py-1 rounded-lg text-xs font-bold border ${badgeClass}">
+                  ${e.status}
+                </span>
+                ${scoreBadge}
+              </div>
+            </td>
+            <td class="px-6 py-4 text-right">
+              <div class="flex items-center justify-end space-x-2">
+                <button onclick="openAdminModal('${e.id}')" class="bg-white/80 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-bold text-xs px-3 py-1.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80 hover:border-emerald-300 transition-colors">
+                  Manage
+                </button>
+                <button onclick="deleteEnquiry('${e.id}')" class="bg-white/80 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950 text-rose-600 dark:text-rose-400 font-bold text-xs px-2.5 py-1.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80 hover:border-rose-300 transition-colors" title="Delete record">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+        tbody.insertAdjacentHTML('beforeend', row);
+      });
+    }
+
+    function deleteEnquiry(id) {
+      if (confirm(`Are you sure you want to delete enquiry record ${id}?`)) {
+        const index = enquiries.findIndex(e => e.id === id);
+        if (index !== -1) {
+          const removedName = enquiries[index].name;
+          enquiries.splice(index, 1);
+          saveDatabaseState();
+          renderEnquiryTable();
+          showToast(`Deleted enquiry record for ${removedName} (${id})`, 'warning');
+        }
+      }
+    }
+
+    // 10. MODAL AUDIT MANAGER
+    function openAdminModal(id) {
+      const app = enquiries.find(e => e.id === id);
+      if (!app) return;
+
+      currentEditEnquiryId = id;
+
+      // Populate static fields
+      document.getElementById("modal-app-id").innerText = app.id;
+      document.getElementById("modal-app-name").innerText = app.name;
+      document.getElementById("modal-app-parent").innerText = app.parent;
+      document.getElementById("modal-app-email").innerText = app.email;
+      document.getElementById("modal-app-phone").innerText = app.phone;
+      document.getElementById("modal-app-course").innerText = app.course;
+      document.getElementById("modal-app-marks").innerText = `${app.marks}% Aggregate`;
+
+      // Set input defaults
+      document.getElementById("modal-status").value = app.status;
+      document.getElementById("modal-staff").value = app.staff || "Dr. K. Raghavan";
+      document.getElementById("modal-notes").value = "";
+
+      // Render audit log
+      renderAuditLog(app.history);
+
+      // Show Modal
+      document.getElementById("admin-modal").classList.remove("hidden");
+    }
+
+    function renderAuditLog(history) {
+      const container = document.getElementById("modal-audit-log");
+      container.innerHTML = "";
+
+      if (!history || history.length === 0) {
+        container.innerHTML = `<span class="italic text-slate-400">No log entries found.</span>`;
+        return;
+      }
+
+      history.forEach(log => {
+        const item = `
+          <div class="flex items-start justify-between border-b border-slate-200/20 pb-1.5 last:border-0 last:pb-0">
+            <span class="font-medium text-slate-600">${log.action}</span>
+            <span class="text-[10px] text-slate-400 font-semibold shrink-0 ml-4">${log.date}</span>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', item);
+      });
+    }
+
+    function closeAdminModal() {
+      document.getElementById("admin-modal").classList.add("hidden");
+      currentEditEnquiryId = null;
+    }
+
+    function saveEnquiryModification() {
+      if (!currentEditEnquiryId) return;
+
+      const appIndex = enquiries.findIndex(e => e.id === currentEditEnquiryId);
+      if (appIndex === -1) return;
+
+      const app = enquiries[appIndex];
+      const newStatus = document.getElementById("modal-status").value;
+      const newStaff = document.getElementById("modal-staff").value;
+      const noteInput = document.getElementById("modal-notes").value.trim();
+
+      const now = new Date();
+      const dateStr = now.toISOString().split('T')[0] + ' ' + now.toTimeString().split(' ')[0].substring(0, 5);
+
+      let historyAdded = false;
+
+      // Status changed logging
+      if (app.status !== newStatus) {
+        app.history.push({
+          date: dateStr,
+          action: `Status changed to ${newStatus} by admin counselor`
+        });
+        app.status = newStatus;
+        historyAdded = true;
+      }
+
+      // Counselor assigned logging
+      if (app.staff !== newStaff) {
+        app.history.push({
+          date: dateStr,
+          action: `Assigned counselor updated to ${newStaff}`
+        });
+        app.staff = newStaff;
+        historyAdded = true;
+      }
+
+      // Add text note logging
+      if (noteInput) {
+        app.history.push({
+          date: dateStr,
+          action: `Note added: "${noteInput}"`
+        });
+        app.notes = noteInput;
+        historyAdded = true;
+      }
+
+      if (historyAdded) {
+        saveDatabaseState();
+        renderEnquiryTable();
+        showToast(`Profile ${app.id} changes recorded successfully.`, 'success');
+      }
+
+      closeAdminModal();
+    }
+
+    // 11. DATA EXPORT PORT (CSV / JSON)
+    function exportData(format) {
+      if (enquiries.length === 0) {
+        showToast("No enquiries available to export.", "warning");
+        return;
+      }
+
+      let dataStr = "";
+      let mimeType = "";
+      let filename = "";
+
+      if (format === 'json') {
+        dataStr = JSON.stringify(enquiries, null, 2);
+        mimeType = "application/json";
+        filename = "sg_admissions_enquiries_log.json";
+      } else if (format === 'csv') {
+        const headers = ["ID", "Name", "Parent", "Email", "Phone", "Course", "Campus", "Marks", "Status", "Assignee Staff", "Notes"];
+        const rows = enquiries.map(e => [
+          e.id,
+          `"${e.name.replace(/"/g, '""')}"`,
+          `"${e.parent.replace(/"/g, '""')}"`,
+          e.email,
+          e.phone,
+          `"${e.course}"`,
+          `"${e.campus}"`,
+          e.marks,
+          e.status,
+          `"${e.staff || ''}"`,
+          `"${(e.notes || '').replace(/"/g, '""')}"`
+        ]);
+
+        dataStr = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+        mimeType = "text/csv";
+        filename = "sg_admissions_enquiries_log.csv";
+      }
+
+      // Generate Download File Triggers
+      const blob = new Blob([dataStr], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      showToast(`Exported ${enquiries.length} enquiries as ${format.toUpperCase()}`, 'success');
+    }
+
+    // 12. WHATSAPP AI CHATBOT & DIALOGUE MANAGER
+    let waState = {
+      lang: 'en',
+      step: 'lang_select',
+      stream: '',
+      interests: '',
+      course: '',
+      marks: 80,
+      leadData: {
+        name: '',
+        phone: '',
+        email: '',
+        city: '',
+        date: '',
+        time: ''
+      }
+    };
+
+    let voiceListening = false;
+
+    function initWhatsAppBot() {
+      clearWhatsAppChat();
+    }
+
+    function clearWhatsAppChat() {
+      const container = document.getElementById("wa-chat-body");
+      container.innerHTML = "";
+      
+      waState = {
+        lang: 'en',
+        step: 'lang_select',
+        stream: '',
+        interests: '',
+        course: '',
+        marks: 80,
+        leadData: { name: '', phone: '', email: '', city: '', date: '', time: '' }
+      };
+
+      // Add WhatsApp Bot Initial Greeting (Bilingual with Hindi & Gujarati)
+      renderWAMessage("Welcome to Sri Gowthami Admissions Office chatbot! Choose your language to begin.\n\nश्री गौतमी शैक्षणिक संस्थान प्रवेश चैटबॉट में आपका स्वागत है! शुरू करने के लिए अपनी भाषा चुनें।\n\nશ્રી ગૌતમી શૈક્ષણિક સંસ્થાના પ્રવેશ ચેટબોટમાં આપનું સ્વાગત છે! શરૂ કરવા માટે તમારી ભાષા પસંદ કરો.", 'bot');
+      setWAQuickReplies(['English', 'हिन्दी (Hindi)', 'ગુજરાતી (Gujarati)']);
+    }
+
+    function renderWAMessage(text, sender = 'bot') {
+      const container = document.getElementById("wa-chat-body");
+      const timeStr = new Date().toTimeString().split(' ')[0].substring(0, 5);
+      
+      let msgHtml = "";
+      if (sender === 'user') {
+        msgHtml = `
+          <div class="flex items-start justify-end space-x-2">
+            <div class="bg-[#dcf8c6] text-slate-800 p-3 rounded-2xl rounded-tr-none shadow-sm text-sm font-semibold max-w-[80%] border border-emerald-100 relative">
+              <p class="whitespace-pre-line">${text}</p>
+              <div class="text-[10px] text-slate-400 text-right mt-1.5 flex items-center justify-end space-x-1">
+                <span>${timeStr}</span>
+                <i class="fa-solid fa-check-double text-sky-500"></i>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (sender === 'bot') {
+        msgHtml = `
+          <div class="flex items-start justify-start space-x-2">
+            <div class="bg-white text-slate-800 p-3 rounded-2xl rounded-tl-none shadow-md text-sm font-semibold max-w-[80%] border border-slate-200/50 relative">
+              <p class="whitespace-pre-line">${text}</p>
+              <div class="text-[10px] text-slate-400 text-right mt-1.5">
+                <span>${timeStr}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (sender === 'typing') {
+        msgHtml = `
+          <div id="wa-typing-indicator" class="flex items-start justify-start space-x-2">
+            <div class="bg-white text-slate-800 px-4 py-3 rounded-2xl rounded-tl-none shadow-md text-sm font-semibold border border-slate-200/50 flex items-center space-x-1">
+              <span class="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce"></span>
+              <span class="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce" style="animation-delay: 0.15s"></span>
+              <span class="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce" style="animation-delay: 0.3s"></span>
+            </div>
+          </div>
+        `;
+      }
+
+      container.insertAdjacentHTML('beforeend', msgHtml);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function setWAQuickReplies(choices) {
+      const container = document.getElementById("wa-quick-replies");
+      container.innerHTML = "";
+
+      if (!choices || choices.length === 0) return;
+
+      choices.forEach(choice => {
+        const btn = document.createElement("button");
+        btn.className = "bg-white hover:bg-slate-100 border border-slate-300 text-[#075E54] font-bold text-xs px-3.5 py-2 rounded-full transition-all duration-200 shadow-sm active:scale-95";
+        btn.innerText = choice;
+        btn.onclick = function() {
+          handleQuickReplyClick(choice);
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function handleQuickReplyClick(choice) {
+      // Append user bubble
+      renderWAMessage(choice, 'user');
+      
+      // Hide quick replies while thinking
+      setWAQuickReplies([]);
+      
+      // Display typing animation
+      renderWAMessage("", 'typing');
+
+      setTimeout(() => {
+        // Remove typing indicator
+        const el = document.getElementById("wa-typing-indicator");
+        if (el) el.remove();
+
+        processWhatsAppDialogue(choice);
+      }, 700);
+    }
+
+    function handleSendWhatsApp(event) {
+      event.preventDefault();
+      const input = document.getElementById("wa-chat-input");
+      const val = input.value.trim();
+
+      if (!val) return;
+
+      renderWAMessage(val, 'user');
+      input.value = "";
+
+      setWAQuickReplies([]);
+      renderWAMessage("", 'typing');
+
+      setTimeout(() => {
+        const el = document.getElementById("wa-typing-indicator");
+        if (el) el.remove();
+
+        processWhatsAppDialogue(val);
+      }, 800);
+    }
+
+    function processWhatsAppDialogue(input) {
+      const lang = waState.lang;
+      
+      switch (waState.step) {
+        
+        case 'lang_select':
+          if (input.includes('English')) {
+            waState.lang = 'en';
+            waState.step = 'stream_select';
+            renderWAMessage("Language set to **English**.\n\nHello! I am your AI Admissions Counselor. I'm here to guide you through our courses, eligibility, fees, placements, transport, hostel facilities, and secure your seat. \n\nFirst, please select your high school / intermediate education stream:", 'bot');
+            setWAQuickReplies(['MPC (Math/Physics/Chem)', 'BiPC (Biology/Physics/Chem)', 'CEC/MEC (Commerce/Business)', 'Graduation Degree']);
+          } else if (input.includes('हिन्दी')) {
+            waState.lang = 'hi';
+            waState.step = 'stream_select';
+            renderWAMessage("भाषा **हिन्दी** सेट की गई है।\n\nनमस्कार! मैं आपका एआई प्रवेश सलाहकार हूँ। मैं यहाँ आपको हमारे पाठ्यक्रमों, पात्रता, फीस, प्लेसमेंट, छात्रावास, परिवहन और आपकी सीट सुरक्षित करने में मार्गदर्शन करूँगा।\n\nसबसे पहले, कृपया अपनी हाई स्कूल / इंटरमीडिएट शिक्षा स्ट्रीम का चयन करें:", 'bot');
+            setWAQuickReplies(['MPC (इंजीनियरिंग)', 'BiPC (मेडिकल/विज्ञान)', 'CEC/MEC (मैनेजमेंट)', 'स्नातक की डिग्री']);
+          } else {
+            waState.lang = 'gj';
+            waState.step = 'stream_select';
+            renderWAMessage("ભાષા **ગુજરાતી** સેટ કરવામાં આવી છે.\n\nનમસ્કાર! હું તમારો એઆઈ પ્રવેશ સલાહકાર છું. હું અહીં તમને અમારા અભ્યાસક્રમો, પાત્રતા, ફી, પ્લેસમેન્ટ, હોસ્ટેલ, વાહનવ્યવહાર અને તમારી સીટ સુરક્ષિત કરવામાં માર્ગદર્શન આપીશ.\n\nસૌ પ્રથમ, કૃપા કરીને તમારા હાઇ સ્કૂલ / ઇન્ટરમીડિયેટ શિક્ષણ પ્રવાહને પસંદ કરો:", 'bot');
+            setWAQuickReplies(['MPC (ઇજનેરી)', 'BiPC (મેડિકલ/સાયન્સ)', 'CEC/MEC (મેનેજમેન્ટ)', 'સ્નાતકની ડિગ્રી']);
+          }
+          break;
+
+        case 'stream_select':
+          waState.stream = input;
+          waState.step = 'interests_select';
+          if (lang === 'en') {
+            renderWAMessage("Perfect! What are your core career goals or interests?", 'bot');
+            setWAQuickReplies(['Coding & Computers', 'Electronics & Robotics', 'Infrastructure & Civil', 'Business & Management', 'Data & Mathematics']);
+          } else if (lang === 'hi') {
+            renderWAMessage("बढ़िया! आपके मुख्य करियर लक्ष्य या रुचियां क्या हैं?", 'bot');
+            setWAQuickReplies(['कोडिंग और कंप्यूटर', 'इलेक्ट्रॉनिक्स और रोबोटिक्स', 'सिविल और बिल्डिंग', 'बिजनेस और मैनेजमेंट', 'डेटा और गणित']);
+          } else {
+            renderWAMessage("ખૂબ સરસ! તમારા મુખ્ય કારકિર્દી લક્ષ્યો અથવા રુચિઓ શું છે?", 'bot');
+            setWAQuickReplies(['કોડિંગ અને કોમ્પ્યુટર', 'ઇલેક્ટ્રોનિક્સ અને રોબોટિક્સ', 'સિવિલ અને બિલ્ડિંગ', 'બિઝનેસ અને મેનેજમેન્ટ', 'ડેટા અને ગણિત']);
+          }
+          break;
+
+        case 'interests_select':
+          waState.interests = input;
+          waState.step = 'course_rec';
+          
+          // Recommend Course
+          let recCourse = ACADEMIC_COURSES[0]; // Default CSE
+          if (waState.stream.includes('MPC') || waState.stream.includes('इंजीनियरिंग') || waState.stream.includes('ઇજનેરી')) {
+            if (input.includes('Coding') || input.includes('कोडिंग') || input.includes('કોડિંગ')) {
+              recCourse = ACADEMIC_COURSES[0]; // CSE
+            } else if (input.includes('Electronics') || input.includes('इलेक्ट्रॉनिक्स') || input.includes('ઇલેક્ટ્રોનિક્સ')) {
+              recCourse = ACADEMIC_COURSES[2]; // ECE
+            } else if (input.includes('Civil') || input.includes('बिल्डिंग') || input.includes('બિલ્ડિંગ') || input.includes('Civil')) {
+              recCourse = ACADEMIC_COURSES[3]; // Civil
+            } else {
+              recCourse = ACADEMIC_COURSES[1]; // AI/ML
+            }
+          } else if (waState.stream.includes('BiPC') || waState.stream.includes('विज्ञान') || waState.stream.includes('સાયન્સ')) {
+            recCourse = ACADEMIC_COURSES[5]; // B.Sc DS
+          } else if (waState.stream.includes('CEC') || waState.stream.includes('Graduation') || waState.stream.includes('मैनेजमेंट') || waState.stream.includes('મેનેજમેન્ટ') || waState.stream.includes('डिग्री') || waState.stream.includes('ડિગ્રી')) {
+            recCourse = ACADEMIC_COURSES[4]; // MBA
+          }
+
+          waState.course = recCourse.name;
+
+          let responseText = "";
+          if (lang === 'en') {
+            responseText = `Based on your stream (${waState.stream}) and interests (${input}), I highly recommend **${recCourse.name} (${recCourse.shortName})** at our **${recCourse.campus}** block.\n\n*Why it matches:* ${recCourse.desc}\n\n*Details:* \n📅 Duration: ${recCourse.duration}\n💰 Tuition Fee: ${recCourse.fee}\n✔️ Min. Eligibility Cutoff: ${recCourse.eligibility}% in board marks.\n\n🏫 *Campus Facilities:* Wi-Fi hostels, AC/non-AC rooms, placement campus drives (Highest Package ₹12 LPA), transport buses covering all main locations.\n\nWhat would you like to do next?`;
+            renderWAMessage(responseText, 'bot');
+            setWAQuickReplies(['Book Appointment 📅', 'Download Brochure 📄', 'Hostel Details 🏢', 'Restart Bot 🔄']);
+          } else if (lang === 'hi') {
+            responseText = `आपकी स्ट्रीम (${waState.stream}) और रुचियों (${input}) के आधार पर, मैं हमारे **${recCourse.campus}** ब्लॉक में **${recCourse.name} (${recCourse.shortName})** की अत्यधिक अनुशंसा करता हूँ।\n\n*यह क्यों मेल खाता है:* ${recCourse.desc}\n\n*विवरण:* \n📅 अवधि: ${recCourse.duration}\n💰 ट्यूशन फीस: ${recCourse.fee}\n✔️ न्यूनतम पात्रता कटऑफ: बोर्ड परीक्षाओं में ${recCourse.eligibility}% अंक।\n\n🏫 *परिसर सुविधाएं:* वाई-फाई छात्रावास, एसी/गैर-एसी कमरे, प्लेसमेंट अभियान (उच्चतम पैकेज ₹12 लाख प्रति वर्ष), सभी मुख्य स्थानों को कवर करने वाली बसें।\n\nआप आगे क्या करना चाहेंगे?`;
+            renderWAMessage(responseText, 'bot');
+            setWAQuickReplies(['अपॉइंटमेंट बुक करें 📅', 'विवरणिका डाउनलोड करें 📄', 'छात्रावास का विवरण 🏢', 'चैट रीस्टार्ट करें 🔄']);
+          } else {
+            responseText = `તમારા પ્રવાહ (${waState.stream}) અને રુચિઓ (${input}) ના આધારે, હું અમારા **${recCourse.campus}** બ્લોકમાં **${recCourse.name} (${recCourse.shortName})** ની ભારપૂર્વક ભલામણ કરું છું.\n\n*તે કેમ મેળ ખાય છે:* ${recCourse.desc}\n\n*વિગતો:* \n📅 સમયગાળો: ${recCourse.duration}\n💰 ટ્યુશન ફી: ${recCourse.fee}\n✔️ લઘુત્તમ પાત્રતા કટઓફ: બોર્ડ પરીક્ષામાં ${recCourse.eligibility}% ગુણ.\n\n🏫 *કેમ્પસ સુવિધાઓ:* વાઇ-ફાઇ હોસ્ટેલ, એસી/નોન-એસી રૂમ, કેમ્પસ પ્લેસમેન્ટ ડ્રાઇવ (સૌથી વધુ પેકેજ ₹12 લાખ પ્રતિ વર્ષ), તમામ મુખ્ય સ્થાનોને આવરી લેતી પરિવહન બસો.\n\nતમે આગળ શું કરવા માંગો છો?`;
+            renderWAMessage(responseText, 'bot');
+            setWAQuickReplies(['એપોઇન્ટમેન્ટ બુક કરો 📅', 'માહિતી પત્રિકા ડાઉનલોડ કરો 📄', 'હોસ્ટેલ વિગતો 🏢', 'ચેટ રીસ્ટાર્ટ કરો 🔄']);
+          }
+          break;
+
+        case 'course_rec':
+          if (input.includes('Brochure') || input.includes('विवरणिका') || input.includes('પત્રિકા')) {
+            downloadMockBrochure();
+            if (lang === 'en') {
+              renderWAMessage("⚠️ The online brochure download service is currently not working / undergoing maintenance.\n\nLet's schedule an appointment with a counselor to secure your seat and receive the brochure directly. What would you like to do?", 'bot');
+              setWAQuickReplies(['Book Appointment 📅', 'Hostel Details 🏢', 'Restart Bot 🔄']);
+            } else if (lang === 'hi') {
+              renderWAMessage("⚠️ विवरणिका डाउनलोड सेवा वर्तमान में काम नहीं कर रही है / रखरखाव के अधीन है।\n\nअपनी सीट सुरक्षित करने और सीधे विवरणिका प्राप्त करने के लिए कृपया काउंसलर के साथ अपॉइंटमेंट बुक करें। आप क्या करना चाहेंगे?", 'bot');
+              setWAQuickReplies(['अपॉइंटमेंट बुक करें 📅', 'छात्रावास का विवरण 🏢', 'चैट रीस्टार्ट करें 🔄']);
+            } else {
+              renderWAMessage("⚠️ માહિતી પત્રિકા ડાઉનલોડ સેવા હાલમાં કામ કરી રહી નથી / જાળવણી હેઠળ છે.\n\nતમારી સીટ સુરક્ષિત કરવા અને સીધી માહિતી પત્રિકા મેળવવા માટે કૃપા કરીને કાઉન્સિલર સાથે એપોઇન્ટમેન્ટ નક્કી કરો. તમે શું કરવા માંગો છો?", 'bot');
+              setWAQuickReplies(['એપોઇન્ટમેન્ટ બુક કરો 📅', 'હોસ્ટેલ વિગતો 🏢', 'ચેટ રીસ્ટાર્ટ કરો 🔄']);
+            }
+          } else if (input.includes('Hostel') || input.includes('छात्रावास') || input.includes('હોસ્ટેલ')) {
+            if (lang === 'en') {
+              renderWAMessage("🏢 Hostels feature 3/4 sharing rooms, study halls, hygienic mess halls (North & South Indian menu), 24/7 medical room, and high-speed Wi-Fi. Our transport covers 15 routes with GPS-enabled buses. Let's secure your seat booking.", 'bot');
+              setWAQuickReplies(['Book Appointment 📅', 'Download Brochure 📄', 'Restart Bot 🔄']);
+            } else if (lang === 'hi') {
+              renderWAMessage("🏢 छात्रावासों में 3/4 साझा कमरे, अध्ययन कक्ष, स्वच्छ मेस (उत्तर और दक्षिण भारतीय भोजन), 24/7 चिकित्सा कक्ष और हाई-स्पीड वाई-फाई की सुविधा है। हमारा परिवहन जीपीएस बसों के साथ 15 मार्गों को कवर करता है। आइए आपकी सीट सुरक्षित करें।", 'bot');
+              setWAQuickReplies(['अपॉइंटमेंट बुक करें 📅', 'विवरणिका डाउनलोड करें 📄', 'चैट रीस्टार्ट करें 🔄']);
+            } else {
+              renderWAMessage("🏢 હોસ્ટેલમાં 3/4 શેરિંગ રૂમ, સ્ટડી હોલ, સ્વચ્છ મેસ (ઉત્તર અને દક્ષિણ ભારતીય ભોજન), 24/7 મેડિકલ રૂમ અને હાઇ-સ્પીડ વાઇ-ફાઇની સુવિધા છે. અમારું પરિવહન જીપીએસ બસો સાથે 15 રૂટને આવરી લે છે. ચાલો તમારી સીટ સુરક્ષિત કરીએ.", 'bot');
+              setWAQuickReplies(['એપોઇન્ટમેન્ટ બુક કરો 📅', 'માહિતી પત્રિકા ડાઉનલોડ કરો 📄', 'ચેટ રીસ્ટાર્ટ કરો 🔄']);
+            }
+          } else if (input.includes('Book Appointment') || input.includes('अपॉइंटमेंट') || input.includes('એપોઇન્ટમેન્ટ')) {
+            waState.step = 'name_collect';
+            if (lang === 'en') {
+              renderWAMessage("Great choice! Let's register your seat booking session. Please type your **Full Name**:", 'bot');
+            } else if (lang === 'hi') {
+              renderWAMessage("बहुत बढ़िया विकल्प! आइए आपके सीट बुकिंग सत्र को पंजीकृत करें। कृपया अपना **पूरा नाम** टाइप करें:", 'bot');
+            } else {
+              renderWAMessage("સરસ વિકલ્પ! ચાલો તમારા સીટ બુકિંગ સત્રની નોંધણી કરીએ. કૃપા કરીને તમારું **પૂરું નામ** ટાઇપ કરો:", 'bot');
+            }
+          } else {
+            clearWhatsAppChat();
+          }
+          break;
+
+        case 'name_collect':
+          waState.leadData.name = input;
+          waState.step = 'phone_collect';
+          if (lang === 'en') {
+            renderWAMessage(`Thanks ${input}. Please share your **10-Digit Mobile Phone Number** (for SMS alerts):`, 'bot');
+          } else if (lang === 'hi') {
+            renderWAMessage(`धन्यवाद ${input}। कृपया अपना **10 अंकों का मोबाइल फोन नंबर** साझा करें (एसएमएस अलर्ट के लिए):`, 'bot');
+          } else {
+            renderWAMessage(`આભાર ${input}. કૃપા કરીને તમારો **10 અંકનો મોબાઈલ ફોન નંબર** દાખલ કરો (SMS એલર્ટ માટે):`, 'bot');
+          }
+          break;
+
+        case 'phone_collect':
+          if (!/^[0-9]{10}$/.test(input.trim())) {
+            if (lang === 'en') {
+              renderWAMessage("⚠️ Invalid phone number. Please enter a valid 10-digit number:", 'bot');
+            } else if (lang === 'hi') {
+              renderWAMessage("⚠️ अमान्य फोन नंबर। कृपया एक वैध 10-अंकीय नंबर दर्ज करें:", 'bot');
+            } else {
+              renderWAMessage("⚠️ અમાન્ય ફોન નંબર. કૃપા કરીને સાચો 10 અંકનો નંબર દાખલ કરો:", 'bot');
+            }
+            return;
+          }
+          waState.leadData.phone = input;
+          waState.step = 'email_collect';
+          if (lang === 'en') {
+            renderWAMessage("Excellent. Please share your **Email Address**:", 'bot');
+          } else if (lang === 'hi') {
+            renderWAMessage("बहुत बढ़िया। कृपया अपना **ईमेल पता** साझा करें:", 'bot');
+          } else {
+            renderWAMessage("ખૂબ સરસ. કૃપા કરીને તમારું **ઇમેઇલ સરનામું** દાખલ કરો:", 'bot');
+          }
+          break;
+
+        case 'email_collect':
+          if (!input.includes('@') || !input.includes('.')) {
+            if (lang === 'en') {
+              renderWAMessage("⚠️ Invalid email format. Please enter a valid email address:", 'bot');
+            } else if (lang === 'hi') {
+              renderWAMessage("⚠️ अमान्य ईमेल प्रारूप। कृपया एक वैध ईमेल पता दर्ज करें:", 'bot');
+            } else {
+              renderWAMessage("⚠️ અમાન્ય ઇમેઇલ ફોર્મેટ. કૃપા કરીને સાચું ઇમેઇલ સરનામું દાખલ કરો:", 'bot');
+            }
+            return;
+          }
+          waState.leadData.email = input;
+          waState.step = 'city_collect';
+          if (lang === 'en') {
+            renderWAMessage("Which **City or Town** are you from?", 'bot');
+          } else if (lang === 'hi') {
+            renderWAMessage("आप किस **शहर या कस्बे** से हैं?", 'bot');
+          } else {
+            renderWAMessage("તમે કયા **શહેર અથવા નગર** થી છો?", 'bot');
+          }
+          break;
+
+        case 'city_collect':
+          waState.leadData.city = input;
+          waState.step = 'book_appt';
+          if (lang === 'en') {
+            renderWAMessage("Awesome! Please select your preferred **Counseling Date** slot:", 'bot');
+            setWAQuickReplies(['Tomorrow 📅', 'This Saturday 📅', 'Next Monday 📅']);
+          } else if (lang === 'hi') {
+            renderWAMessage("अद्भुत! कृपया अपनी पसंदीदा **काउंसिलिंग तिथि** स्लॉट चुनें:", 'bot');
+            setWAQuickReplies(['कल 📅', 'इस शनिवार 📅', 'अगले सोमवार 📅']);
+          } else {
+            renderWAMessage("ખૂબ સરસ! કૃપા કરીને તમારી પસંદગીનો **કાઉન્સેલિંગ તારીખ** સ્લોટ પસંદ કરો:", 'bot');
+            setWAQuickReplies(['આવતીકાલે 📅', 'આ શનિવારે 📅', 'આવતા સોમવારે 📅']);
+          }
+          break;
+
+        case 'book_appt':
+          waState.leadData.date = input;
+          waState.step = 'appt_booked';
+          if (lang === 'en') {
+            renderWAMessage("Got it. Select your preferred **Time Slot**:", 'bot');
+            setWAQuickReplies(['10:00 AM 🕒', '01:00 PM 🕒', '03:30 PM 🕒']);
+          } else if (lang === 'hi') {
+            renderWAMessage("समझ गया। अपना पसंदीदा **समय स्लॉट** चुनें:", 'bot');
+            setWAQuickReplies(['सुबह 10:00 🕒', 'दोपहर 01:00 🕒', 'शाम 03:30 🕒']);
+          } else {
+            renderWAMessage("સમજી ગયો. તમારી પસંદગીનો **સમય સ્લોટ** પસંદ કરો:", 'bot');
+            setWAQuickReplies(['સવારે 10:00 🕒', 'બપોરે 01:00 🕒', 'સાંજે 03:30 🕒']);
+          }
+          break;
+
+        case 'appt_booked':
+          waState.leadData.time = input;
+          waState.step = 'completed';
+          
+          // Determine Lead Score (Hot, Warm, Cold)
+          let leadScore = 'Warm';
+          if (waState.stream.includes('MPC') || waState.stream.includes('ઇજનેરી') || waState.stream.includes('इंजीनियरिंग')) {
+            leadScore = 'Hot'; // Engineering high demand
+          } else if (waState.interests.includes('Coding') || waState.interests.includes('कोडिंग') || waState.interests.includes('કોડિંગ')) {
+            leadScore = 'Hot';
+          }
+
+          // Generate Database Entry
+          const now = new Date();
+          const dateStr = now.toISOString().split('T')[0] + ' ' + now.toTimeString().split(' ')[0].substring(0, 5);
+          
+          const newEnquiry = {
+            id: "ENQ" + (1000 + enquiries.length + 1),
+            name: waState.leadData.name,
+            parent: "WhatsApp AI Bot Lead",
+            email: waState.leadData.email,
+            phone: waState.leadData.phone,
+            course: waState.course,
+            campus: ACADEMIC_COURSES.find(c => c.name === waState.course).campus,
+            marks: waState.marks,
+            status: "Pending",
+            staff: "Dr. K. Raghavan",
+            leadScore: leadScore,
+            source: "WhatsApp Bot",
+            notes: `Lead Score: ${leadScore} | Source: WhatsApp Bot (${waState.lang.toUpperCase()}). Scheduled Counseling Slot: ${waState.leadData.date} at ${waState.leadData.time} (City: ${waState.leadData.city}).`,
+            history: [
+              { date: dateStr, action: `Enquiry generated via WhatsApp Admissions Bot (${leadScore} Lead in ${waState.lang.toUpperCase()})` }
+            ]
+          };
+
+          // Append and save to database
+          enquiries.unshift(newEnquiry);
+          saveDatabaseState();
+          renderEnquiryTable();
+
+          if (lang === 'en') {
+            renderWAMessage(`🎉 **Counseling Slot Confirmed!**\n\n👤 Candidate Name: ${waState.leadData.name}\n📅 Date: ${waState.leadData.date}\n🕒 Time Slot: ${waState.leadData.time}\n📍 Course: ${waState.course}\n\nOur counseling director **Dr. K. Raghavan** has been assigned to your profile. A confirmation WhatsApp notification has been dispatched to **${waState.leadData.phone}**.\n\nThank you for choosing Sri Gowthami!`, 'bot');
+            setWAQuickReplies(['Restart Bot 🔄', 'Website Main Portal 🌐']);
+          } else if (lang === 'hi') {
+            renderWAMessage(`🎉 **काउंसिलिंग स्लॉट की पुष्टि हो गई है!**\n\n👤 उम्मीदवार का नाम: ${waState.leadData.name}\n📅 दिनांक: ${waState.leadData.date}\n🕒 समय स्लॉट: ${waState.leadData.time}\n📍 कोर्स: ${waState.course}\n\nहमारे काउंसिलिंग निदेशक **Dr. K. Raghavan** को आपकी प्रोफ़ाइल सौंपी गई है। एक पुष्टिकरण व्हाट्सएप संदेश **${waState.leadData.phone}** पर भेज दिया गया है।\n\nश्री गौतमी चुनने के लिए धन्यवाद!`, 'bot');
+            setWAQuickReplies(['रीस्टार्ट चैट 🔄', 'मुख्य पोर्टल 🌐']);
+          } else {
+            renderWAMessage(`🎉 **કાઉન્સેલિંગ સ્લોટ કન્ફર્મ થઈ ગયો છે!**\n\n👤 ઉમેદવારનું નામ: ${waState.leadData.name}\n📅 તારીખ: ${waState.leadData.date}\n🕒 સમય સ્લોટ: ${waState.leadData.time}\n📍 કોર્સ: ${waState.course}\n\nઅમારા કાઉન્સેલિંગ ડિરેક્ટર **Dr. K. Raghavan** ને તમારી પ્રોફાઇલ સોંપવામાં આવી છે. એક કન્ફર્મેશન વોટ્સએપ સંદેશ **${waState.leadData.phone}** પર મોકલવામાં આવ્યો છે.\n\nશ્રી ગૌતમી પસંદ કરવા બદલ આભાર!`, 'bot');
+            setWAQuickReplies(['ચેટ રીસ્ટાર્ટ કરો 🔄', 'મુખ્ય પોર્ટલ 🌐']);
+          }
+
+          // Trigger simulated automated campaign notification scheduling
+          triggerSimulatedCampaign(waState.leadData.name, waState.leadData.phone, waState.leadData.date);
+          break;
+
+        case 'completed':
+          clearWhatsAppChat();
+          break;
+
+        default:
+          clearWhatsAppChat();
+          break;
+      }
+    }
+
+    // Voice Input Simulator
+    function toggleVoiceInputSim() {
+      const micBtn = document.getElementById("wa-mic-btn");
+      const form = document.getElementById("wa-chat-form");
+      const waveform = document.getElementById("wa-voice-waveform");
+
+      if (!voiceListening) {
+        voiceListening = true;
+        micBtn.className = "w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center animate-pulse focus:outline-none";
+        form.classList.add("hidden");
+        waveform.classList.remove("hidden");
+        waveform.classList.add("flex");
+
+        // Simulate 3.5s speaking then auto-typing recommendation query
+        setTimeout(() => {
+          if (voiceListening) {
+            let transcribedText = "Recommend a coding program for MPC student";
+            if (waState.lang === 'hi') transcribedText = "एमपीसी छात्र के लिए कोडिंग कोर्स सुझाएं";
+            else if (waState.lang === 'gj') transcribedText = "MPC વિદ્યાર્થી માટે કોડિંગ કોર્સ સૂચવો";
+            
+            document.getElementById("wa-chat-input").value = transcribedText;
+            showToast("Voice input transcribed successfully!", "success");
+            
+            // Stop listening & submit
+            toggleVoiceInputSim();
+            handleSendWhatsApp(new Event('submit'));
+          }
+        }, 3500);
+
+      } else {
+        voiceListening = false;
+        micBtn.className = "w-10 h-10 rounded-full bg-white text-slate-500 flex items-center justify-center hover:bg-slate-100 transition-colors focus:outline-none";
+        form.classList.remove("hidden");
+        waveform.classList.add("hidden");
+        waveform.classList.remove("flex");
+      }
+    }
+
+    // Cloud API Settings
+    function saveWhatsAppConfig() {
+      const phoneId = document.getElementById("wa-config-phone-id").value.trim();
+      const token = document.getElementById("wa-config-token").value.trim();
+
+      if (!phoneId || !token) {
+        showToast("Please fill all configuration parameters", "error");
+        return;
+      }
+
+      showToast("WhatsApp Cloud API configuration synced!", "success");
+    }
+
+    // Download mock brochure handbook using jsPDF with high aesthetic appeal
+    function downloadMockBrochure() {
+      try {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('p', 'mm', 'a4'); // A4 size: 210mm x 297mm
+
+        // 1. TOP PREMIUM HEADER BLOCK (Deep Institutional Teal)
+        doc.setFillColor(7, 94, 84); // #075E54
+        doc.rect(0, 0, 210, 42, "F");
+
+        // 2. GOLD DECORATIVE ACCENT STRIPE
+        doc.setFillColor(212, 175, 55); // #D4AF37 (Gold)
+        doc.rect(0, 42, 210, 3, "F");
+
+        // 3. LOGO EMBLEM MONOGRAM
+        doc.setFillColor(255, 255, 255);
+        doc.roundedRect(15, 9, 22, 22, 3, 3, "F");
+        
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(14);
+        doc.setTextColor(7, 94, 84);
+        doc.text("SG", 21, 23);
+        doc.setFontSize(7);
+        doc.text("PORTAL", 19, 28);
+
+        // 4. HEADER TYPOGRAPHY
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16);
+        doc.setTextColor(255, 255, 255);
+        doc.text("SRI GOWTHAMI EDUCATIONAL INSTITUTIONS", 44, 19);
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10);
+        doc.setTextColor(212, 175, 55); // Gold
+        doc.text("OFFICIAL ADMISSIONS PROSPECTUS & COURSE PATHWAYS", 44, 26);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
+        doc.setTextColor(230, 245, 240);
+        doc.text("ACADEMIC SESSION 2026-2027  |  NATIONAL HELPLINE: 1800-200-3344", 44, 32);
+
+        // 5. SECTION: AFFILIATED COURSES
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        doc.setTextColor(7, 94, 84); // Teal
+        doc.text("AFFILIATED DEGREE & PROFESSIONAL PROGRAMS", 15, 56);
+        
+        doc.setDrawColor(7, 94, 84);
+        doc.setLineWidth(0.4);
+        doc.line(15, 58, 110, 58);
+
+        // 6. RENDER PROGRAM CARDS (2 Columns, 3 Rows)
+        const programs = [
+          {
+            title: "B.Tech Computer Science (CSE)",
+            campus: "Main Campus Block",
+            cutoff: "60% PCM Cutoff",
+            fee: "INR 1,20,000 / Year",
+            desc: "Software systems, Cloud, and Data Architectures."
+          },
+          {
+            title: "B.Tech Artificial Intelligence & ML",
+            campus: "Engineering Block",
+            cutoff: "65% PCM Cutoff",
+            fee: "INR 1,30,000 / Year",
+            desc: "Advanced neural nets and machine learning pipelines."
+          },
+          {
+            title: "B.Tech Electronics & Comm (ECE)",
+            campus: "Main Campus Block",
+            cutoff: "55% PCM Cutoff",
+            fee: "INR 1,00,000 / Year",
+            desc: "VLSI chip designs, IoT systems, & signal processing."
+          },
+          {
+            title: "B.Tech Civil Engineering",
+            campus: "Engineering Block",
+            cutoff: "50% PCM Cutoff",
+            fee: "INR 90,000 / Year",
+            desc: "Infrastructure design and green material sciences."
+          },
+          {
+            title: "MBA Business Management",
+            campus: "City Campus Block",
+            cutoff: "50% Graduation",
+            fee: "INR 1,50,000 / Year",
+            desc: "Marketing metrics, finance systems, & supply chain."
+          },
+          {
+            title: "B.Sc Data Science",
+            campus: "City Campus Block",
+            cutoff: "55% Mathematics",
+            fee: "INR 80,000 / Year",
+            desc: "Probability models and big data processing algorithms."
+          }
+        ];
+
+        let startX = 15;
+        let startY = 64;
+        let cardW = 86;
+        let cardH = 34;
+
+        programs.forEach((prog, index) => {
+          let col = index % 2;
+          let row = Math.floor(index / 2);
+          let px = startX + (col * 93);
+          let py = startY + (row * 39);
+
+          // Card Background
+          doc.setFillColor(248, 250, 252); // Soft light slate (#F8FAFC)
+          doc.setDrawColor(226, 232, 240); // Card border (#E2E8F0)
+          doc.setLineWidth(0.3);
+          doc.roundedRect(px, py, cardW, cardH, 2.5, 2.5, "FD");
+
+          // Left Highlight accent bar
+          doc.setFillColor(7, 94, 84); // Teal
+          doc.rect(px, py, 1.8, cardH, "F");
+
+          // Card Text Content
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(8.5);
+          doc.setTextColor(30, 41, 59); // Slate-800
+          doc.text(prog.title, px + 5, py + 6);
+
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(7.5);
+          doc.setTextColor(100, 116, 139); // Slate-500
+          doc.text(prog.desc, px + 5, py + 12, { maxWidth: cardW - 10 });
+
+          // Details Row
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(7);
+          doc.setTextColor(7, 94, 84); // Teal
+          doc.text(`Location: ${prog.campus}`, px + 5, py + 23);
+          
+          doc.setFont("helvetica", "normal");
+          doc.setTextColor(180, 83, 9); // Amber
+          doc.text(`Cutoff: ${prog.cutoff}`, px + 5, py + 28);
+
+          doc.setFont("helvetica", "bold");
+          doc.setTextColor(15, 23, 42); // Slate-900
+          doc.text(`Fee: ${prog.fee}`, px + 48, py + 28);
+        });
+
+        // 7. SECTION: SCHOLARSHIPS (Gold callout box)
+        let schY = 184;
+        doc.setFillColor(254, 243, 199); // Light yellow-gold (#FEF3C7)
+        doc.setDrawColor(251, 191, 36); // Gold border (#FBBF24)
+        doc.setLineWidth(0.3);
+        doc.roundedRect(15, schY, 180, 26, 3, 3, "FD");
+
+        // Gold icon accent
+        doc.setFillColor(251, 191, 36);
+        doc.roundedRect(19, schY + 4, 6, 18, 1, 1, "F");
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10);
+        doc.setTextColor(180, 83, 9); // Dark gold
+        doc.text("INSTITUTIONAL MERIT SCHOLARSHIP SCHEMES:", 29, schY + 8);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8.5);
+        doc.setTextColor(120, 53, 4);
+        doc.text("- Board / High School Aggregate Score >= 90%: 50% Tuition Fee Waiver across all years.\n- Board / High School Aggregate Score >= 85%: 25% Tuition Fee Waiver across all years.", 29, schY + 14);
+
+        // 8. SECTION: PLACEMENTS (Emerald green block)
+        let placeY = 217;
+        doc.setFillColor(240, 253, 244); // Light green (#F0FDF4)
+        doc.setDrawColor(187, 247, 208); // Green border (#BBF7D0)
+        doc.setLineWidth(0.3);
+        doc.roundedRect(15, placeY, 180, 36, 3, 3, "FD");
+
+        // Green icon accent
+        doc.setFillColor(34, 197, 94);
+        doc.roundedRect(19, placeY + 4, 6, 28, 1, 1, "F");
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10);
+        doc.setTextColor(21, 128, 61); // Dark green
+        doc.text("CAREER ADVANCEMENT & PLACEMENT TRACK RECORD:", 29, placeY + 8);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
+        doc.setTextColor(22, 101, 52);
+        doc.text("- Historic Highest Salary Package: INR 12.0 Lakhs / Annum\n- Institutional Placement Percentage: 92% candidates verified locked in placement drives.\n- Top Recruitment Partners: TCS, Infosys, Cognizant, Wipro, L&T, Tech Mahindra.", 29, placeY + 15);
+
+        // 9. FOOTER BLOCK
+        doc.setDrawColor(226, 232, 240);
+        doc.setLineWidth(0.4);
+        doc.line(15, 274, 195, 274);
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7.5);
+        doc.setTextColor(148, 163, 184); // Slate-400
+        doc.text("Sri Gowthami Admissions Board Office  |  Admissions Portal Sandbox Dev", 15, 280);
+        
+        doc.setFont("helvetica", "normal");
+        doc.text("Contact Support: admissions@srigowthami.edu.in  |  Phone: +91-8866442200", 123, 280);
+
+        // Save PDF
+        doc.save("srigowthami_admission_handbook_2026.pdf");
+        showToast("Premium Course Brochure PDF generated and downloaded!", "success");
+      } catch (err) {
+        console.error("PDF generation failed: ", err);
+        showToast("Error generating PDF brochure. Downloading text backup instead.", "warning");
+        // Fallback to text file in case of load failure
+        const backupText = "SRI GOWTHAMI EDUCATIONAL INSTITUTIONS - COURSE HANDBOOK 2026-27\n\nRefer to website for full program listings.";
+        const blob = new Blob([backupText], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", "srigowthami_admission_handbook_2026.txt");
+        link.click();
+      }
+    }
+
+    // Trigger Campaign logging follow-up alerts
+    function triggerSimulatedCampaign(name, phone, apptDate) {
+      const logsContainer = document.getElementById("wa-campaign-logs");
+      logsContainer.innerHTML = ""; // Clear placeholder
+      
+      const timeNow = new Date().toTimeString().split(' ')[0].substring(0, 5);
+      
+      const log1 = `
+        <div class="border-b border-slate-200/20 pb-1 flex justify-between text-slate-500">
+          <span>🔔 [${timeNow}] SMS Campaign Alert scheduled for ${name}</span>
+          <span class="text-[9px] text-emerald-600 font-extrabold shrink-0">QUEUED</span>
+        </div>
+      `;
+      logsContainer.insertAdjacentHTML('beforeend', log1);
+
+      // Trigger active alert notification mock logs after 5 seconds
+      setTimeout(() => {
+        const timeAlert = new Date().toTimeString().split(' ')[0].substring(0, 5);
+        const log2 = `
+          <div class="border-b border-slate-200/20 pb-1 flex justify-between text-[#075E54]">
+            <span>✅ [${timeAlert}] Automated Follow-up SMS sent: 'Bring board memos on ${apptDate}'</span>
+            <span class="text-[9px] text-[#075E54] font-extrabold shrink-0">SENT</span>
+          </div>
+        `;
+        logsContainer.insertAdjacentHTML('beforeend', log2);
+        showToast(`Automated WhatsApp campaign follow-up sent to ${name}!`, "info");
+      }, 5000);
+    }
+
+    // 13. ADMISSIONS EMAIL CONFIRMATION SIMULATOR
+    function showSimulatedEmail(enquiry) {
+      // Reset tab selection to Student
+      switchModalTab('student');
+
+      // Populate Student Email
+      document.getElementById("email-to-addr").innerText = `${enquiry.name} <${enquiry.email}>`;
+      document.getElementById("email-subject").innerText = `Admissions Confirmation: ${enquiry.id} - Sri Gowthami`;
+      document.getElementById("email-student-name").innerText = enquiry.name;
+      document.getElementById("email-app-id").innerText = enquiry.id;
+      document.getElementById("email-app-course").innerText = enquiry.course;
+      document.getElementById("email-app-campus").innerText = enquiry.campus;
+      document.getElementById("email-app-marks").innerText = `${enquiry.marks}%`;
+      
+      const statusEl = document.getElementById("email-app-status");
+      statusEl.innerText = enquiry.status;
+      if (enquiry.status === 'Shortlisted' || enquiry.status === 'Approved') {
+        statusEl.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100";
+      } else if (enquiry.status === 'Pending') {
+        statusEl.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-100";
+      } else {
+        statusEl.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-100";
+      }
+      
+      document.getElementById("email-app-staff").innerText = enquiry.staff;
+
+      // Populate Parent Alerts SMS & Email Copy
+      document.getElementById("sms-parent-phone").innerText = enquiry.phone;
+      document.getElementById("sms-parent-name").innerText = enquiry.parent || "Guardian";
+      document.getElementById("sms-student-name").innerText = enquiry.name;
+      document.getElementById("sms-app-course").innerText = enquiry.course;
+      document.getElementById("sms-app-id").innerText = enquiry.id;
+      document.getElementById("sms-app-staff").innerText = enquiry.staff;
+
+      document.getElementById("email-parent-name").innerText = enquiry.parent || "Guardian";
+      const emailParts = enquiry.email.split('@');
+      const parentEmail = `parent.${emailParts[0]}@${emailParts[1] || 'gmail.com'}`;
+      document.getElementById("email-parent-addr").innerText = parentEmail;
+      document.getElementById("email-parent-app-id").innerText = enquiry.id;
+      document.getElementById("email-parent-student-name").innerText = enquiry.name;
+      document.getElementById("email-parent-course").innerText = enquiry.course;
+      document.getElementById("email-parent-campus").innerText = enquiry.campus;
+      document.getElementById("email-parent-marks").innerText = `${enquiry.marks}%`;
+
+      // Display Modal
+      document.getElementById("email-modal").classList.remove("hidden");
+      showToast("Confirmation alerts dispatched to Student and Parent!", "info");
+    }
+
+    function switchModalTab(tabId) {
+      const btnStudent = document.getElementById("modal-tab-btn-student");
+      const btnParent = document.getElementById("modal-tab-btn-parent");
+      const contentStudent = document.getElementById("modal-content-student");
+      const contentParent = document.getElementById("modal-content-parent");
+
+      if (tabId === 'student') {
+        btnStudent.className = "px-4 py-2 text-sm font-extrabold text-emerald-700 border-b-2 border-emerald-600 focus:outline-none";
+        btnParent.className = "px-4 py-2 text-sm font-bold text-slate-500 hover:text-slate-800 border-b-2 border-transparent focus:outline-none ml-2";
+        contentStudent.classList.remove("hidden");
+        contentParent.classList.add("hidden");
+      } else {
+        btnParent.className = "px-4 py-2 text-sm font-extrabold text-emerald-700 border-b-2 border-emerald-600 focus:outline-none";
+        btnStudent.className = "px-4 py-2 text-sm font-bold text-slate-500 hover:text-slate-800 border-b-2 border-transparent focus:outline-none ml-2";
+        contentStudent.classList.add("hidden");
+        contentParent.classList.remove("hidden");
+      }
+    }
+
+    function closeEmailModal() {
+      document.getElementById("email-modal").classList.add("hidden");
+    }
+
+  </script>
+</body>
+</html>
